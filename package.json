@@ -1,38 +1,43 @@
 {
-  "name": "sampann-web",
+  "name": "sampanna",
   "version": "1.0.0",
   "private": true,
   "engines": {
     "node": ">=20.9.0"
   },
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate && next build",
-    "start": "next start",
-    "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "postinstall": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy",
-    "db:seed": "prisma db seed",
-    "db:studio": "prisma studio",
-    "images": "node scripts/optimize-images.mjs"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "build:client": "npm run build --workspace=client",
+    "build:server": "npm run build --workspace=server",
+    "typecheck:client": "npm run typecheck --workspace=client",
+    "typecheck:server": "npm run typecheck --workspace=server",
+    "lint:client": "npm run lint --workspace=client",
+    "db:migrate": "npm run db:migrate --workspace=server",
+    "db:deploy": "npm run db:deploy --workspace=server",
+    "db:seed": "npm run db:seed --workspace=server",
+    "db:studio": "npm run db:studio --workspace=server"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "motion": "^14.7.1",
     "next": "^16.4.3",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "server-only": "^0.0.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
