@@ -1,0 +1,181 @@
+// Sampann — database schema (Supabase PostgreSQL via Prisma)
+//
+// DATABASE_URL → Supavisor transaction pooler (runtime, serverless-safe)
+// DIRECT_URL   → session pooler / direct connection (migrations, seeding)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─── Menu ────────────────────────────────────────────────────────────────────
+
+model MenuCategory {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String?
+  image        String?
+  imageAlt     String?
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  dishes       Dish[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+}
+
+model Dish {
+  id           String            @id @default(cuid())
+  name         String
+  slug         String            @unique
+  description  String?
+  /// Single price in whole rupees. Null when the dish is priced per variant or "as per size".
+  price        Int?
+  /// Printed price qualifier, e.g. "As per size" (menu: APS). Never a fabricated amount.
+  priceNote    String?
+  priceOptions DishPriceOption[]
+  image        String?
+  imageAlt     String?
+  categoryId   String
+  category     MenuCategory      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  /// Free-form presentation tags, e.g. "seafood". Derived only from the dish name/menu.
+  tags         String[]          @default([])
+  isFeatured   Boolean           @default(false)
+  isAvailable  Boolean           @default(true)
+  displayOrder Int               @default(0)
+  /// Verified dietary attributes. Null = not verified, so nothing is shown.
+  isVegetarian Boolean?
+  isVegan      Boolean?
+  containsNuts Boolean?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([categoryId, displayOrder])
+  @@index([isFeatured])
+  @@index([name])
+}
+
+/// Variant pricing printed on the menu, e.g. VEG 249 / CHICKEN 299, HALF / FULL.
+model DishPriceOption {
+  id           String @id @default(cuid())
+  dishId       String
+  dish         Dish   @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  label        String
+  price        Int?
+  priceNote    String?
+  displayOrder Int    @default(0)
+
+  @@unique([dishId, label])
+}
+
+// ─── Gallery ─────────────────────────────────────────────────────────────────
+
+enum GalleryCategory {
+  FOOD
+  DRINKS
+  AMBIENCE
+  KITCHEN
+}
+
+model GalleryImage {
+  id           String          @id @default(cuid())
+  imageUrl     String          @unique
+  altText      String
+  caption      String?
+  category     GalleryCategory
+  width        Int
+  height       Int
+  /// Tiny base64 placeholder to prevent layout shift and blank tiles.
+  blurDataUrl  String?
+  displayOrder Int             @default(0)
+  isPublished  Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([isPublished, category, displayOrder])
+}
+
+// ─── Reservations ────────────────────────────────────────────────────────────
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  CANCELLED
+}
+
+model Reservation {
+  id              String            @id @default(cuid())
+  guestName       String            @db.VarChar(120)
+  email           String            @db.VarChar(254)
+  phone           String            @db.VarChar(32)
+  date            DateTime          @db.Date
+  /// Local restaurant time (Asia/Kolkata), "HH:MM".
+  time            String            @db.VarChar(5)
+  guestCount      Int
+  specialRequests String?           @db.VarChar(1000)
+  status          ReservationStatus @default(PENDING)
+  /// Salted SHA-256 of the client IP, for rate limiting only. Raw IPs are never stored.
+  ipHash          String?           @db.VarChar(64)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([status, date])
+  @@index([date, time])
+  @@index([ipHash, createdAt])
+}
+
+// ─── Testimonials ────────────────────────────────────────────────────────────
+
+/// Kept explicit so Google reviews and admin-managed testimonials are never confused.
+enum TestimonialSource {
+  GOOGLE
+  ADMIN
+}
+
+model Testimonial {
+  id          String            @id @default(cuid())
+  authorName  String
+  rating      Int?
+  reviewText  String
+  source      TestimonialSource
+  reviewDate  DateTime?
+  sourceUrl   String?
+  isVerified  Boolean           @default(false)
+  isPublished Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([isPublished, source])
+}
+
+// ─── Contact ─────────────────────────────────────────────────────────────────
+
+enum EnquiryStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  SPAM
+}
+
+model ContactEnquiry {
+  id        String        @id @default(cuid())
+  name      String        @db.VarChar(120)
+  email     String        @db.VarChar(254)
+  phone     String?       @db.VarChar(32)
+  message   String        @db.VarChar(2000)
+  status    EnquiryStatus @default(NEW)
+  /// Salted SHA-256 of the client IP, for rate limiting only.
+  ipHash    String?       @db.VarChar(64)
+  createdAt DateTime      @default(now())
+
+  @@index([status, createdAt])
+  @@index([ipHash, createdAt])
+}

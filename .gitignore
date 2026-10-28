@@ -1,0 +1,37 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.env
+.env*.local
+.vercel
+npm-debug.log*
+.claude/settings.local.json
+
+# ── Original assets: never commit or deploy ────────────────────────────────
+# Full-resolution originals (~1.2 GB) live outside the project in
+# ../sampann-original-assets. These patterns stop them being added back by
+# mistake. Optimised website images (public/images/*.webp, public/images/og/)
+# are NOT ignored.
+sampann_images/
+sampann-original-assets/
+*-original-assets/
+/originals/
+/public/images/interior/
+/public/images/food/
+/public/images/gallery/
+/public/images/other/
+/public/images/logo/
+/Sampanna_logo.png
+Sampann_Menu_updated*.pdf
+
+# Archives and backups
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.bak
+/backup*/
+/_previous-web-derivatives/
