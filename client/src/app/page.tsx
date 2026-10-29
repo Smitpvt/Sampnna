@@ -35,17 +35,12 @@ function buildChapters(menu: CategoryDTO[]): ShowcaseEntry[] {
 
 export default async function HomePage() {
   const [menu, featured, google, testimonials] = await Promise.all([getMenu(), getFeaturedDishes(), getGoogleSummary(), getPublishedTestimonials()]);
-  const insetDish = featured.find((d) => d.image?.src === media(HOME_MEDIA.heroInset).src);
   const dishCount = menu.reduce((n, c) => n + c.dishes.length, 0);
 
   return (
     <>
-      <Hero
-        backdrop={media(HOME_MEDIA.heroBackdrop)}
-        inset={media(HOME_MEDIA.heroInset)}
-        insetLabel={{ name: insetDish?.name ?? media(HOME_MEDIA.heroInset).caption, category: insetDish?.categoryName ?? "" }}
-      />
-      <Story image={media(HOME_MEDIA.storyImage)} detail={media(HOME_MEDIA.storyDetail)} />
+      <Hero backdrops={HOME_MEDIA.heroBackdrops.map(media)} />
+      <Story images={HOME_MEDIA.storyImages.map(media)} />
       {featured.length > 0 && <FeaturedDishes dishes={featured} />}
       <CategoryShowcase entries={buildChapters(menu)} />
       <Highlights dishes={dishCount} categories={menu.length} kitchens={site.cuisines} google={google} />

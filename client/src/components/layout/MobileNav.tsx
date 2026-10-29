@@ -57,10 +57,19 @@ export function MobileNav({ open, onClose, isActive }: Props) {
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="shell flex h-20 items-center justify-between">
-            <Logo className="h-9 w-auto" />
-            <button type="button" onClick={onClose} aria-label="Close menu" className="-mr-2 inline-flex size-12 items-center justify-center">
-              <Close className="size-6" />
+          {/* Mirrors the header: the close control sits exactly where the menu toggle was (centred logo on phones). */}
+          <div className="shell flex h-16 items-center gap-4 max-sm:grid max-sm:grid-cols-[2.75rem_1fr_2.75rem] md:h-20">
+            <div className="flex max-sm:col-start-2 max-sm:justify-self-center">
+              <Logo className="h-9 w-auto" />
+            </div>
+            <span aria-hidden className="h-7 w-px bg-gold/45 max-sm:hidden" />
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close menu"
+              className="inline-flex size-11 items-center justify-center rounded-[10px] transition-colors duration-300 hover:bg-ivory/[0.08] hover:text-sand max-sm:col-start-3 max-sm:justify-self-end"
+            >
+              <Close className="size-5" />
             </button>
           </div>
 

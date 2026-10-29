@@ -85,7 +85,10 @@ export function FeaturedDishes({ dishes }: { dishes: DishDTO[] }) {
   };
 
   return (
-    <section aria-labelledby="featured-title" className="relative overflow-hidden bg-turquoise-deep py-24 text-ivory md:py-32">
+    <section
+      aria-labelledby="featured-title"
+      className="relative overflow-hidden bg-turquoise-deep pt-14 pb-20 text-ivory md:pt-16 md:pb-24 lg:pt-20 lg:pb-28"
+    >
       <div className="shell flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="eyebrow text-sand/80">From the menu</p>

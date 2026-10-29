@@ -5,19 +5,20 @@
  */
 export const copy = {
   hero: {
-    eyebrow: "Resort & Restaurant · Chaul, Alibag",
-    lines: ["Abundance,", "at every table."],
-    body: "Indian, Tandoor, Oriental, Continental and Konkan kitchens — gathered under brick arches, set for sharing.",
+    eyebrow: "A taste of the Konkan",
+    heading: "Sampann",
+    body: "Where the warmth of Maharashtrian hospitality meets the flavours of the coast. Discover Indian, Tandoor, Oriental and Continental favourites, thoughtfully brought together at Sampann.",
   },
   story: {
     eyebrow: "What is Sampann?",
     word: "संपन्न",
     pronunciation: "sam·pann",
-    heading: "A word for a table that wants for nothing.",
+    heading: "A Place for Good Food & Good Times.",
     body: [
-      "Sampann means abundance — rich, fulfilled, complete. It is the feeling of a table where every plate has a reason to be there, and every guest leaves having had enough of everything.",
-      "Our menu travels: bold Indian flavours and tandoor temptations, savoury Oriental stir-fries, Western classics and the local cooking of the Konkan coast — prepared with fresh ingredients by a HACCP-certified chef.",
+      "Sampann means being समृद्ध and भरभरून जगणं. For us, it’s about serving good food, bringing people together, and making every visit feel special.",
+      "From Maharashtrian favourites and Konkani seafood to tandoor dishes and more, there’s something for everyone at our table. Come for the food, stay for the warmth, and leave with a smile.",
     ],
+    cta: "Our Story",
   },
   reserve: {
     eyebrow: "Reserve a table",

@@ -73,10 +73,10 @@ export const HOME_CHAPTERS: ChapterConfig[] = [
 ];
 
 export const HOME_MEDIA = {
-  heroBackdrop: "dining-room-arches",
-  heroInset: "honey-chilli-lotus-stem",
-  storyImage: "lantern-brick-arch",
-  storyDetail: "table-setting-overhead",
+  /** Hero crossfade, in order. The first is the LCP image and shows alone when motion is reduced. */
+  heroBackdrops: ["dining-room-arches", "dining-room-windows", "table-setting-row", "dining-room-evening"],
+  /** The meaning section: large landscape interior, then the small ones at its top-left and bottom-right corners. */
+  storyImages: ["dining-room-long-view", "lantern-brick-arch", "table-setting-overhead"],
   gallery: ["arched-window-garden", "seafood-thali", "kitchen-flame", "mocktail-still", "table-setting-banquette"],
   reservation: "dining-room-evening",
 };
