@@ -42,7 +42,7 @@ export function Story({ images }: { images: MediaAsset[] }) {
     <section
       id="story"
       aria-labelledby="story-title"
-      className="relative flex items-center overflow-hidden bg-ivory py-16 md:py-20 lg:min-h-screen lg:pb-10 lg:pt-[calc(4.5rem+2.5rem)]"
+      className="relative flex items-center overflow-hidden bg-ivory pb-16 pt-12 md:pb-20 md:pt-16 lg:min-h-screen lg:pb-16 lg:pt-[calc(4.5rem+1rem)]"
     >
       <div className="shell grid items-center gap-12 lg:grid-cols-2 lg:gap-14 xl:grid-cols-[7fr_5fr]">
         {/* Words */}
@@ -89,7 +89,14 @@ export function Story({ images }: { images: MediaAsset[] }) {
               placeholder="blur"
               blurDataURL={large.blurDataUrl}
               className="object-cover"
+              style={{ filter: "saturate(1.15) contrast(1.06) hue-rotate(3deg)" }}
             />
+            {/*
+              Warm grade. A filter alone (e.g. sepia) barely shifts this photo's white
+              ceiling and pale floor, and pushes the turquoise toward mint; a soft
+              golden multiply layer warms the light itself while the turquoise stays true.
+            */}
+            <div aria-hidden className="pointer-events-none absolute inset-0 bg-[rgba(232,182,128,0.34)] mix-blend-multiply" />
           </ImageReveal>
           <ImageReveal
             delay={0.15}

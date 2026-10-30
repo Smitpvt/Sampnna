@@ -1,174 +1,115 @@
 "use client";
 
 import clsx from "clsx";
-import { motion } from "motion/react";
+import { useReducedMotion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Price } from "@/components/menu/Price";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "@/components/ui/Icons";
-import type { DishDTO } from "@/types/content";
+import type { FeaturedDishDTO } from "@/types/content";
 
 /**
- * Section C — horizontal, editorial dish reel.
- * Native scroll-snap does the heavy lifting (touch swipe, trackpads, keyboard);
- * mouse users can also drag. The card nearest the reel's leading edge is active.
+ * Section C — featured dishes as a gallery of round plates. Four sit side by
+ * side on desktop (three on tablets, one and a peek on phones) in a horizontal
+ * track that snaps plate by plate: swipe or scroll it, or use the arrows to
+ * move a page at a time. Each plate has a fine cream outer ring and a white
+ * rim, with the dish's menu name, category and description beneath — no
+ * prices, and nothing moves on its own.
  */
-export function FeaturedDishes({ dishes }: { dishes: DishDTO[] }) {
+export function FeaturedDishes({ dishes }: { dishes: FeaturedDishDTO[] }) {
   const track = useRef<HTMLUListElement>(null);
-  const [active, setActive] = useState(0);
-  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const reduceMotion = useReducedMotion();
+  const [edges, setEdges] = useState({ start: true, end: false });
 
-  const cards = () => Array.from(track.current?.children ?? []) as HTMLElement[];
-
-  const onScroll = useCallback(() => {
+  const measure = () => {
     const el = track.current;
     if (!el) return;
-    const items = cards();
-    const edge = el.scrollLeft + parseFloat(getComputedStyle(el).scrollPaddingLeft || "0");
-    let best = 0;
-    let bestDist = Infinity;
-    items.forEach((c, i) => {
-      const d = Math.abs(c.offsetLeft - edge);
-      if (d < bestDist) {
-        bestDist = d;
-        best = i;
-      }
-    });
-    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 4) best = items.length - 1;
-    setActive(best);
-  }, []);
+    setEdges({ start: el.scrollLeft <= 4, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4 });
+  };
 
   useEffect(() => {
     const el = track.current;
     if (!el) return;
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [onScroll]);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
-  const go = (index: number) => {
+  const page = (dir: 1 | -1) => {
     const el = track.current;
-    const target = cards()[Math.max(0, Math.min(index, dishes.length - 1))];
-    if (!el || !target) return;
-    const pad = parseFloat(getComputedStyle(el).scrollPaddingLeft || "0");
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollTo({ left: target.offsetLeft - pad, behavior: reduce ? "auto" : "smooth" });
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth, behavior: reduceMotion ? "auto" : "smooth" });
   };
 
-  // Mouse drag (touch uses native scrolling).
-  const onPointerDown = (e: React.PointerEvent) => {
-    if (e.pointerType !== "mouse" || !track.current) return;
-    drag.current = { x: e.clientX, left: track.current.scrollLeft, moved: false };
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    const el = track.current;
-    if (!drag.current || !el) return;
-    const dx = e.clientX - drag.current.x;
-    if (Math.abs(dx) > 4 && !drag.current.moved) {
-      drag.current.moved = true;
-      el.style.scrollSnapType = "none";
-      el.setPointerCapture(e.pointerId);
-    }
-    if (drag.current.moved) el.scrollLeft = drag.current.left - dx;
-  };
-  const endDrag = (e: React.PointerEvent) => {
-    const el = track.current;
-    if (!drag.current || !el) return;
-    const moved = drag.current.moved;
-    drag.current = null;
-    if (moved) {
-      el.releasePointerCapture(e.pointerId);
-      el.style.scrollSnapType = "";
-      onScroll();
-      go(active);
-    }
-  };
+  const navButton =
+    "inline-flex size-11 items-center justify-center rounded-full border border-ivory/30 transition-colors hover:border-sand hover:bg-sand hover:text-charcoal disabled:pointer-events-none disabled:opacity-30";
 
   return (
-    <section
-      aria-labelledby="featured-title"
-      className="relative overflow-hidden bg-turquoise-deep pt-14 pb-20 text-ivory md:pt-16 md:pb-24 lg:pt-20 lg:pb-28"
-    >
-      <div className="shell flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-        <div>
-          <p className="eyebrow text-sand/80">From the menu</p>
-          <h2 id="featured-title" className="mt-5 max-w-2xl text-headline">
-            Plates worth <em className="text-sand">crossing</em> the table for.
-          </h2>
-        </div>
-        <div className="flex items-center gap-6">
-          <p className="eyebrow tabular-nums text-ivory/70" aria-live="polite">
-            {String(active + 1).padStart(2, "0")} <span className="text-ivory/40">/ {String(dishes.length).padStart(2, "0")}</span>
-          </p>
-          <div className="flex gap-2">
-            <button type="button" onClick={() => go(active - 1)} disabled={active === 0} aria-label="Previous dish" className="inline-flex size-12 items-center justify-center border border-ivory/30 transition-colors hover:bg-ivory hover:text-charcoal disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-ivory">
+    <section aria-labelledby="featured-title" className="relative overflow-hidden bg-turquoise-deep py-16 text-ivory md:py-20 lg:py-24">
+      <div className="shell">
+        <div className="flex flex-col items-center gap-6 text-center md:flex-row md:items-end md:justify-between md:text-left">
+          <div>
+            <p className="eyebrow text-sand/80">From the menu</p>
+            <h2 id="featured-title" className="mt-4 max-w-2xl text-headline">
+              Plates worth <em className="text-sand">crossing</em> the table for.
+            </h2>
+          </div>
+          <div className="hidden items-center gap-3 md:flex">
+            <button type="button" onClick={() => page(-1)} disabled={edges.start} aria-label="Previous dishes" aria-controls="featured-track" className={navButton}>
               <ArrowLeft />
             </button>
-            <button type="button" onClick={() => go(active + 1)} disabled={active === dishes.length - 1} aria-label="Next dish" className="inline-flex size-12 items-center justify-center border border-ivory/30 transition-colors hover:bg-ivory hover:text-charcoal disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-ivory">
+            <button type="button" onClick={() => page(1)} disabled={edges.end} aria-label="Next dishes" aria-controls="featured-track" className={navButton}>
               <ArrowRight />
             </button>
           </div>
         </div>
-      </div>
 
-      <ul
-        ref={track}
-        aria-label="Featured dishes"
-        className="no-scrollbar mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-4 [scroll-padding-left:1.25rem] md:gap-8 md:[scroll-padding-left:2.5rem] xl:[scroll-padding-left:max(4rem,calc((100vw-1440px)/2+4rem))] cursor-grab active:cursor-grabbing"
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onClickCapture={(e) => drag.current?.moved && e.preventDefault()}
-      >
-        {dishes.map((dish, i) => (
-          <li
-            key={dish.id}
-            aria-current={i === active ? "true" : undefined}
-            className={clsx(
-              "group w-[78vw] shrink-0 snap-start first:ml-5 last:mr-5 sm:w-[46vw] md:first:ml-10 md:last:mr-10 lg:w-[30vw] xl:w-[400px] xl:first:ml-[max(4rem,calc((100vw-1440px)/2+4rem))]",
-              "transition-opacity duration-700",
-              i === active ? "opacity-100" : "opacity-55 hover:opacity-90",
-            )}
-          >
-            <motion.article
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.9, delay: Math.min(i, 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+        <ul
+          ref={track}
+          id="featured-track"
+          aria-label="Featured dishes"
+          onScroll={measure}
+          className="no-scrollbar -mx-4 mt-10 flex snap-x snap-mandatory scroll-px-4 gap-5 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:scroll-px-0 sm:px-0 md:mt-12 lg:gap-8"
+        >
+          {dishes.map((dish) => (
+            <li
+              key={dish.key}
+              className="group flex shrink-0 basis-[74%] snap-start flex-col items-center text-center sm:basis-[calc((100%-1.25rem)/2)] md:basis-[calc((100%-2.5rem)/3)] lg:basis-[calc((100%-6rem)/4)]"
             >
-              <div className="relative aspect-[4/5] overflow-hidden bg-charcoal/20">
-                {dish.image && (
+              {/* Double rim: a fine cream ring around a white plate edge. */}
+              <div className="w-full rounded-full border border-ivory/60 p-[5px] md:p-1.5">
+                <div className="relative aspect-square overflow-hidden rounded-full border-[5px] border-white shadow-[0_24px_50px_-24px_rgb(0_0_0/0.6)] md:border-[6px]">
                   <Image
                     src={dish.image.src}
                     alt={dish.image.alt}
                     fill
-                    draggable={false}
-                    sizes="(min-width: 1280px) 400px, (min-width: 1024px) 30vw, (min-width: 640px) 46vw, 78vw"
+                    sizes="(min-width: 1024px) 24vw, (min-width: 768px) 31vw, (min-width: 640px) 46vw, 74vw"
                     placeholder={dish.image.blurDataUrl ? "blur" : "empty"}
                     blurDataURL={dish.image.blurDataUrl}
-                    className="object-cover transition-transform duration-[1.2s] ease-out-soft group-hover:scale-[1.04]"
+                    draggable={false}
+                    className="object-cover transition-transform duration-700 ease-out-soft group-hover:scale-[1.04]"
                   />
-                )}
-                <span className="eyebrow absolute left-4 top-4 bg-charcoal/60 px-2 py-1 text-[0.62rem] text-ivory backdrop-blur-sm">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+                </div>
               </div>
-              <div className="mt-5 flex items-baseline justify-between gap-4 border-b border-ivory/20 pb-4">
-                <h3 className="font-serif text-2xl leading-tight md:text-[1.7rem]">{dish.name}</h3>
-                <Price dish={dish} className="text-lg text-sand" />
-              </div>
-              <p className="eyebrow mt-4 text-[0.65rem] text-sand/80">{dish.categoryName}</p>
-              {dish.description && <p className="mt-2 max-w-sm text-sm leading-relaxed text-ivory/75">{dish.description}</p>}
-            </motion.article>
-          </li>
-        ))}
-      </ul>
+              <p className="eyebrow mt-6 text-[0.68rem] text-sand/80">{dish.categoryName}</p>
+              <h3 className="mt-2 font-serif text-[clamp(1.35rem,1.15rem+0.6vw,1.65rem)] leading-tight">{dish.name}</h3>
+              {dish.description && <p className="mt-2 line-clamp-3 max-w-xs text-sm leading-relaxed text-ivory/75">{dish.description}</p>}
+            </li>
+          ))}
+        </ul>
 
-      <div className="shell mt-12">
-        <Link href="/menu" className="link-line eyebrow text-sand">
-          See the full menu
-        </Link>
+        <div className="mt-10 flex items-center justify-center gap-6 md:mt-12">
+          <button type="button" onClick={() => page(-1)} disabled={edges.start} aria-label="Previous dishes" aria-controls="featured-track" className={clsx(navButton, "md:hidden")}>
+            <ArrowLeft />
+          </button>
+          <Link href="/menu" className="link-line eyebrow text-sand">
+            See the full menu
+          </Link>
+          <button type="button" onClick={() => page(1)} disabled={edges.end} aria-label="Next dishes" aria-controls="featured-track" className={clsx(navButton, "md:hidden")}>
+            <ArrowRight />
+          </button>
+        </div>
       </div>
     </section>
   );

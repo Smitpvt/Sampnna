@@ -7,11 +7,11 @@ import { Reviews } from "@/components/home/Reviews";
 import { Story } from "@/components/home/Story";
 import { ReservationSection } from "@/components/reservations/ReservationSection";
 import { site } from "@/config/site";
-import { HOME_CHAPTERS, HOME_MEDIA } from "@/content/home";
-import { media } from "@/lib/media";
-import { getFeaturedDishes, getMenu } from "@/services/menu";
+import { FEATURED_DISHES, HOME_CHAPTERS, HOME_MEDIA } from "@/content/home";
+import { featuredImage, media } from "@/lib/media";
+import { getMenu } from "@/services/menu";
 import { getGoogleSummary, getPublishedTestimonials } from "@/services/reviews";
-import type { CategoryDTO, DishDTO } from "@/types/content";
+import type { CategoryDTO, DishDTO, FeaturedDishDTO } from "@/types/content";
 
 export const revalidate = 3600;
 
@@ -33,8 +33,32 @@ function buildChapters(menu: CategoryDTO[]): ShowcaseEntry[] {
   });
 }
 
+/**
+ * Resolve the curated Featured Dishes against the live menu. A dish is shown only
+ * if it is on the menu and has a verified photograph — no placeholder plates.
+ */
+function buildFeatured(menu: CategoryDTO[]): FeaturedDishDTO[] {
+  const byName = new Map(menu.flatMap((c) => c.dishes).map((d) => [d.name, d]));
+  return FEATURED_DISHES.flatMap((f) => {
+    const dish = byName.get(f.dish);
+    if (!dish) return [];
+    return [
+      {
+        key: dish.slug,
+        name: dish.name,
+        categoryName: dish.categoryName,
+        categorySlug: dish.categorySlug,
+        // The dish's own menu description, or its section's printed note.
+        description: dish.description ?? menu.find((c) => c.slug === dish.categorySlug)?.description ?? null,
+        image: featuredImage(f.image),
+      },
+    ];
+  });
+}
+
 export default async function HomePage() {
-  const [menu, featured, google, testimonials] = await Promise.all([getMenu(), getFeaturedDishes(), getGoogleSummary(), getPublishedTestimonials()]);
+  const [menu, google, testimonials] = await Promise.all([getMenu(), getGoogleSummary(), getPublishedTestimonials()]);
+  const featured = buildFeatured(menu);
   const dishCount = menu.reduce((n, c) => n + c.dishes.length, 0);
 
   return (

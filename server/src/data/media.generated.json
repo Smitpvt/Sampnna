@@ -1,300 +1,312 @@
 {
   "dining-room-arches": {
-    "src": "/images/dining-room-arches.webp",
+    "src": "/images/interior/dining-room-arches.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAAAwAgCdASoQAAsAA4BaJZgCdH8AEa5gvrU8wAD9d2grIVhYP0TdX+bAHnp5E+PXHmvS9taslq+/8CeutuzgHssWeb6oTrinF63n315ZzmII7PU3VlczCny87CEKiZ1QEXEtsXElAr9aazMwdlt9HDe0AAA="
   },
   "dining-room-long-view": {
-    "src": "/images/dining-room-long-view.webp",
+    "src": "/images/interior/dining-room-long-view.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADwAQCdASoQAAsAA4BaJQBOgB3e726ZPAAAzgumyc+B3CDG7Ghbsb13uHgScyJHjKGa+GM0Z43Wh7lAiJwt+cfo6QU4xr/kpFC6UxpWW7R35+knPQoaqyla4ASSQkbWCIMTZY/AAAA="
   },
   "dining-room-windows": {
-    "src": "/images/dining-room-windows.webp",
+    "src": "/images/interior/dining-room-windows.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoQAAsAA4BaJQBOgBhiv81zTAAA/uwQ3b3MS/DgFzxDV8cLtlm882H6UxQSdqstKHLkQ9wGLNdrDjJzRpUahlsDHlg/UfcctF73kkHuSXbAAA=="
   },
   "dining-room-evening": {
-    "src": "/images/dining-room-evening.webp",
+    "src": "/images/interior/dining-room-evening.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAQAgCdASoQAAsAA4BaJQBOgCLMuMiU/ooAAMtPguaEyadpi5HgC6IgfSBy+QhfAgIKeLRipFdO0cAD+IlyOVkBFVMiOSM61XjPI+ROsg7pvn1BV7O1geV85APvEwj5lMgFvcA8OhgQAA=="
   },
   "table-setting-banquette": {
-    "src": "/images/table-setting-banquette.webp",
+    "src": "/images/interior/table-setting-banquette.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAwAgCdASoQAAsAA4BaJaACdAYvDgd2nYI/+ADdB7McXHS+YY83Gwtjd/wwf77ZSuGJl4OSuH17xMN6qvZAjP4wkUZWUz0ZBhan76muK+87hIkNmt7PtcNhbyXWvjaMcZq1vAAA"
   },
   "table-setting-overhead": {
-    "src": "/images/table-setting-overhead.webp",
+    "src": "/images/interior/table-setting-overhead.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAABQAgCdASoQAAsAA4BaJbACdH8AGX07SMiFj8AA/ndfjd7NSuviyMl4kn0uX14HpI9AXj49sX0BvGF3TDaRpF1mqIxcnKX+gc00CSvJiaO86E9i2dj3Ku+iNyxMdW3qs4HzsBJZ2gAAAA=="
   },
   "table-setting-row": {
-    "src": "/images/table-setting-row.webp",
+    "src": "/images/interior/table-setting-row.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABQAgCdASoQAAsAA4BaJbACdH8AgoB3EJCDOKAA9FkoN4n+v41rHWgd4LZyNzgk8IcBa1CcNqIICfx+oRUSbPPjGUiWvSkEMPyThCUaEo6deiaxPZwRBsyvmpJEPI8tr99+D5a5V4yNh+66pSsXH5qojAA="
   },
   "arched-window-garden": {
-    "src": "/images/arched-window-garden.webp",
+    "src": "/images/interior/arched-window-garden.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAABQAgCdASoQAAsAA4BaJQBOgMXN3Km9qBkgnqAA/uW668X+7HcY+C+TMA0tp9Fw/8qMK58fBYE8LR7n9DC5exIdB3VGXzPh7BL+GGBn2bD+Mpq1iy3IoP9DhgTlPqzZBXMDyC2As4DkhwjHuSQAAA=="
   },
   "exterior-sign-dusk": {
-    "src": "/images/exterior-sign-dusk.webp",
+    "src": "/images/gallery/exterior-sign-dusk.webp",
     "width": 1600,
     "height": 2400,
     "blurDataUrl": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoLABAAA4BaJbACdADdSc9i3HAA/r40e5xBA9D42Io+pjmN98ki5T9ev/0ZAOxdzxF0YuHL9J8j/Yzeo9lTfK68G8nwMqEAAAA="
   },
   "lantern-brick-arch": {
-    "src": "/images/lantern-brick-arch.webp",
+    "src": "/images/gallery/lantern-brick-arch.webp",
     "width": 1600,
     "height": 2400,
     "blurDataUrl": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoLABAAA4BaJbACdAEUUJ0jHTAA/q0yJVQ1oG9wrHOVa/U3BQDhYiZkeiNJdOBgVI82ZvDF2CDg/HL9FtWARP7U/KzQlYAA"
   },
   "chimichurri-prawns": {
-    "src": "/images/chimichurri-prawns.webp",
+    "src": "/images/food/chimichurri-prawns.webp",
     "width": 1362,
     "height": 1024,
     "blurDataUrl": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABQAgCdASoQAAwAA4BaJZgCdAYqXi2OsaruTMAA9oYkcvdFsgm4qvP8831K8cFdlfDN9wfe8eNGpT+pwE3XCxemYmfhI3iYhT6hgRTHv4reenbjag47S62Z53vIneATO3x4BUiVftgAl6arfsXz0ud3c0D0AA=="
   },
   "chongqing-mala-chicken": {
-    "src": "/images/chongqing-mala-chicken.webp",
+    "src": "/images/food/chongqing-mala-chicken.webp",
     "width": 1536,
     "height": 1024,
     "blurDataUrl": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADwAQCdASoQAAsAA4BaJbACdAYvC4iKTAAA/gaZkKdm0K88A/AsBPP1Abs05+PsMIit8+fcPRtgqObRa7LFjCZwNDD3TmpQYd4CfqTVTQ3PSsk1A1/L3j2p2bi9wakLSgWb7NkAAAA="
   },
   "honey-chilli-lotus-stem": {
-    "src": "/images/honey-chilli-lotus-stem.webp",
+    "src": "/images/food/honey-chilli-lotus-stem.webp",
     "width": 1024,
     "height": 1536,
     "blurDataUrl": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAQCdASoLABAAA4BaJbACdADcrafgBtAA/VOZfOBnpWgjzqaIK1VS4HfWYJF42yHCWc6PlO7m54xxEewTmh8/oxffscK5I4+5vGrzpPpsJJqDkl5In59bywakJEGBLSgAAA=="
   },
   "messina-pizza": {
-    "src": "/images/messina-pizza.webp",
+    "src": "/images/food/messina-pizza.webp",
     "width": 1024,
     "height": 1536,
     "blurDataUrl": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAQAgCdASoLABAAA4BaJbACdADdguglzu6AAPa3wgf9ZunlXq05ND9hK6b9oKAIfvHdQoJa4iNyEYf1FSAfbwBZKgz44K8cSeqMD5DTe50hJvouJvGPq1kL5m34a24PnwmwAA=="
   },
   "murg-tandoori": {
-    "src": "/images/murg-tandoori.webp",
+    "src": "/images/food/murg-tandoori.webp",
     "width": 1536,
     "height": 1024,
     "blurDataUrl": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAACQAgCdASoQAAsAA4BaJaACdAfwIugwTSRQlatwEAD+6alK1R90vnC+TD0qfo/9R6Nw4TbJ0onmKoSsarB6nVz2g7VA2VlDdxkTuNIYws6O3rtPnbRQauXwBkLklMXJoIhCuO5IAAA="
   },
   "lotus-stem-sesame": {
-    "src": "/images/lotus-stem-sesame.webp",
+    "src": "/images/food/lotus-stem-sesame.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoQAAsAA4BaJZQAAuVtWg4WAAD+95u2XtPZorIA9w3u9ad56i7mz+f1Dlb+PKi4HtduGiXXj9FlxqDvQCcl6FAMRcVA5X0VAAA="
   },
   "khao-suey": {
-    "src": "/images/khao-suey.webp",
+    "src": "/images/food/khao-suey.webp",
     "width": 1600,
     "height": 2400,
     "blurDataUrl": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAABwAgCdASoLABAAA4BaJZACdAEfA65LW2+ygHQAAP7qOjUNZy5aefBuNcjcyVR2qPKrVHcg9kFyWIrJalW2kzG7fEcuYxtCY3Fgnord+qRFT/msYdwaaTAGByEK1e+Q7sDZPdAA"
   },
   "khao-suey-serve": {
-    "src": "/images/khao-suey-serve.webp",
+    "src": "/images/food/khao-suey-serve.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAQAgCdASoQAAsAA4BaJYwC7ADp/L42sJMAAP73h9V0/XR/qe24nMxc0wV5aRligpQj5G+OEEqLL487UoSjjgLECS0Lsbfv0mbWtx6x5yieTEl6PoAAAA=="
   },
   "waldorf-salad": {
-    "src": "/images/waldorf-salad.webp",
+    "src": "/images/food/waldorf-salad.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAQAgCdASoQAAsAA4BaJYgCdAECnpJVPfAAAP4EohDH9qUtZvE8OVPMA8z+Eh8czVTd5/2OrjaXYtH1r0Y7FyqRipz9+VAwYruA2Z9ST11EKotw3sNtElos5AAAAA=="
   },
   "veg-thali": {
-    "src": "/images/veg-thali.webp",
+    "src": "/images/food/veg-thali.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADwAQCdASoQAAsAA4BaJaACdADpJ22qYoAA/uze3X0ZQ0ha6EKoLTqVxZ5S1RIUWww7qbCmO9hNXWREynyfwUWkHCAcmjCAIUNYWS6qFQNUqAuofKeho1CKNY7lgAAA"
   },
   "seafood-thali": {
-    "src": "/images/seafood-thali.webp",
+    "src": "/images/food/seafood-thali.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAwAgCdASoQAAsAA4BaJYgCdADdjBIZdKJI4AD+7MBJgjyUSTWBKgztiCyiYBwyeLvwHe6YnzhDQdWpP25Img65r72jwVVzNoChTFgaCIeOihi4tyKAAA=="
   },
   "kombadi-vade": {
-    "src": "/images/kombadi-vade.webp",
+    "src": "/images/food/kombadi-vade.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoQAAsAA4BaJZgCdAD0WbYZtfR/AAD+6PqqipMB8t7gOZL7v8UOX4qXg5x/AKt12J8f2lyDImI+d7dCsuBIUxy1JYuAWwy18qkAAA=="
   },
   "pomfret-green-masala": {
-    "src": "/images/pomfret-green-masala.webp",
+    "src": "/images/food/pomfret-green-masala.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoQAAsAA4BaJQBOgCFrKF6ETAAA/vV5VM2ADMpMmLUrYe6z1huxeGjYMXA2RjepftictAA9rAetwhPS3EaYJVXAAzhYDp7V/IKNK1G/gAA="
   },
   "pasta-parmesan": {
-    "src": "/images/pasta-parmesan.webp",
+    "src": "/images/food/pasta-parmesan.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoQAAsAA4BaJYgCw7EJU/LCQAAA/vaJ87mjb+mxRXXhMpxohAy+2LSaHxrFQQOBwpEO1ptLNm7XRUexxG4h60tcIajBtSKsrWp9ytGImxjzvaAA"
   },
   "dim-sum-steam": {
-    "src": "/images/dim-sum-steam.webp",
+    "src": "/images/food/dim-sum-steam.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoQAAsAA4BaJZQAAtz+26HRoAAA/vhV64I2uqiFhIUC3+mluxFpGEXIIo0sx59OwWglcteaX2mJ4244QDT39mAoAQhTNlsgAAA="
   },
+  "murg-tandoori-plate": {
+    "src": "/images/food/murg-tandoori-plate.webp",
+    "width": 2400,
+    "height": 1600,
+    "blurDataUrl": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAgCdASoQAAsAA4BaJZAC7AEVV0AZaBxyoAD+7Js5FXxtz+UiSz4dL7eezdydn/HhVT/ZmqjlnQUroIW4i2dt7kECS+EuKATM2IkuJS3FOTAyOSRpeNvkAAA="
+  },
+  "dim-sum-crystal": {
+    "src": "/images/food/dim-sum-crystal.webp",
+    "width": 2400,
+    "height": 1600,
+    "blurDataUrl": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoQAAsAA4BaJZQCdADz5G0coQAA/u9+J/iH+y42mrVpwlRMU8UW6xjOCemFn0JJF7tAAA=="
+  },
   "pizza-slice": {
-    "src": "/images/pizza-slice.webp",
+    "src": "/images/food/pizza-slice.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABwAgCdASoQAAsAA4BaJbACdAYtzwldHCUTjC4AAP7Q249LjSHQJK38CkFi/ja3hRlzXclfgusBrs+lgrmft7iH1rgsz9S6l+WCoBrGPTUKEsGNUH5JmDatR+HG3A63uEOL3R9QGoxADGoLI195RXQoAAA="
   },
   "ukadiche-modak": {
-    "src": "/images/ukadiche-modak.webp",
+    "src": "/images/food/ukadiche-modak.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoQAAsAA4BaJZQC7AELzGPtk6QAAP74VPmAlhTb+f66EC+vtTvN5cIzFsVPz1kbuP5PsbW/16Nz1MD/mpxwrwe0Odqlt2RfWyEaAAAA"
   },
   "ukadiche-modak-still": {
-    "src": "/images/ukadiche-modak-still.webp",
+    "src": "/images/food/ukadiche-modak-still.webp",
     "width": 1600,
     "height": 2400,
     "blurDataUrl": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAwAgCdASoLABAAA4BaJQBOgMWb32TfukDRAAD+9aFG9sg4wOsYtWsBKD6Z0vF66V6lHRNqL9x0+h1dnQL4cTusZApL5X/uF7ycaYyHH6DTRUAA"
   },
   "sizzling-brownie": {
-    "src": "/images/sizzling-brownie.webp",
+    "src": "/images/food/sizzling-brownie.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoQAAsAA4BaJQBOgBtIS3itgZAA/lTtCEG0eSB5/oxyLvEirI/SnkyAfKOBqTzeigRqGCsgvXHmvrLcC/F9Tq+YmOExd2VQAAA="
   },
   "payasam-glass": {
-    "src": "/images/payasam-glass.webp",
+    "src": "/images/food/payasam-glass.webp",
     "width": 1600,
     "height": 2400,
     "blurDataUrl": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAACwAQCdASoLABAAA4BaJYwCdAELJclAAP5BLegG597FctzuCEu53XL2Ro9BtycB+7Ezkca00n0ef/AggdKGUxWlzZXt78G8xe0D1MyUBWNVQAAA"
   },
   "biryani-overhead": {
-    "src": "/images/biryani-overhead.webp",
+    "src": "/images/food/biryani-overhead.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAABQAgCdASoQAAsAA4BaJZgCdAEeoGl8Dn2lrggA/qnss66OD6SEJHYOJSsDdHwqGEa1yoXV7S6R/jcapS1TMr9xADBfbSTTfq5tmyYf0burtg18Uo2AAA=="
   },
   "matka-biryani": {
-    "src": "/images/matka-biryani.webp",
+    "src": "/images/food/matka-biryani.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoQAAsAA4BaJagCdAEPBKlteIp94AD+il4oPS2cx16LlLv17ZiJTYgriJGFohoOjsQV1fhzoErHdmO8rxVhzB0DmCLkMur7msYgRzMo1CRCPMpadI4AAA=="
   },
   "kebab-skewer": {
-    "src": "/images/kebab-skewer.webp",
+    "src": "/images/food/kebab-skewer.webp",
     "width": 1600,
     "height": 2400,
     "blurDataUrl": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoLABAAA4BaJQBOgBuxtGv8DSQAAP6jfCWu+EMOI2PJq/V2y39/YqIdjSZupk3eaTYfslrA7z9cwara4EBhIEtza6l2+sTiAdnpwxQA"
   },
   "tandoori-naan-brick": {
-    "src": "/images/tandoori-naan-brick.webp",
+    "src": "/images/food/tandoori-naan-brick.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAsAA4BaJbACdAEOuOFYFIAA/tjASjHP2cfb4cPnEFglXvEviuxj1ougrOwekRL/SQiT6ft1zLN4qeM71IeTXFhJkML3ZrfvF+AA"
   },
   "salad-feta": {
-    "src": "/images/salad-feta.webp",
+    "src": "/images/food/salad-feta.webp",
     "width": 1600,
     "height": 2400,
     "blurDataUrl": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwAgCdASoLABAAA4BaJZACdAEQzOoptjktwAD+wlM/wnA9qHBMw0duPVs3HZ0tDmIF8BhHVDFhibxSQqboJhJeEv7mvA5ATt0qLkgYu7v34wWxRBCrFU3RejOziprcY/GtfyWWuXOfAAAA"
   },
   "clear-soup": {
-    "src": "/images/clear-soup.webp",
+    "src": "/images/food/clear-soup.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAQAgCdASoQAAsAA4BaJQBOgCP3jCbdg0YAAP1HD0oj6EHeBU+6lrplWXzMTcVZsGqMnEtCwZWkEx7nYCilG8D5my5eA5zeSjNEHxaNexyAAA=="
   },
   "tandoori-board": {
-    "src": "/images/tandoori-board.webp",
+    "src": "/images/food/tandoori-board.webp",
     "width": 1024,
     "height": 1536,
     "blurDataUrl": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoLABAAA4BaJYgCdAELY1M1NxFgUAD+9IDW4sgLkQ20W8gUsvK2dbr/1o0Vsf4uK3Po4MGujr/MHn311Vz+AbijCnYHdyZxnPAAAA=="
   },
   "grain-salad-bowl": {
-    "src": "/images/grain-salad-bowl.webp",
+    "src": "/images/food/grain-salad-bowl.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAsAA4BaJQBdgBjz8vgzYAAA/vX35X3fGHvhxwqe7Rwx7vFbImnMTD1adpvRzt/djD8U3j8+9P3HOeID2SMhCSeRS2iFugAAAA=="
   },
   "virgin-mojito": {
-    "src": "/images/virgin-mojito.webp",
+    "src": "/images/food/virgin-mojito.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACwAQCdASoQAAsAA4BaJZwAAudVaikgAP75D9XeHBbZ6VRq3RER60z+3Di1cwAA"
   },
   "mojito-pour": {
-    "src": "/images/mojito-pour.webp",
+    "src": "/images/food/mojito-pour.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoQAAsAA4BaJZwAAxRAdlcotAAA/vEj5SVK+k8pBV9lVWVCTEGZyGXQV9U0wMB6sQOpbn/rDdTaOGMwtoAAAA=="
   },
   "mocktail-coupe": {
-    "src": "/images/mocktail-coupe.webp",
+    "src": "/images/food/mocktail-coupe.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAsAA4BaJZwAAudmbLVAAP73eJ0KtPFl2NXV2r+x8k/xYJMt20IqqmeWBAAA"
   },
   "mocktail-still": {
-    "src": "/images/mocktail-still.webp",
+    "src": "/images/food/mocktail-still.webp",
     "width": 1600,
     "height": 2400,
     "blurDataUrl": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADwAQCdASoLABAAA4BaJZQAAudmSP6+vMAA/vhLQm2JBAZGIEDLs2ekSn3rwIAA"
   },
   "kitchen-flame": {
-    "src": "/images/kitchen-flame.webp",
+    "src": "/images/gallery/kitchen-flame.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAQAgCdASoQAAsAA4BaJaACdAEDW8jYRihIAP5s0eKpjqA+CtTjAxL3kSNwp06PXpe8qTbgaIAFL0Xii4DauudXdYB6Noh1XGTHBg68mKTx09pW5lh7qBMcOh8tzqgmtkhnRAAA"
   },
   "kitchen-wok": {
-    "src": "/images/kitchen-wok.webp",
+    "src": "/images/gallery/kitchen-wok.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAQAgCdASoQAAsAA4BaJZwAD5AsY6byMpgAAP7tIJWbe3oBTOKsYIcpsIvxKo8JO8XtEoFDi/2dU/2ylCLRz8Wrn1brMaqrnDIfKVYxQrjgf3dX9ZlV5xFGSwClLImGLksu6nxFsuuyAA=="
   },
   "kitchen-curry-ladle": {
-    "src": "/images/kitchen-curry-ladle.webp",
+    "src": "/images/gallery/kitchen-curry-ladle.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAwAgCdASoQAAsAA4BaJYwCdH8AF7XC+YB7AAD++FXpN71Uzb8GN671ZIWg1fbSH5ujfWUuJaafjuBKZiZXsuVHYVRgrqfoyw9GmRPMljQDIqxuAAA="
   },
   "kitchen-pizza-prep": {
-    "src": "/images/kitchen-pizza-prep.webp",
+    "src": "/images/gallery/kitchen-pizza-prep.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAQAgCdASoQAAsAA4BaJZgCdAEVLoZCSa7QAP7a03AWPmrL2qsRmnIJ5VC9Qw6bJxrww1Lx7XeYUhop9naVd0kIOCxFG27ZnUJIB1aqEgZDdViTMoQFDBoHgAA="
   },
   "kitchen-dough": {
-    "src": "/images/kitchen-dough.webp",
+    "src": "/images/gallery/kitchen-dough.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADQAQCdASoQAAsAA4BaJZwAAptrMmZKwAD+qbDhjkQXnOgJZetoEa0Po99RjWxj/WBVgOhBH9w39GhwL0sSJFxcVlL8f8aUbfbrAAAA"
   },
   "kitchen-finishing": {
-    "src": "/images/kitchen-finishing.webp",
+    "src": "/images/gallery/kitchen-finishing.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAwAgCdASoQAAsAA4BaJZQCdAYvXnyzZDrI8ADN7LDNFRBk7dyrWIFmgRdes6k7b+u2/ndE31QsH3aBAn3x20RQh2lJjYqjL7ZzqRzNoBDTbWqDA4ZvYXOqK7VVLItF0O2wAA=="
   },
   "kitchen-plating": {
-    "src": "/images/kitchen-plating.webp",
+    "src": "/images/gallery/kitchen-plating.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAABwAgCdASoQAAsAA4BaJZQC7H8Agoil3O4Uo3KAAP73rnpjYKukp/ZANwlgN3+AID+FjeisN07Z6swsQQitqv7JKUN7OaZLr+vNeA8PI1qmyWj3LlwsKdN/W6Vs+dlgAAA="
   },
   "kitchen-fresh-fish": {
-    "src": "/images/kitchen-fresh-fish.webp",
+    "src": "/images/gallery/kitchen-fresh-fish.webp",
     "width": 2400,
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAABQAgCdASoQAAsAA4BaJZwC7AYtfzgiZqIU+mAA/uthbAoG6nyvx6CI7uKxsqqg2kJJCf4tMtcaPhv7jhkbU40yzFjlUOQujRV2lGPPIUw0i+Utl9Lf7vGPkAQlwYo4wSG2Z6btWAAAAA=="

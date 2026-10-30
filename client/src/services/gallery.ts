@@ -1,9 +1,9 @@
 import { fetchApi } from "@/lib/api";
-import { allMedia } from "@/lib/media";
+import { galleryMedia } from "@/lib/media";
 import type { GalleryCategory, GalleryImageDTO } from "@/types/content";
 
 function getFallbackGallery(category?: GalleryCategory): GalleryImageDTO[] {
-  const assets = allMedia();
+  const assets = galleryMedia();
   return assets
     .filter((a) => !category || a.category === category)
     .map((a, i) => ({

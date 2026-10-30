@@ -1,0 +1,58 @@
+{
+  "khao-suey": {
+    "src": "/images/featured/khao-suey.webp",
+    "alt": "Burmese khao suey in a SAMPANN-printed bowl and saucer",
+    "width": 1000,
+    "height": 1000,
+    "blurDataUrl": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAACQAgCdASoQABAAA4BaJbACdAYu52lv6QiNSmnwAAD+prxC9k3v0I9BVfPxgnP/1E8iefP/ZbdASgQGMaXVIIGrnug9KmrvEXCLlRutsQh3UpuWRFcWQvIJb/PrznohjZNO331Q6QpNEGuMqOUT/hIgAAA="
+  },
+  "ortolana-pizza": {
+    "src": "/images/featured/ortolana-pizza.webp",
+    "alt": "Pizza topped with zucchini, peppers and parmesan on a round wooden board",
+    "width": 1000,
+    "height": 1000,
+    "blurDataUrl": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwAgCdASoQABAAA4BaJbACdGulAzYyrWxGkAD+wlq96zfngn34CGpYLc54BdezX8Wm7gLwlAQATU/qUA2gXK3Ue8hqM4Wcbygb80sSadnBzwppVj7El9OJTlz0jSjTJ++oiS3tUo4qsAAA"
+  },
+  "seafood-thali": {
+    "src": "/images/featured/seafood-thali.webp",
+    "alt": "Seafood thali with fried pomfret, curries, rice, bread and sol kadhi on a banana leaf",
+    "width": 1000,
+    "height": 1000,
+    "blurDataUrl": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABwAgCdASoQABAAA4BaJYgCdAYwTy2uGIYiTFgAAP7pQ8t37/juSJqebaE8+eeKs2E/dhdDn2o86Nj4ZUQDb+rtDlt0kP7Exb78cTi+S7kXbWn/kW+3fz1zZQIKV0bD47Wd4ynR1MiQN54BgoUoB+UzmrEAAA=="
+  },
+  "fettuccine-bolognese": {
+    "src": "/images/featured/fettuccine-bolognese.webp",
+    "alt": "Fettuccine in a minced chicken bolognese sauce in a pale blue bowl",
+    "width": 1000,
+    "height": 1000,
+    "blurDataUrl": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAACwAgCdASoQABAAA4BaJbACdEf/oEAMuTKNTlHqDAAA/of1uy0gU8hgeQcZjLOFRSr+Ymjd+ysBXF43Ak6Ye2T64h8c2QvBy6mmNTEyB91OtOsyYsd6apU4zvxOCmfd1jSJdFZRmJaNkvW/w3Z6pqF2YEAAAA=="
+  },
+  "murgh-biryani": {
+    "src": "/images/featured/murgh-biryani.webp",
+    "alt": "Murgh matka dum biryani in a clay pot with a chicken leg, raita and sliced onions",
+    "width": 1000,
+    "height": 1000,
+    "blurDataUrl": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAQAgCdASoQABAAA4BaJbACdAYwnywp0MAAAP4/7JdiCvucZjr3xg78fF8hzOCZmU9Gp5vjPGcnpQKIGJfvyeU0PUFdyUC9KjItBDyU+GA+1NtUi0O7rjQ1bFFl8jqJE0drQwOb130tWJZEeAAAAA=="
+  },
+  "kombadi-vade": {
+    "src": "/images/featured/kombadi-vade.webp",
+    "alt": "Kombadi vade thali with puffed vade, chicken curry, rice and sol kadhi on a banana leaf",
+    "width": 1000,
+    "height": 1000,
+    "blurDataUrl": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAABQAgCdASoQABAAA4BaJbACdAYtfzAmOvLQawAA/k+Bqc4MdSywca66g371zkhn7iOvHyjvhVNK62f+7iYWItCBMsiV4lKT4Ab6GPqWf1nVUa6T8TR/MMjfGhPBs8f1xF2VS6bdEfn+yw4Siqpu8/3gVV3WU4BHAW71lMuvu9eAAA=="
+  },
+  "lotus-stem": {
+    "src": "/images/featured/lotus-stem.webp",
+    "alt": "Honey chilli lotus stem scattered with sesame seeds on a white plate",
+    "width": 1000,
+    "height": 1000,
+    "blurDataUrl": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAwAgCdASoQABAAA4BaJaACdAYvXmpye1o0AAD5EI51aWxTJ7T9Tw3Oybckq8MHvw9L+3WU0+gJRaSDss2etagiWlZS4j/amtUuEEevYzbWuPcJJeAgof5pwPx6EHYXUdOGKnWviGvmgMZVxyIAAA=="
+  },
+  "ukadiche-modak": {
+    "src": "/images/featured/ukadiche-modak.webp",
+    "alt": "Ukadiche modak on a leaf in a brass bowl",
+    "width": 1000,
+    "height": 1000,
+    "blurDataUrl": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAABQAgCdASoQABAAA4BaJZgCdAYulwipOUYktQAA/jRiHx0ra0acdW/IcYmg15NfpWwvkBtpDxfgpNzFFrgNhUliGdteCMHXEQbhWte7oGGbpr6Dw/U3U0GXOCyTDV5zwL0bbqAStLSXqU9NOd7y4xYnOt8gAAAA"
+  }
+}

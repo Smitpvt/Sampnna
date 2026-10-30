@@ -25,6 +25,8 @@
   { "source": "food/food-02.jpg", "slug": "pomfret-green-masala", "category": "FOOD", "gallery": true, "alt": "Whole pomfret coated in green masala on a silver tray with onion rings and lemon", "caption": "Pomfret" },
   { "source": "food/food-07.jpg", "slug": "pasta-parmesan", "category": "FOOD", "gallery": true, "alt": "Parmesan being grated over a plate of pasta in a pale blue bowl", "caption": "From the Continental kitchen" },
   { "source": "food/food-09.jpg", "slug": "dim-sum-steam", "category": "FOOD", "gallery": true, "alt": "Steam rising as the lid is lifted from a bamboo basket of dumplings", "caption": "Steamed" },
+  { "source": "food/murg-tandoori-03.jpg", "slug": "murg-tandoori-plate", "category": "FOOD", "gallery": false, "alt": "Murg tandoori on a wooden platter with lime and dips, outdoors among palms", "caption": "Murg Tandoori" },
+  { "source": "food/food-16.jpg", "slug": "dim-sum-crystal", "category": "FOOD", "gallery": false, "alt": "Translucent crystal dim sum with a green vegetable filling on a banana leaf, one lifted with chopsticks, beside two dips in brass bowls", "caption": "Dim Sum Crystal Veg" },
   { "source": "food/food-18.jpg", "slug": "pizza-slice", "category": "FOOD", "gallery": true, "alt": "A vegetable pizza on a wooden board with a slice pulled away", "caption": "Pizza" },
   { "source": "food/ukadiche-modak-03.jpg", "slug": "ukadiche-modak", "category": "FOOD", "gallery": true, "alt": "Ghee being poured over ukadiche modak in a brass bowl", "caption": "Ukadiche Modak" },
   { "source": "food/ukadiche-modak-04.jpg", "slug": "ukadiche-modak-still", "category": "FOOD", "gallery": true, "alt": "Ukadiche modak in a brass bowl on a green leaf with a small pot of ghee", "caption": "Ukadiche Modak" },

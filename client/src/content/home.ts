@@ -72,6 +72,29 @@ export const HOME_CHAPTERS: ChapterConfig[] = [
   },
 ];
 
+/**
+ * Featured Dishes, in display order. Each is selected by its exact menu name —
+ * the description always comes from the menu data. `image` is a plate-centred
+ * square crop of a camera original, made and colour-matched by
+ * server/scripts/featured-images.mjs. The pizza is identified as Ortolana from
+ * its toppings (market vegetables on tomato sauce and mozzarella), and the
+ * menu's thali with pomfret is the Seafood Thali — worth confirming with the
+ * kitchen. Messina Pizza, Chongqing Mala Chicken and Chimichurri Prawns are
+ * left out: their supplied images have no verified provenance.
+ */
+export type FeaturedConfig = { dish: string; image: string };
+
+export const FEATURED_DISHES: FeaturedConfig[] = [
+  { dish: "Burmese Khao Suey Soup", image: "khao-suey" },
+  { dish: "Ortolana Pizza", image: "ortolana-pizza" },
+  { dish: "Seafood Thali", image: "seafood-thali" },
+  { dish: "Fettuccine Chicken Bolognese", image: "fettuccine-bolognese" },
+  { dish: "Murgh Matka Dum Biryani", image: "murgh-biryani" },
+  { dish: "Kombadi Vade", image: "kombadi-vade" },
+  { dish: "Honey Chilli Lotus Stem", image: "lotus-stem" },
+  { dish: "Ukadiche Modak (3 pc)", image: "ukadiche-modak" },
+];
+
 export const HOME_MEDIA = {
   /** Hero crossfade, in order. The first is the LCP image and shows alone when motion is reduced. */
   heroBackdrops: ["dining-room-arches", "dining-room-windows", "table-setting-row", "dining-room-evening"],

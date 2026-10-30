@@ -1,5 +1,7 @@
 import generated from "@/data/media.generated.json";
 import sources from "@/data/media-sources.json";
+import featured from "@/data/featured.generated.json";
+import type { ImageRef } from "@/types/content";
 
 export type MediaAsset = {
   slug: string;
@@ -29,6 +31,20 @@ export function media(slug: string): MediaAsset {
 
 export function allMedia(): MediaAsset[] {
   return Object.values(assets);
+}
+
+const gallerySlugs = new Set((sources as { slug: string; gallery?: boolean }[]).filter((s) => s.gallery !== false).map((s) => s.slug));
+
+/** Photos flagged for the public gallery (some, e.g. featured-dish photos, are used elsewhere only). */
+export function galleryMedia(): MediaAsset[] {
+  return Object.values(assets).filter((a) => gallerySlugs.has(a.slug));
+}
+
+/** A square, plate-centred Featured Dishes photo (see server/scripts/featured-images.mjs). */
+export function featuredImage(slug: string): ImageRef {
+  const image = (featured as Record<string, ImageRef>)[slug];
+  if (!image) throw new Error(`Unknown featured image "${slug}". Run \`node server/scripts/featured-images.mjs\`?`);
+  return image;
 }
 
 /** Resolve a stored image reference (media slug or absolute URL) to dimensions/blur when known. */
