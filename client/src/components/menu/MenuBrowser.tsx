@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Search } from "@/components/ui/Icons";
+import { COURSES, type Course } from "@/content/courses";
 import type { CategoryDTO } from "@/types/content";
 import { DishRow } from "./DishRow";
 
@@ -15,7 +16,7 @@ const normalise = (s: string) =>
     .replace(/[̀-ͯ]/g, "")
     .toLowerCase();
 
-/** Keep shareable state (?q, ?collection, ?category) in the URL without a server round trip. */
+/** Keep shareable state (?q, ?collection, ?course, ?category) in the URL without a server round trip. */
 function syncUrl(params: Record<string, string | null>) {
   const url = new URL(window.location.href);
   for (const [k, v] of Object.entries(params)) {
@@ -26,13 +27,15 @@ function syncUrl(params: Record<string, string | null>) {
 }
 
 /**
- * Full menu with search, collection filter and chapter navigation. The whole
+ * Full menu with search, collection and course filters (?course= narrows the
+ * menu to one homepage course — its printed sections only), and chapter navigation. The whole
  * menu is server-rendered; URL parameters are applied after mount so the page
  * stays static and every dish is in the initial HTML.
  */
 export function MenuBrowser({ categories }: { categories: CategoryDTO[] }) {
   const [query, setQuery] = useState("");
   const [collection, setCollection] = useState<string | null>(null);
+  const [course, setCourse] = useState<Course | null>(null);
   const [ready, setReady] = useState(false);
   const [active, setActive] = useState(categories[0]?.slug);
   const deferred = useDeferredValue(query.trim());
@@ -40,7 +43,11 @@ export function MenuBrowser({ categories }: { categories: CategoryDTO[] }) {
 
   const visible = useMemo(() => {
     const q = normalise(deferred);
-    return categories
+    // A course shows just its sections, in the course's own order.
+    const sections = course
+      ? course.categories.map((slug) => categories.find((c) => c.slug === slug)).filter((c): c is CategoryDTO => Boolean(c))
+      : categories;
+    return sections
       .map((c) => ({
         ...c,
         dishes: c.dishes.filter(
@@ -50,10 +57,15 @@ export function MenuBrowser({ categories }: { categories: CategoryDTO[] }) {
         ),
       }))
       .filter((c) => c.dishes.length > 0);
-  }, [categories, deferred, collection]);
+  }, [categories, deferred, collection, course]);
 
   const total = visible.reduce((n, c) => n + c.dishes.length, 0);
   const filtering = deferred.length >= 2 || Boolean(collection);
+  const clearAll = () => {
+    setQuery("");
+    setCollection(null);
+    setCourse(null);
+  };
 
   // Apply ?q, ?collection and ?category once on mount. Reading the URL here
   // (not during render) keeps the server HTML identical to the first client render.
@@ -64,17 +76,19 @@ export function MenuBrowser({ categories }: { categories: CategoryDTO[] }) {
     const c = params.get("collection");
     if (q) setQuery(q.slice(0, 60));
     if (COLLECTIONS.some((x) => x.tag === c)) setCollection(c);
+    const picked = COURSES.find((x) => x.slug === params.get("course")) ?? null;
+    setCourse(picked);
     setReady(true);
     /* eslint-enable react-hooks/set-state-in-effect */
     const slug = params.get("category");
-    if (slug && /^[a-z0-9-]+$/.test(slug)) {
+    if (!picked && slug && /^[a-z0-9-]+$/.test(slug)) {
       requestAnimationFrame(() => document.getElementById(slug)?.scrollIntoView({ block: "start" }));
     }
   }, []);
 
   useEffect(() => {
-    if (ready) syncUrl({ q: deferred.length >= 2 ? deferred : null, collection });
-  }, [deferred, collection, ready]);
+    if (ready) syncUrl({ q: deferred.length >= 2 ? deferred : null, collection, course: course?.slug ?? null });
+  }, [deferred, collection, course, ready]);
 
   // Track the chapter currently in view for the navigation highlight.
   useEffect(() => {
@@ -121,7 +135,21 @@ export function MenuBrowser({ categories }: { categories: CategoryDTO[] }) {
               maxLength={60}
             />
           </label>
-          <div className="flex items-center gap-5 text-sm">
+          <div className="flex flex-wrap items-center gap-x-5 text-sm">
+            {course && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCourse(null);
+                  window.scrollTo({ top: 0 });
+                }}
+                aria-label={`Showing ${course.name} — show the full menu`}
+                className="eyebrow inline-flex min-h-11 items-center gap-2 border-b border-turquoise-deep py-2 text-turquoise-deep"
+              >
+                {course.name}
+                <span aria-hidden className="text-base leading-none">×</span>
+              </button>
+            )}
             {COLLECTIONS.map((c) => (
               <button
                 key={c.tag}
@@ -196,10 +224,7 @@ export function MenuBrowser({ categories }: { categories: CategoryDTO[] }) {
             <button
               type="button"
               className="btn btn-dark mt-8"
-              onClick={() => {
-                setQuery("");
-                setCollection(null);
-              }}
+              onClick={clearAll}
             >
               Clear search
             </button>

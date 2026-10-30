@@ -27,17 +27,6 @@ export type DishDTO = {
   isVegetarian: boolean | null;
 };
 
-/** One plate in the homepage Featured Dishes carousel (shown without prices). */
-export type FeaturedDishDTO = {
-  key: string;
-  name: string;
-  categoryName: string;
-  categorySlug: string;
-  description: string | null;
-  /** Square, plate-centred photo. */
-  image: ImageRef;
-};
-
 export type CategoryDTO = {
   id: string;
   name: string;

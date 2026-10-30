@@ -1,115 +1,116 @@
-"use client";
-
-import clsx from "clsx";
-import { useReducedMotion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight } from "@/components/ui/Icons";
-import type { FeaturedDishDTO } from "@/types/content";
+import type { FeaturedPlate } from "@/services/featured";
+
+/** Share of the circle's diameter that every plate fills, leaving an even margin around it. */
+const PLATE_FILL = 0.88;
 
 /**
- * Section C — featured dishes as a gallery of round plates. Four sit side by
- * side on desktop (three on tablets, one and a peek on phones) in a horizontal
- * track that snaps plate by plate: swipe or scroll it, or use the arrows to
- * move a page at a time. Each plate has a fine cream outer ring and a white
- * rim, with the dish's menu name, category and description beneath — no
- * prices, and nothing moves on its own.
+ * Clip the photo to its own plate outline (a hair inside, so none of the
+ * file's surround shows), then scale and centre it so the plate's widest
+ * span is PLATE_FILL of the circle — the same size for every dish.
  */
-export function FeaturedDishes({ dishes }: { dishes: FeaturedDishDTO[] }) {
-  const track = useRef<HTMLUListElement>(null);
-  const reduceMotion = useReducedMotion();
-  const [edges, setEdges] = useState({ start: true, end: false });
-
-  const measure = () => {
-    const el = track.current;
-    if (!el) return;
-    setEdges({ start: el.scrollLeft <= 4, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4 });
+function plateStyle([cx, cy, rx, ry]: [number, number, number, number]): React.CSSProperties {
+  const scale = PLATE_FILL / ((2 * Math.max(rx, ry)) / 100);
+  return {
+    clipPath: `ellipse(${(rx * 0.995).toFixed(2)}% ${(ry * 0.995).toFixed(2)}% at ${cx}% ${cy}%)`,
+    transform: `scale(${scale.toFixed(4)}) translate(${(50 - cx).toFixed(2)}%, ${(50 - cy).toFixed(2)}%)`,
   };
+}
 
-  useEffect(() => {
-    const el = track.current;
-    if (!el) return;
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+/** Seconds the row rests on each arrangement, and seconds it takes to glide one plate on. */
+const HOLD = 2;
+const MOVE = 1.6;
 
-  const page = (dir: 1 | -1) => {
-    const el = track.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * el.clientWidth, behavior: reduceMotion ? "auto" : "smooth" });
-  };
+/**
+ * Keyframes for the hold-then-glide loop: rest at step k, ease to step k + 1,
+ * rest again… After n steps the track sits exactly one full set along, which
+ * looks identical to the start (the plates repeat), so the loop restarts with
+ * no visible jump. `--step` is one plate plus one gap.
+ */
+function stepKeyframes(name: string, n: number) {
+  const cycle = HOLD + MOVE;
+  const pct = (t: number) => ((t / (n * cycle)) * 100).toFixed(3);
+  const at = (k: number) => `transform: translate3d(calc(var(--step) * ${-k}), 0, 0);`;
+  const frames = Array.from(
+    { length: n },
+    (_, k) => `${pct(k * cycle)}%, ${pct(k * cycle + HOLD)}% { ${at(k)} animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }`,
+  );
+  return `@keyframes ${name} { ${frames.join(" ")} 100% { ${at(n)} } }`;
+}
 
-  const navButton =
-    "inline-flex size-11 items-center justify-center rounded-full border border-ivory/30 transition-colors hover:border-sand hover:bg-sand hover:text-charcoal disabled:pointer-events-none disabled:opacity-30";
+/**
+ * Section C — a full-width row of large round plates under a centred heading,
+ * with one link to the menu, sized to fit one screen on desktop. The row rests
+ * for two seconds, glides one plate to the left, rests again, and loops
+ * forever. Pure CSS — no client JavaScript, nothing reacts to hover. With
+ * reduced motion it stands still and scrolls by hand instead.
+ */
+export function FeaturedDishes({ plates }: { plates: FeaturedPlate[] }) {
+  const n = plates.length;
+  // Enough repeats that the screen is always full of plates, even at the last step.
+  const copies = 1 + Math.ceil(7 / n);
 
   return (
-    <section aria-labelledby="featured-title" className="relative overflow-hidden bg-turquoise-deep py-16 text-ivory md:py-20 lg:py-24">
-      <div className="shell">
-        <div className="flex flex-col items-center gap-6 text-center md:flex-row md:items-end md:justify-between md:text-left">
-          <div>
-            <p className="eyebrow text-sand/80">From the menu</p>
-            <h2 id="featured-title" className="mt-4 max-w-2xl text-headline">
-              Plates worth <em className="text-sand">crossing</em> the table for.
-            </h2>
-          </div>
-          <div className="hidden items-center gap-3 md:flex">
-            <button type="button" onClick={() => page(-1)} disabled={edges.start} aria-label="Previous dishes" aria-controls="featured-track" className={navButton}>
-              <ArrowLeft />
-            </button>
-            <button type="button" onClick={() => page(1)} disabled={edges.end} aria-label="Next dishes" aria-controls="featured-track" className={navButton}>
-              <ArrowRight />
-            </button>
-          </div>
-        </div>
+    <section
+      aria-labelledby="featured-title"
+      className="relative bg-turquoise-deep py-14 text-ivory md:py-16 lg:flex lg:min-h-svh lg:flex-col lg:justify-center lg:pb-10 lg:pt-[calc(4.5rem+1.25rem)]"
+    >
+      <style>{stepKeyframes("plate-step", n)}</style>
 
+      <div className="shell text-center">
+        <p className="eyebrow text-sand/80">A taste of Sampann</p>
+        <h2 id="featured-title" className="mt-3 text-headline">
+          A Taste Around the <em className="text-sand">Table</em>
+        </h2>
+      </div>
+
+      {/* Vertical padding leaves room for the plates' shadows, so nothing is clipped into a band. */}
+      {/* Top padding leaves room for the plates' shadows, so nothing is clipped into a band; the
+          names below each plate take the room the bottom padding used to. */}
+      <div className="mt-6 overflow-hidden pb-3 pt-6 md:mt-8 lg:mt-6 motion-reduce:no-scrollbar motion-reduce:overflow-x-auto">
         <ul
-          ref={track}
-          id="featured-track"
-          aria-label="Featured dishes"
-          onScroll={measure}
-          className="no-scrollbar -mx-4 mt-10 flex snap-x snap-mandatory scroll-px-4 gap-5 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:scroll-px-0 sm:px-0 md:mt-12 lg:gap-8"
+          aria-label="Dishes from the Sampann kitchen"
+          className="flex w-max items-start [--gap:1.25rem] [--plate:min(62vw,17rem)] [--step:calc(var(--plate)+var(--gap))] sm:[--gap:2rem] sm:[--plate:min(38vw,20rem)] lg:[--gap:2.5rem] lg:[--plate:min(23vw,calc(100svh-22.5rem),27rem)] motion-reduce:animate-none"
+          style={{ animation: `plate-step ${n * (HOLD + MOVE)}s linear infinite` }}
         >
-          {dishes.map((dish) => (
-            <li
-              key={dish.key}
-              className="group flex shrink-0 basis-[74%] snap-start flex-col items-center text-center sm:basis-[calc((100%-1.25rem)/2)] md:basis-[calc((100%-2.5rem)/3)] lg:basis-[calc((100%-6rem)/4)]"
-            >
-              {/* Double rim: a fine cream ring around a white plate edge. */}
-              <div className="w-full rounded-full border border-ivory/60 p-[5px] md:p-1.5">
-                <div className="relative aspect-square overflow-hidden rounded-full border-[5px] border-white shadow-[0_24px_50px_-24px_rgb(0_0_0/0.6)] md:border-[6px]">
-                  <Image
-                    src={dish.image.src}
-                    alt={dish.image.alt}
-                    fill
-                    sizes="(min-width: 1024px) 24vw, (min-width: 768px) 31vw, (min-width: 640px) 46vw, 74vw"
-                    placeholder={dish.image.blurDataUrl ? "blur" : "empty"}
-                    blurDataURL={dish.image.blurDataUrl}
-                    draggable={false}
-                    className="object-cover transition-transform duration-700 ease-out-soft group-hover:scale-[1.04]"
-                  />
+          {Array.from({ length: copies }, (_, copy) =>
+            plates.map((plate) => (
+              // Photo and name share one list item, so they always travel — and loop — together.
+              <li
+                key={`${copy}-${plate.src}`}
+                aria-hidden={copy > 0 || undefined}
+                className="mr-[var(--gap)] w-[var(--plate)] shrink-0 motion-reduce:[&[aria-hidden]]:hidden"
+              >
+                <div className="aspect-square rounded-full shadow-[0_10px_22px_-14px_rgb(0_0_0/0.55)]">
+                  {/* The clip lives on its own square so the shadow above isn't clipped; clip-path keeps the
+                      circle exact even while the track is moving (border-radius + overflow alone can leak a
+                      hairline of the image's square corners in some browsers during transforms). */}
+                  <div className="relative size-full overflow-hidden rounded-full bg-ivory/[0.08] [clip-path:circle(50%)]">
+                    <Image
+                      src={plate.src}
+                      alt={copy > 0 ? "" : plate.alt}
+                      fill
+                      sizes="(min-width: 1024px) 27rem, (min-width: 640px) 20rem, 17rem"
+                      draggable={false}
+                      className="object-cover"
+                      style={plateStyle(plate.plate)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <p className="eyebrow mt-6 text-[0.68rem] text-sand/80">{dish.categoryName}</p>
-              <h3 className="mt-2 font-serif text-[clamp(1.35rem,1.15rem+0.6vw,1.65rem)] leading-tight">{dish.name}</h3>
-              {dish.description && <p className="mt-2 line-clamp-3 max-w-xs text-sm leading-relaxed text-ivory/75">{dish.description}</p>}
-            </li>
-          ))}
+                <p className="mx-auto mt-3 line-clamp-2 max-w-[90%] text-center text-[0.95rem] font-medium leading-snug tracking-[0.01em] text-ivory/90 md:mt-4">
+                  {plate.name}
+                </p>
+              </li>
+            )),
+          )}
         </ul>
+      </div>
 
-        <div className="mt-10 flex items-center justify-center gap-6 md:mt-12">
-          <button type="button" onClick={() => page(-1)} disabled={edges.start} aria-label="Previous dishes" aria-controls="featured-track" className={clsx(navButton, "md:hidden")}>
-            <ArrowLeft />
-          </button>
-          <Link href="/menu" className="link-line eyebrow text-sand">
-            See the full menu
-          </Link>
-          <button type="button" onClick={() => page(1)} disabled={edges.end} aria-label="Next dishes" aria-controls="featured-track" className={clsx(navButton, "md:hidden")}>
-            <ArrowRight />
-          </button>
-        </div>
+      <div className="mt-6 text-center md:mt-8 lg:mt-6">
+        <Link href="/menu" className="btn btn-light">
+          Explore full menu
+        </Link>
       </div>
     </section>
   );

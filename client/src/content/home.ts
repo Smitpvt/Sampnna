@@ -1,99 +1,27 @@
 /**
- * Homepage presentation config. This only *selects and orders* dishes that
- * already exist in the menu (by slug) — it never defines dishes or prices.
- * Unknown slugs are skipped; empty picks fall back to the category's first dishes.
+ * The plate photos in public/images/featured_dishes, keyed by filename. The
+ * row shows every image in that folder; a file not listed here falls back to
+ * its filename for alt text and a default fit.
+ * `plate` = [centreX, centreY, radiusX, radiusY], in % of the image: the
+ * outline of that photo's plate, measured per image by tracing the plate edge
+ * on 360 rays. The files are PNG cut-outs whose surround is a baked-in
+ * checkerboard (or transparency) right up to the rim, and several plates are
+ * slightly oval — so each photo is clipped to its own plate outline, then
+ * scaled and centred so every whole plate appears at the same size with an
+ * even margin inside its circle. Display only — the files are untouched.
  */
-export type ChapterConfig = {
-  key: string;
-  title: string;
-  intro: string;
-  /** A menu category slug, or a dish tag collection. */
-  source: { category: string } | { tag: string };
-  image: string;
-  picks: string[];
+export const FEATURED_PLATES: Record<string, { name: string; alt: string; plate?: [number, number, number, number] }> = {
+  "Bolongese_chicken_fettuice.png": { name: "Fettuccine Chicken Bolognese", alt: "Fettuccine in a minced chicken bolognese sauce, topped with basil, in a white bowl", plate: [49.88, 49.82, 47.61, 48.46] },
+  "chicken_milaense.png": { name: "Chicken Milanese", alt: "Crumbed chicken milanese with a green leaf salad and a lime half on a white plate", plate: [49.98, 49.94, 49.71, 49.77] },
+  "Chimi chauri prawns.png": { name: "Chimichurri Prawns", alt: "Prawns in a glossy sauce with spring onions, peppers and peanuts in a white bowl", plate: [49.73, 49.48, 49.17, 48.44] },
+  "Chongqing mala chicken.png": { name: "Chongqing Mala Chicken", alt: "Chongqing mala chicken with dried red chillies and peppers in a white bowl", plate: [49.94, 49.92, 49.78, 49.63] },
+  "Greek_Salad.png": { name: "Greek Salad", alt: "Greek salad with feta, olives, peppers and red onion on a white plate", plate: [49.72, 49.92, 49.53, 49.53] },
+  "khao-suey.png": { name: "Burmese Khao Suey Soup", alt: "Burmese khao suey soup in a white bowl and saucer", plate: [49.92, 49.62, 49.65, 49.46] },
+  "messina-pizza.png": { name: "Messina Pizza", alt: "Messina pizza topped with prawns, cherry tomatoes and herbs", plate: [50.06, 49.7, 49.59, 49.19] },
+  "quiona_salad.png": { name: "Quinoa Salad", alt: "Red quinoa salad with tomato, apple, peppers and micro-greens in a white bowl", plate: [49.89, 49.41, 48.69, 48.21] },
+  "Tandoori_jhinga.png": { name: "Tandoori Jhinga", alt: "Tandoori jhinga — charred spiced prawns on lettuce with lemon wedges", plate: [49.88, 49.28, 49.6, 49.16] },
+  "waldorf-salad.png": { name: "Waldorf Salad", alt: "Waldorf salad with apple, walnuts and grapes on lettuce in a white bowl", plate: [49.84, 49.05, 48.64, 48.01] },
 };
-
-export const HOME_CHAPTERS: ChapterConfig[] = [
-  {
-    key: "continental-starters",
-    title: "Continental Starters",
-    intro: "Herb-marinated prawns, crumbed bites and fries — an easy way into the evening.",
-    source: { category: "continental-starter" },
-    image: "chimichurri-prawns",
-    picks: ["chimichurri-prawns", "crispy-fish-finger", "chicken-milanese", "cheese-corn-ball", "garlic-herbs-french-fries"],
-  },
-  {
-    key: "oriental-main-course",
-    title: "Oriental Main Course",
-    intro: "Rice, noodles and curries from the wok — from Thai red and green to Kung Pao.",
-    source: { category: "oriental-main-course" },
-    image: "kitchen-wok",
-    picks: ["thai-curry", "pad-thai-noodles", "kung-pao-chicken", "mao-tofu", "burnt-garlic-rice"],
-  },
-  {
-    key: "indian-main-course",
-    title: "Indian Main Course",
-    intro: "Slow, generous gravies of vegetables, paneer, chicken and mutton — for the middle of the table.",
-    source: { category: "indian-main-course" },
-    image: "tandoori-naan-brick",
-    picks: ["paneer-lababdar", "sabji-diwani-handi", "murg-nawabi", "murg-mussallam", "ghosh-rara"],
-  },
-  {
-    key: "maharashtrian-thalis",
-    title: "Authentic Maharashtrian Thalis",
-    intro: "Complete meals on a single plate — every thali comes with sol kadhi, rice, bread and dessert.",
-    source: { category: "maharashtrian-thali" },
-    image: "seafood-thali",
-    picks: ["veg-thali", "chicken-thali", "mutton-thali", "seafood-thali", "kombadi-vade"],
-  },
-  {
-    key: "seafood-specials",
-    title: "Seafood Specials",
-    intro: "Pomfret, surmai, bombil and prawns — fried on the tawa, roasted in the tandoor, tossed in the wok.",
-    source: { tag: "seafood" },
-    image: "pomfret-green-masala",
-    picks: ["pomfret-fry", "surmai-fry", "bombil-fry", "tandoori-jhinga", "prawns-salt-and-pepper"],
-  },
-  {
-    key: "mocktails",
-    title: "Mocktails",
-    intro: "Lime and mint, guava and spice, fruit and fizz — poured cold.",
-    source: { category: "mocktail" },
-    image: "mocktail-coupe",
-    picks: ["virgin-mojito", "guava-spice", "fruit-punch", "strawberry-delight", "blue-lagoon"],
-  },
-  {
-    key: "desserts",
-    title: "Desserts",
-    intro: "From ukadiche modak with ghee to a brownie that arrives sizzling.",
-    source: { category: "desserts" },
-    image: "ukadiche-modak",
-    picks: ["ukadiche-modak-3-pc", "sizzling-brownie", "elaneer-payasam", "gulab-jamun-2-pc", "banana-toffee-with-ice-cream"],
-  },
-];
-
-/**
- * Featured Dishes, in display order. Each is selected by its exact menu name —
- * the description always comes from the menu data. `image` is a plate-centred
- * square crop of a camera original, made and colour-matched by
- * server/scripts/featured-images.mjs. The pizza is identified as Ortolana from
- * its toppings (market vegetables on tomato sauce and mozzarella), and the
- * menu's thali with pomfret is the Seafood Thali — worth confirming with the
- * kitchen. Messina Pizza, Chongqing Mala Chicken and Chimichurri Prawns are
- * left out: their supplied images have no verified provenance.
- */
-export type FeaturedConfig = { dish: string; image: string };
-
-export const FEATURED_DISHES: FeaturedConfig[] = [
-  { dish: "Burmese Khao Suey Soup", image: "khao-suey" },
-  { dish: "Ortolana Pizza", image: "ortolana-pizza" },
-  { dish: "Seafood Thali", image: "seafood-thali" },
-  { dish: "Fettuccine Chicken Bolognese", image: "fettuccine-bolognese" },
-  { dish: "Murgh Matka Dum Biryani", image: "murgh-biryani" },
-  { dish: "Kombadi Vade", image: "kombadi-vade" },
-  { dish: "Honey Chilli Lotus Stem", image: "lotus-stem" },
-  { dish: "Ukadiche Modak (3 pc)", image: "ukadiche-modak" },
-];
 
 export const HOME_MEDIA = {
   /** Hero crossfade, in order. The first is the LCP image and shows alone when motion is reduced. */

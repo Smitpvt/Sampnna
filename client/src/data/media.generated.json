@@ -155,6 +155,18 @@
     "height": 1600,
     "blurDataUrl": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAgCdASoQAAsAA4BaJZAC7AEVV0AZaBxyoAD+7Js5FXxtz+UiSz4dL7eezdydn/HhVT/ZmqjlnQUroIW4i2dt7kECS+EuKATM2IkuJS3FOTAyOSRpeNvkAAA="
   },
+  "pomfret-platter": {
+    "src": "/images/food/pomfret-platter.webp",
+    "width": 2400,
+    "height": 1600,
+    "blurDataUrl": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoQAAsAA4BaJQBdgCFsf5i38sOAAP72jb+a/wWPXIEalmvdFV75DYpGPBEvS7W76PT89B6TCtKmhcrv6ke4modOWBB5pGIsT5fx5gAA"
+  },
+  "sizzling-brownie-still": {
+    "src": "/images/food/sizzling-brownie-still.webp",
+    "width": 2400,
+    "height": 1600,
+    "blurDataUrl": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAsAA4BaJQBOgCHKVm8gagAA/vLq2hvUq5xL7umsxkRAD8Z8cM7g9d71M4Tq1B81uf8wrrKanb75TOp2lHJy1Bi+Mius5GwAAA=="
+  },
   "dim-sum-crystal": {
     "src": "/images/food/dim-sum-crystal.webp",
     "width": 2400,

@@ -20,6 +20,8 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   devIndicators: false,
   poweredByHeader: false,
+  // The homepage lists public/images/featured_dishes at render time (ISR), so ship the folder with it.
+  outputFileTracingIncludes: { "/": ["./public/images/featured_dishes/**"] },
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [480, 640, 828, 1080, 1280, 1600, 1920, 2400],

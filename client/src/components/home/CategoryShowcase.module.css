@@ -1,0 +1,494 @@
+/*
+ * "One Table. Many Kitchens." — an asymmetric composition of five course
+ * blocks: a large Maharashtrian Specials block, an arched Starters column,
+ * Indian Mains under the headline, and two panel-and-photo blocks below.
+ * Titles sit in cut-out tabs of the page colour with curved inner joins.
+ * Phones and tablets re-stack the same pieces into two columns.
+ */
+
+.section {
+  --page: #f5eee3;
+  --ivory: var(--color-ivory);
+  --beige: #e4d6c1;
+  --brown: #4a2c20;
+  --olive: #6c7040;
+  --teal: var(--color-turquoise-deep);
+  --teal-tint: #d5e4df;
+  --terracotta: var(--color-terracotta);
+  --terracotta-deep: var(--color-terracotta-deep);
+  --ink-soft: var(--color-ink-soft, #6b655c);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --r: 16px;
+  --inset: 8px;
+
+  background: var(--page);
+  color: var(--color-charcoal);
+  padding: 3rem 1rem 4rem;
+}
+
+.serif,
+.title,
+.headline {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+.comp {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+  /* Phone: headline, the Maharashtrian centrepiece, Starters beside Indian Mains, then 04 and 05. */
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  grid-template-rows: auto auto 300px 250px 250px;
+  grid-template-areas: "h h" "m m" "s i" "c c" "d d";
+}
+
+.cell {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ---------- headline ---------- */
+.head {
+  grid-area: h;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 8px;
+  container-type: inline-size;
+  min-width: 0;
+}
+.eyebrow {
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+.head .eyebrow {
+  color: var(--teal);
+}
+/* Sized to its own column, so "One Table." and "Many Kitchens." each always stay on one line. */
+.headline {
+  margin-top: 1.25rem;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 17cqi, 5.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.headline em {
+  display: block;
+  font-style: italic;
+  color: var(--terracotta-deep);
+  padding-bottom: 0.08em;
+}
+.lede {
+  margin-top: 1.25rem;
+  max-width: 21rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  font-size: 0.95rem;
+}
+.more {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  border-top: 1px solid rgb(39 38 34 / 0.15);
+  padding-top: 14px;
+}
+.moreLink {
+  color: var(--terracotta-deep);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.moreLink span {
+  transition: transform 0.6s var(--ease);
+}
+.moreLink:hover span {
+  transform: translate(3px, -3px);
+}
+.place {
+  color: var(--ink-soft);
+  font-size: 0.6rem;
+}
+
+/* ---------- shared block ---------- */
+.blk {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--r);
+  color: inherit;
+  text-decoration: none;
+  isolation: isolate;
+  transition: filter 0.7s var(--ease);
+}
+.blk:focus-visible {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 4px;
+}
+.photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.img {
+  object-fit: cover;
+  transition:
+    transform 1.2s var(--ease),
+    filter 0.8s var(--ease);
+}
+
+.num {
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  font-variant-numeric: tabular-nums;
+  color: var(--terracotta);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.num::after {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+  transition: width 0.7s var(--ease);
+}
+.title {
+  display: block;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-size: 1.5rem;
+}
+.go {
+  display: inline-block;
+  margin-left: 10px;
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease);
+}
+
+@media (hover: hover) {
+  .blk:hover .img {
+    transform: scale(1.04);
+    filter: brightness(1.04);
+  }
+  .blk:hover .num::after {
+    width: 40px;
+  }
+  .blk:hover .go {
+    opacity: 1;
+    transform: none;
+  }
+  /* While one block is hovered, the others soften a little. */
+  .comp:has(.blk:hover) .blk:not(:hover) {
+    filter: saturate(0.86) brightness(0.94);
+  }
+}
+
+/* Cut-out tab: a piece of the page notched into the block, with concave joins on both sides. */
+.tab {
+  position: absolute;
+  z-index: 2;
+  background: var(--page);
+}
+.tab::before,
+.tab::after {
+  content: "";
+  position: absolute;
+  width: var(--r);
+  height: var(--r);
+}
+.tabBl {
+  left: 0;
+  bottom: 0;
+  border-top-right-radius: var(--r);
+  padding: 16px 24px 2px 2px;
+}
+.tabBl::before {
+  left: 0;
+  bottom: 100%;
+  background: radial-gradient(circle at 100% 0, transparent calc(var(--r) - 0.5px), var(--page) var(--r));
+}
+.tabBl::after {
+  left: 100%;
+  bottom: 0;
+  background: radial-gradient(circle at 100% 0, transparent calc(var(--r) - 0.5px), var(--page) var(--r));
+}
+.tabTr {
+  right: 0;
+  top: 0;
+  border-bottom-left-radius: var(--r);
+  padding: 2px 2px 14px 18px;
+  text-align: right;
+}
+.tabTr::before {
+  right: 100%;
+  top: 0;
+  background: radial-gradient(circle at 0 100%, transparent calc(var(--r) - 0.5px), var(--page) var(--r));
+}
+.tabTr::after {
+  right: 0;
+  top: 100%;
+  background: radial-gradient(circle at 0 100%, transparent calc(var(--r) - 0.5px), var(--page) var(--r));
+}
+
+/* ---------- 03 Maharashtrian Specials — the centrepiece ---------- */
+.m {
+  grid-area: m;
+}
+/* Phone: a square photo shows the whole round thali; the title sits beneath, never over food. */
+.m .blk {
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  border-radius: 0;
+  height: auto;
+}
+.m .photo {
+  position: relative;
+  inset: auto;
+  aspect-ratio: 1;
+  border-radius: var(--r);
+  background: var(--brown);
+}
+.m .tab {
+  position: static;
+  background: none;
+  padding: 14px 0 0;
+}
+.m .tab::before,
+.m .tab::after {
+  display: none;
+}
+.m .tab .eyebrow {
+  display: block;
+  color: var(--olive);
+  margin: 8px 0;
+}
+.m .title {
+  font-size: 2.1rem;
+}
+
+/* ---------- 01 Starters — tall, arch-topped like Sampann's brick arches ---------- */
+.s {
+  grid-area: s;
+}
+.s .blk {
+  border-radius: 999px 999px var(--r) var(--r);
+  background: var(--color-charcoal);
+}
+.s .tab {
+  padding: 20px 26px 4px 4px;
+}
+
+/* ---------- 02 Indian Mains — upper-right corner cut by the title tab ---------- */
+.i {
+  grid-area: i;
+}
+.i .blk {
+  background: var(--beige);
+}
+.i .tab {
+  padding-left: 18px;
+}
+.i .title {
+  white-space: nowrap;
+}
+
+/* ---------- 04 Continental & Asian and 05 Desserts & Drinks — panel beside an inset photo ---------- */
+.c {
+  grid-area: c;
+}
+.d {
+  grid-area: d;
+}
+.c .blk,
+.d .blk {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+}
+.c .blk {
+  grid-template-columns: minmax(0, 44%) minmax(0, 1fr);
+  background: var(--teal-tint);
+}
+.d .blk {
+  grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
+  background: var(--beige);
+}
+.side {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 14px 20px 18px;
+}
+.c .side .eyebrow,
+.c .num {
+  color: var(--teal);
+}
+.c .num,
+.d .num {
+  margin-bottom: 10px;
+}
+.d .side {
+  justify-content: flex-start;
+}
+.pic {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: calc(var(--r) - 6px);
+  margin: var(--inset) var(--inset) var(--inset) 0;
+}
+
+/* The drink sits in a small arch matted in the panel's own beige, straddling the seam and
+   overlapping the smoky edge of the dessert photo — as if the panel wraps around it. */
+.arch {
+  position: absolute;
+  z-index: 2;
+  left: 38%;
+  bottom: calc(var(--inset) + 12px);
+  width: 84px;
+  height: 124px;
+  margin-left: -42px;
+  overflow: hidden;
+  border-radius: 999px 999px 10px 10px;
+  box-shadow:
+    0 0 0 6px var(--beige),
+    0 18px 32px -18px rgb(39 38 34 / 0.55);
+  transition: transform 1s var(--ease);
+}
+@media (hover: hover) {
+  .d .blk:hover .arch {
+    transform: translateY(-4px);
+  }
+}
+
+/* ---------- tablet: same two-column stack, roomier ---------- */
+@media (min-width: 640px) {
+  .section {
+    padding: 4rem 2rem 5rem;
+  }
+  .comp {
+    gap: 16px;
+    grid-template-rows: auto auto 380px 300px 300px;
+  }
+  .m .photo {
+    aspect-ratio: 4 / 3;
+  }
+  .title {
+    font-size: 1.85rem;
+  }
+  .arch {
+    width: 104px;
+    height: 152px;
+    margin-left: -52px;
+  }
+}
+
+/* ---------- desktop: the approved composition ---------- */
+@media (min-width: 1024px) {
+  .section {
+    --r: 20px;
+    padding: 4.5rem 3rem 5.5rem;
+  }
+  .comp {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    /* Row 1 sizes to the headline, so the headline never runs under Indian Mains. */
+    grid-template-rows: auto minmax(190px, 1fr) clamp(270px, 22vw, 320px);
+    grid-template-areas:
+      "h h h h m m m m m m s s"
+      "i i i i m m m m m m s s"
+      "i i i i c c c c d d d d";
+  }
+  .head {
+    padding: 8px 24px 20px 0;
+  }
+  .more {
+    margin-top: 1.9rem;
+  }
+
+  /* Maharashtrian Specials becomes the full block with its corner tab. */
+  .m .blk {
+    display: block;
+    overflow: hidden;
+    border-radius: var(--r);
+    height: 100%;
+    background: var(--brown);
+  }
+  .m .photo {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+  .m .tab {
+    position: absolute;
+    background: var(--page);
+    padding: 18px 28px 2px 2px;
+  }
+  .m .tab::before,
+  .m .tab::after {
+    display: block;
+  }
+  .m .title {
+    font-size: clamp(2.3rem, 1.2rem + 1.5vw, 2.9rem);
+  }
+
+  .s .tab {
+    padding: 24px 30px 6px 4px;
+  }
+  .s .title {
+    font-size: clamp(1.7rem, 1.1rem + 0.8vw, 2rem);
+  }
+  .i .title {
+    font-size: clamp(1.7rem, 1.1rem + 1vw, 2.2rem);
+  }
+  .c .title,
+  .d .title {
+    font-size: clamp(1.35rem, 0.9rem + 0.75vw, 1.9rem);
+  }
+  .side {
+    padding: 22px 16px 22px 20px;
+  }
+  .arch {
+    width: 108px;
+    height: 158px;
+    margin-left: -54px;
+    bottom: calc(var(--inset) + 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blk,
+  .img,
+  .num::after,
+  .go,
+  .arch,
+  .moreLink span {
+    transition: none;
+  }
+}
