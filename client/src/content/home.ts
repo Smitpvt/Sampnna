@@ -28,8 +28,17 @@ export const HOME_MEDIA = {
   heroBackdrops: ["dining-room-arches", "dining-room-windows", "table-setting-row", "dining-room-evening"],
   /** The meaning section: large landscape interior, then the small ones at its top-left and bottom-right corners. */
   storyImages: ["dining-room-long-view", "lantern-brick-arch", "table-setting-overhead"],
-  gallery: ["arched-window-garden", "seafood-thali", "kitchen-flame", "mocktail-still", "table-setting-banquette"],
-  reservation: "dining-room-evening",
+  /** Gallery bento, in tile order (see GalleryPreview): dining room, skewer, table, mojito, thali, flame, modak, brownie. */
+  gallery: [
+    "dining-room-arches",
+    "kebab-skewer",
+    "table-setting-overhead",
+    "virgin-mojito",
+    "seafood-thali",
+    "kitchen-flame",
+    "ukadiche-modak-still",
+    "sizzling-brownie",
+  ],
   /** Closing quote: the arched garden-window dining room, and ukadiche modak overlapping it. */
   closing: { main: "arched-window-garden", detail: "ukadiche-modak-still" },
 };

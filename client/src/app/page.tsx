@@ -52,7 +52,7 @@ export default async function HomePage() {
       {reviews.length > 0 && <Testimonials items={reviews} preview={preview} />}
       <ClosingNote main={imageRef(HOME_MEDIA.closing.main)} detail={imageRef(HOME_MEDIA.closing.detail)} />
       <GalleryPreview images={HOME_MEDIA.gallery.map(media)} />
-      <ReservationSection image={media(HOME_MEDIA.reservation)} />
+      <ReservationSection />
     </>
   );
 }
