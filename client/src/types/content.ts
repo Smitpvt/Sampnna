@@ -49,20 +49,3 @@ export type GalleryImageDTO = {
   blurDataUrl: string | null;
 };
 
-export type ReviewDTO = {
-  id: string;
-  authorName: string;
-  authorUrl?: string | null;
-  rating: number | null;
-  text: string;
-  date: string | null;
-  source: "GOOGLE" | "ADMIN";
-  sourceUrl: string | null;
-};
-
-export type GoogleSummary = {
-  rating: number;
-  reviewCount: number;
-  mapsUrl: string | null;
-  reviews: ReviewDTO[];
-};

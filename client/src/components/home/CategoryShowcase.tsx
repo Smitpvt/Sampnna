@@ -1,19 +1,10 @@
 import clsx from "clsx";
-import { Cormorant_Garamond } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { ImageReveal, Reveal } from "@/components/ui/Reveal";
+import { cormorant } from "@/lib/fonts";
 import type { ImageRef } from "@/types/content";
 import styles from "./CategoryShowcase.module.css";
-
-/** Cormorant Garamond, loaded for this section only — the rest of the site keeps its own serif. */
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
 
 export type CourseCard = {
   slug: string;

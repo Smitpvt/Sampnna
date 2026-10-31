@@ -59,10 +59,3 @@ export type ReviewDTO = {
   source: "GOOGLE" | "ADMIN";
   sourceUrl: string | null;
 };
-
-export type GoogleSummary = {
-  rating: number;
-  reviewCount: number;
-  mapsUrl: string | null;
-  reviews: ReviewDTO[];
-};

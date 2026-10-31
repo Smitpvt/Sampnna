@@ -30,4 +30,6 @@ export const HOME_MEDIA = {
   storyImages: ["dining-room-long-view", "lantern-brick-arch", "table-setting-overhead"],
   gallery: ["arched-window-garden", "seafood-thali", "kitchen-flame", "mocktail-still", "table-setting-banquette"],
   reservation: "dining-room-evening",
+  /** Closing quote: the arched garden-window dining room, and ukadiche modak overlapping it. */
+  closing: { main: "arched-window-garden", detail: "ukadiche-modak-still" },
 };
