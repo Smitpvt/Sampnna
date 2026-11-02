@@ -11,7 +11,7 @@ import { navLinks } from "@/config/site";
  * Gallery, About | Menu, Contact; whichever page is current drops out and the
  * rest close up (e.g. on Gallery: About, Home | Menu, Contact).
  */
-const ORDER = ["/gallery", "/about", "/", "/menu", "/contact"];
+const ORDER = ["/about", "/gallery", "/", "/menu", "/contact"];
 
 const linkCls = "font-serif font-light tracking-[-0.01em] block text-[1.5rem] leading-[1.3] transition-colors hover:text-sand lg:text-[1.6rem]";
 

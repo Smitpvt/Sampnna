@@ -15,7 +15,9 @@ export async function fetchApi<T>(path: string, init?: RequestInit): Promise<T |
     : `${API_BASE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
 
   try {
-    const res = await fetch(url, init);
+    // Prevent unhandled 5-second connection hangs when backend is unreachable or booting
+    const signal = init?.signal ?? AbortSignal.timeout(400);
+    const res = await fetch(url, { ...init, signal });
     if (!res.ok) return null;
     const body = (await res.json()) as ApiResponse<T>;
     if (body && body.ok) return body.data;

@@ -2,7 +2,7 @@ import { fetchApi } from "@/lib/api";
 import { galleryMedia } from "@/lib/media";
 import type { GalleryCategory, GalleryImageDTO } from "@/types/content";
 
-function getFallbackGallery(category?: GalleryCategory): GalleryImageDTO[] {
+export function getFallbackGallery(category?: GalleryCategory): GalleryImageDTO[] {
   const assets = galleryMedia();
   return assets
     .filter((a) => !category || a.category === category)
@@ -19,8 +19,23 @@ function getFallbackGallery(category?: GalleryCategory): GalleryImageDTO[] {
 }
 
 export async function getGalleryImages(category?: GalleryCategory): Promise<GalleryImageDTO[]> {
+  const fallback = getFallbackGallery(category);
+
+  // When developing or running standalone, resolve instantly in 0ms without waiting for a backend
+  if (process.env.NODE_ENV === "development" && (!process.env.INTERNAL_API_URL || process.env.INTERNAL_API_URL.includes("localhost"))) {
+    return fallback;
+  }
+
   const query = category ? `?category=${encodeURIComponent(category)}` : "";
-  const data = await fetchApi<GalleryImageDTO[]>(`/api/gallery${query}`, { next: { revalidate: 300 } });
-  if (data && data.length > 0) return data;
-  return getFallbackGallery(category);
+  try {
+    const data = await fetchApi<GalleryImageDTO[]>(`/api/gallery${query}`, {
+      signal: AbortSignal.timeout(200),
+      next: { revalidate: 300 },
+    });
+    if (data && data.length > 0) return data;
+  } catch {
+    // fallback instantly
+  }
+
+  return fallback;
 }
