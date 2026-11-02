@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { type CSSProperties, type PointerEvent as ReactPointerEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { site } from "@/config/site";
 import { COURSES } from "@/content/courses";
 import { cormorant } from "@/lib/fonts";
@@ -20,12 +20,13 @@ type Side = "left" | "right";
 type Shade = "front" | "back" | "reveal" | null;
 
 const amount = (n: number) => n.toLocaleString("en-IN");
+const pad2 = (n: number) => String(n).padStart(2, "0");
 
 /**
- * The menu as a page-turning book in the style of the printed Sampann menu
- * card: two pages side by side on desktop, one page at a time on phones and
- * tablets. Turn with the arrows, a click or tap on a page, a swipe, or the
- * keyboard (← →). ?course= and ?category= open the book at that section.
+ * The menu as a page-turning book: two pages side by side on desktop, one
+ * page at a time on phones and tablets. Turn with the arrows, a click or tap
+ * on a page, a swipe, or the keyboard (← →). ?course= and ?category= open the
+ * book at that section.
  *
  * The visual book is aria-hidden; the full menu is also rendered as a plain
  * list for screen readers and search engines.
@@ -189,16 +190,14 @@ function BookView({
     onPlace(visibleSlug.startsWith("__") || !visibleSlug ? null : visibleSlug);
   }, [visibleSlug, onPlace]);
 
-  const counter = (() => {
-    const nums = visible.map(numberOf);
-    if (visible.length === 1 && visible[0].kind === "cover") return "Cover";
-    return `${nums.join(" – ")} / ${pages.length}`;
-  })();
+  const onCover = visible.length === 1 && visible[0].kind === "cover";
+  const counter = onCover ? (spread ? "Open the menu" : "Tap to open") : `${visible.map((p) => pad2(numberOf(p))).join(" – ")} / ${pad2(pages.length)}`;
+  const progress = count > 1 ? (target / (count - 1)) * 100 : 0;
 
   const pageProps = { mode, numberOf, onJump: goPage };
 
-  /* ── Layout ── */
-  let content: React.ReactNode;
+  /* ── Pages ── */
+  let content: ReactNode;
   if (spread) {
     const L = (p: number) => slots[2 * p] ?? null;
     const R = (p: number) => slots[2 * p + 1] ?? null;
@@ -212,14 +211,22 @@ function BookView({
     const rightCount = slots.slice(2 * target + 2).filter(Boolean).length;
 
     content = (
-      <div className={s.book} style={{ transform: `translateX(${shift})` }} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+      <div
+        className={clsx(s.book, !L(target) && s.closedRight, !R(target) && s.closedLeft)}
+        style={{ transform: `translateX(${shift})` }}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+      >
+        {R(target) && <span className={s.ribbon} />}
         <div className={clsx(s.slot, s.slotLeft)} onClick={tap(() => go(pos - 1))}>
           {underL && <Edges side="left" count={leftCount} />}
           {underL && <PageView spec={underL} side="left" shade={dir === -1 ? "reveal" : null} {...pageProps} />}
+          {underL && !flip && <span className={s.curl} />}
         </div>
         <div className={clsx(s.slot, s.slotRight)} onClick={tap(() => go(pos + 1))}>
           {underR && <Edges side="right" count={rightCount} />}
           {underR && <PageView spec={underR} side="right" shade={dir === 1 ? "reveal" : null} {...pageProps} />}
+          {underR && !flip && underR.kind !== "thanks" && <span className={s.curl} />}
         </div>
         {flip && dir === 1 && (
           <div className={clsx(s.leaf, s.leafNext)}>
@@ -239,12 +246,9 @@ function BookView({
     const dir = flip ? (flip.to > pos ? 1 : -1) : 0;
     const under = dir === 1 ? slots[target]! : slots[pos]!;
     const leafPage = dir === 1 ? slots[pos]! : dir === -1 ? slots[target]! : null;
-    const tapPage = (e: React.MouseEvent<HTMLDivElement>) => {
-      const r = e.currentTarget.getBoundingClientRect();
-      go(pos + (e.clientX - r.left < r.width * 0.35 ? -1 : 1));
-    };
     content = (
       <div className={s.book} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+        <span className={s.ribbon} />
         <div
           className={s.slot}
           onClick={(e) => {
@@ -252,7 +256,8 @@ function BookView({
               swiped.current = false;
               return;
             }
-            tapPage(e);
+            const r = e.currentTarget.getBoundingClientRect();
+            go(pos + (e.clientX - r.left < r.width * 0.35 ? -1 : 1));
           }}
         >
           <Edges side="right" count={slots.length - 1 - target} />
@@ -272,55 +277,82 @@ function BookView({
     );
   }
 
-  const atStart = target === 0;
-  const atEnd = target === count - 1;
+  const prev = (
+    <button type="button" className={clsx(s.arrow, s.arrowPrev)} onClick={() => go(pos - 1)} disabled={target === 0} aria-label="Previous page">
+      <Arrow dir="left" />
+    </button>
+  );
+  const next = (
+    <button type="button" className={clsx(s.arrow, s.arrowNext)} onClick={() => go(pos + 1)} disabled={target === count - 1} aria-label="Next page">
+      <Arrow dir="right" />
+    </button>
+  );
+  const picker = (
+    <label className={s.selectWrap}>
+      <span className="sr-only">Go to a section of the menu</span>
+      <select
+        className={s.select}
+        value={visibleSlug || ""}
+        onChange={(e) => {
+          const v = e.target.value;
+          if (v === "__cover") go(0);
+          else if (v === "__contents") goPage(indexPage);
+          else if (v in firstPage) goPage(firstPage[v]);
+          e.target.blur();
+        }}
+      >
+        {!visibleSlug && <option value="">{onCover ? "Sampann · Menu" : visible.some((p) => p.kind === "thanks") ? "Thank you" : "Welcome"}</option>}
+        <option value="__cover">Cover</option>
+        <option value="__contents">Contents</option>
+        {categories
+          .filter((c) => c.slug in firstPage)
+          .map((c) => (
+            <option key={c.slug} value={c.slug}>
+              {c.name}
+            </option>
+          ))}
+      </select>
+      <span aria-hidden className={s.chev} />
+    </label>
+  );
+  const progressBar = (
+    <div className={s.progress} aria-hidden="true">
+      <div className={s.progressFill} style={{ width: `${progress}%` }} />
+    </div>
+  );
+  const counterEl = (
+    <p className={clsx(onCover ? s.hint : s.counter)} aria-live="polite">
+      {counter}
+    </p>
+  );
 
   return (
     <div className={clsx(spread ? s.spread : s.single)} style={{ display: "contents" }}>
-      <div aria-hidden="true">{content}</div>
-
-      <div className={s.controls}>
-        <button type="button" className={s.arrow} onClick={() => go(pos - 1)} disabled={atStart} aria-label="Previous page">
-          <Arrow dir="left" />
-        </button>
-        <div className={s.meta}>
-          <label className={s.selectWrap}>
-            <span className="sr-only">Go to a section of the menu</span>
-            <select
-              className={s.select}
-              value={visibleSlug || ""}
-              onChange={(e) => {
-                const v = e.target.value;
-                if (v === "__cover") go(0);
-                else if (v === "__contents") goPage(indexPage);
-                else if (v in firstPage) goPage(firstPage[v]);
-                e.target.blur();
-              }}
-            >
-              {!visibleSlug && <option value="">{visible.some((p) => p.kind === "cover") ? "Sampann · Menu" : visible.some((p) => p.kind === "thanks") ? "Thank you" : "Welcome"}</option>}
-              <option value="__cover">Cover</option>
-              <option value="__contents">Our Menu · Contents</option>
-              {categories
-                .filter((c) => c.slug in firstPage)
-                .map((c) => (
-                  <option key={c.slug} value={c.slug}>
-                    {c.name}
-                  </option>
-                ))}
-            </select>
-            <span aria-hidden className={s.chev} />
-          </label>
-          <p className={s.counter} aria-live="polite">
-            {counter}
-          </p>
-        </div>
-        <button type="button" className={s.arrow} onClick={() => go(pos + 1)} disabled={atEnd} aria-label="Next page">
-          <Arrow dir="right" />
-        </button>
+      <div className={s.bookArea}>
+        <div aria-hidden="true">{content}</div>
+        {spread && prev}
+        {spread && next}
       </div>
-      <p className={s.hint} aria-hidden="true">
-        {spread ? "Click a page or use ← → to turn" : "Swipe or tap the page to turn"}
-      </p>
+
+      {spread ? (
+        <div className={s.bar}>
+          {picker}
+          {progressBar}
+          {counterEl}
+        </div>
+      ) : (
+        <>
+          <div className={s.bar}>
+            {prev}
+            {picker}
+            {next}
+          </div>
+          <div className={s.subBar}>
+            {progressBar}
+            {counterEl}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -332,13 +364,7 @@ function Edges({ side, count }: { side: Side; count: number }) {
       {Array.from({ length: layers }, (_, i) => {
         const n = layers - i; // draw the furthest first
         const dx = (side === "left" ? -1 : 1) * n * 2.5;
-        return (
-          <div key={n} className={s.edge} style={{ transform: `translate(${dx}px, ${n * 1.5}px)` }}>
-            <div className={clsx(s.page, side === "left" ? s.sideLeft : s.sideRight)} style={{ filter: "none" }}>
-              <div className={clsx(s.paper, s.paperEdge)} style={{ filter: `brightness(${1 - n * 0.025})` }} />
-            </div>
-          </div>
-        );
+        return <div key={n} className={s.edge} style={{ transform: `translate(${dx}px, ${n * 1.5}px)`, filter: `brightness(${1 - n * 0.03})` }} />;
       })}
     </>
   );
@@ -351,6 +377,54 @@ function BlankBack() {
         <span className={clsx(s.shade, s.shadeBack)} />
       </div>
     </div>
+  );
+}
+
+/* ─── Ornaments ─────────────────────────────────────────────────────────── */
+
+function Ornament({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 170 14" fill="none" aria-hidden>
+      <path d="M0 7h66M104 7h66" stroke="currentColor" strokeWidth="0.8" />
+      <path d="M72 7l6-4 7 4-7 4z M98 7l-6-4-7 4 7 4z" fill="currentColor" opacity="0.55" />
+      <path d="M85 1l6 6-6 6-6-6z" fill="currentColor" />
+      <circle cx="62" cy="7" r="1.4" fill="currentColor" />
+      <circle cx="108" cy="7" r="1.4" fill="currentColor" />
+    </svg>
+  );
+}
+
+/** Art-deco corner clasp, drawn for the top-left corner (mirrored in CSS). */
+function Corner({ className }: { className: string }) {
+  return (
+    <svg className={clsx(s.corner, className)} viewBox="0 0 40 40" fill="none" aria-hidden>
+      <path d="M2 26V12C2 6.5 6.5 2 12 2h14" stroke="currentColor" strokeWidth="1" />
+      <path d="M6.5 22V13c0-3.6 2.9-6.5 6.5-6.5h9" stroke="currentColor" strokeWidth="0.6" opacity="0.6" />
+      <path d="M12 8.5l3.5 3.5-3.5 3.5-3.5-3.5z" fill="currentColor" />
+      <circle cx="2" cy="30" r="1.1" fill="currentColor" />
+      <circle cx="30" cy="2" r="1.1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function Corners() {
+  return (
+    <>
+      <Corner className={s.cTL} />
+      <Corner className={s.cTR} />
+      <Corner className={s.cBL} />
+      <Corner className={s.cBR} />
+    </>
+  );
+}
+
+function ArchLine() {
+  return (
+    <svg className={s.archLine} viewBox="0 0 100 146" fill="none" aria-hidden>
+      <path d="M1 146V50a49 49 0 0 1 98 0v96" stroke="currentColor" strokeWidth="0.45" />
+      <path d="M5 146V51a45 45 0 0 1 90 0v95" stroke="currentColor" strokeWidth="0.25" opacity="0.55" />
+      <path d="M50 -3.2l3.2 3.2-3.2 3.2-3.2-3.2z" fill="currentColor" />
+    </svg>
   );
 }
 
@@ -367,21 +441,31 @@ type PageViewProps = {
 
 function PageView({ spec, side, shade, mode, numberOf, onJump }: PageViewProps) {
   const shadeEl = shade && <span className={clsx(s.shade, shade === "front" ? s.shadeFront : shade === "back" ? s.shadeBack : s.shadeReveal)} />;
-  const green = spec.kind === "cover" || spec.kind === "thanks";
+  const leather = spec.kind === "cover" || spec.kind === "thanks";
 
   return (
     <div className={clsx(s.page, side === "left" ? s.sideLeft : s.sideRight)}>
-      {green ? (
-        <div className={s.paperGreen}>
-          <span className={s.goldFrame} />
+      {leather ? (
+        <div className={s.leather}>
+          {spec.kind === "cover" && <span className={s.spineBand} />}
+          <span className={clsx(s.leatherFrame, spec.kind === "cover" && s.coverFrame)}>
+            <Corners />
+          </span>
           {shadeEl}
         </div>
       ) : (
-        <div className={s.paper}>{shadeEl}</div>
+        <div className={s.paper}>
+          {spec.kind !== "welcome" && (
+            <span className={s.frame}>
+              <Corners />
+            </span>
+          )}
+          {shadeEl}
+        </div>
       )}
       {spec.kind === "cover" && <Cover />}
       {spec.kind === "welcome" && <Welcome />}
-      {spec.kind === "index" && <Contents spec={spec} onJump={onJump} />}
+      {spec.kind === "index" && <Contents spec={spec} number={numberOf(spec)} onJump={onJump} />}
       {spec.kind === "menu" && <MenuPage sections={spec.sections} number={numberOf(spec)} mode={mode} />}
       {spec.kind === "thanks" && <Thanks />}
     </div>
@@ -391,72 +475,109 @@ function PageView({ spec, side, shade, mode, numberOf, onJump }: PageViewProps) 
 function Cover() {
   return (
     <div className={s.cover}>
-      <Image src="/brand/sampann-logo.png" alt="" width={244} height={60} className={s.coverLogo} unoptimized priority />
-      <span className={s.coverRule} />
-      <p className={s.coverWord}>MENU</p>
-      <p className={s.coverPlace}>CHAUL · ALIBAG</p>
+      <div className={s.arch}>
+        <ArchLine />
+        <Image src="/brand/sampann-logo.png" alt="" width={244} height={60} className={s.coverLogo} unoptimized priority />
+        <p className={s.coverThe}>THE</p>
+        <p className={clsx(s.coverMenu, s.foil)}>Menu</p>
+        <Ornament className={s.coverOrn} />
+        <p className={s.coverPlace}>CHAUL · ALIBAG</p>
+      </div>
+      <p className={s.cuisines}>{site.cuisines.join(" · ")}</p>
     </div>
   );
 }
 
-/** Words from the welcome page of the printed menu. */
 function Welcome() {
   return (
     <div className={clsx(s.inner, s.welcome)}>
+      <svg className={s.welcomeArch} viewBox="0 0 100 100" preserveAspectRatio="none" fill="none" aria-hidden>
+        <path d="M0 100V26C0 11 22 0 50 0s50 11 50 26v74z" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke" opacity="0.55" />
+      </svg>
       <span className={s.inkLogo} role="img" aria-label="Sampann Resort & Restaurant" />
-      <p className={s.welcomeTitle}>Welcome to</p>
-      <p className={s.welcomeName}>Sampann&rsquo; Resort &amp; Restaurant</p>
+      <p className={s.welcomeTitle}>Welcome</p>
+      <p className={s.welcomeSub}>to Sampann&rsquo; Resort &amp; Restaurant</p>
+      <Ornament className={s.welcomeOrn} />
       <p className={s.welcomeLead}>
         Indulge in a culinary journey around the world,
         <br />
-        right here in Sampann&rsquo; Restaurant!
+        right here at our table.
       </p>
-      <span className={s.welcomeRule} />
       <p className={s.welcomeText}>
-        Our restaurant brings together the bold flavours and aromas of global cuisines, from spicy Indian flavor to Tandoor temptation, savory
-        Oriental stir-fries, authentic Western cuisine, Konkan local cuisine and beyond.
+        Bold flavours and aromas from across the globe — fiery Indian classics, tandoor temptations, Oriental stir-fries, authentic Western
+        plates and the local cooking of the Konkan coast.
       </p>
-      <span className={s.welcomeRule} />
+      <span className={s.welcomeSep} />
       <p className={s.welcomeText}>
-        At Sampann&rsquo; Resort, we are passionate about serving delicious, high quality food that&rsquo;s made with love, care and HACCP
-        certified Chef. Our Chefs use only the fresh ingredients &amp; use harmless materials to craft a menu that&rsquo;s as diverse as it is
-        delicious.
+        Everything is cooked fresh, with love and care, under our HACCP-certified chefs — a menu as diverse as it is delicious.
       </p>
-      <span className={s.welcomeRule} />
+      <span className={s.welcomeSep} />
       <p className={s.welcomeText}>
-        Join us for a warm and cozy dining experience, perfect for families, friends, and special occasions with loved ones. Our friendly staff
-        are always happy to help you navigate our menu and make recommendations.
+        Settle in for a warm, cosy meal with family and friends, or a special occasion with loved ones. Our team is always happy to guide you
+        through the menu.
       </p>
     </div>
   );
 }
 
-function Contents({ spec, onJump }: { spec: Extract<PageSpec, { kind: "index" }>; onJump: (pageIndex: number) => void }) {
+function RunHead({ label }: { label: string }) {
+  return (
+    <div className={s.runhead}>
+      <span>Sampann</span>
+      <span className={s.runDot} />
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function Foot({ number, mode }: { number: number; mode: Mode }) {
+  return (
+    <div className={s.foot}>
+      <p className={s.folio}>{pad2(number)}</p>
+      <p className={s.fnote}>{mode === "spread" ? "All prices in ₹ · 5% GST applicable" : "Prices in ₹ · 5% GST extra"}</p>
+    </div>
+  );
+}
+
+function Contents({
+  spec,
+  number,
+  onJump,
+}: {
+  spec: Extract<PageSpec, { kind: "index" }>;
+  number: number;
+  onJump: (pageIndex: number) => void;
+}) {
   return (
     <div className={s.inner}>
-      <div className={s.head}>
-        <p className={s.title}>Our Menu</p>
-        <span className={s.rule} />
-        {spec.continued && <p className={s.cont}>Continued</p>}
+      <RunHead label="Contents" />
+      <div className={s.content}>
+        <div className={s.head}>
+          <p className={s.kicker}>{spec.continued ? "Contents · continued" : "The menu"}</p>
+          <p className={s.title}>Contents</p>
+          <Ornament className={s.ornament} />
+        </div>
+        <div className={s.indexList} style={{ "--row": spec.rowHeight } as CSSProperties}>
+          {spec.entries.map((e) => (
+            <button
+              key={e.slug}
+              type="button"
+              tabIndex={-1}
+              className={s.indexRow}
+              onClick={(ev) => {
+                ev.stopPropagation();
+                onJump(e.page - 1);
+              }}
+            >
+              <span className={s.indexNum}>{pad2(e.ordinal)}</span>
+              <span className={s.indexName}>{e.name}</span>
+              <span className={s.leader} />
+              <span className={s.indexNo}>{pad2(e.page)}</span>
+            </button>
+          ))}
+        </div>
       </div>
-      <div className={s.indexList} style={{ "--rows": spec.entries.length } as CSSProperties}>
-        {spec.entries.map((e) => (
-          <button
-            key={e.slug}
-            type="button"
-            tabIndex={-1}
-            className={s.indexRow}
-            onClick={(ev) => {
-              ev.stopPropagation();
-              onJump(e.page - 1);
-            }}
-          >
-            <span className={s.indexName}>{e.name}</span>
-            <span className={s.indexLeader} />
-            <span className={s.indexNo}>{String(e.page).padStart(2, "0")}</span>
-          </button>
-        ))}
-      </div>
+      <Foot number={number} mode="single" />
     </div>
   );
 }
@@ -464,13 +585,17 @@ function Contents({ spec, onJump }: { spec: Extract<PageSpec, { kind: "index" }>
 function MenuPage({ sections, number, mode }: { sections: Section[]; number: number; mode: Mode }) {
   return (
     <div className={s.inner}>
+      <RunHead label={sections[0]?.name ?? ""} />
       <div className={s.content}>
         {sections.map((sec) => (
           <section key={`${sec.slug}-${sec.continued}`} className={s.section}>
             <div className={s.head}>
+              <p className={s.kicker}>
+                N° {pad2(sec.ordinal)}
+                {sec.continued && " · continued"}
+              </p>
               <p className={s.title}>{sec.name}</p>
-              <span className={s.rule} />
-              {sec.continued && <p className={s.cont}>Continued</p>}
+              <Ornament className={s.ornament} />
               {sec.note && <p className={s.note}>{sec.note.replace(/\.$/, "")}</p>}
             </div>
             {sec.layout === "grid" ? (
@@ -478,6 +603,7 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
                 {sec.dishes.map((d) => (
                   <li key={d.id} className={s.gridItem}>
                     <span className={s.name}>{d.name}</span>
+                    <span className={s.leader} />
                     <Amount dish={d} />
                   </li>
                 ))}
@@ -488,7 +614,12 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
                   <li key={d.id} className={s.item}>
                     <div className={s.row}>
                       <span className={s.name}>{d.name}</span>
-                      {d.options.length === 0 && <Amount dish={d} />}
+                      {d.options.length === 0 && (
+                        <>
+                          <span className={s.leader} />
+                          <Amount dish={d} />
+                        </>
+                      )}
                     </div>
                     {d.description && <p className={s.desc}>{d.description}</p>}
                     {d.options.length > 0 && (
@@ -508,14 +639,7 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
           </section>
         ))}
       </div>
-      <div className={s.foot}>
-        <p className={s.pill}>
-          <span>All prices in ₹</span>
-          <span className={s.dot} />
-          <span>{mode === "spread" ? "Note – 5% GST will be applicable" : "5% GST applicable"}</span>
-        </p>
-        <p className={s.pageNo}>{String(number).padStart(2, "0")}</p>
-      </div>
+      <Foot number={number} mode={mode} />
     </div>
   );
 }
@@ -527,35 +651,37 @@ function Amount({ dish }: { dish: Pick<DishDTO, "price" | "priceNote"> }) {
 }
 
 function Thanks() {
+  const stop = (e: React.MouseEvent) => e.stopPropagation();
   return (
     <div className={s.thanks}>
       <Image src="/brand/sampann-logo.png" alt="" width={244} height={60} className={s.thanksLogo} unoptimized />
-      <div className={s.hostBox}>
-        <p className={s.hostLabel}>We also host</p>
-        <p className={s.hostList}>
-          Banquet Hall · Party Order
-          <br />
-          Engagement · Wedding
-          <br />
-          Birthday, etc.
-        </p>
+      <p className={clsx(s.thanksTitle, s.foil)}>Thank you</p>
+      <p className={s.thanksSub}>for dining with us — do visit again.</p>
+      <p className={s.hostLabel}>We also host</p>
+      <div className={s.hostList}>
+        {site.events.map((e, i) => (
+          <span key={e} style={{ display: "contents" }}>
+            {i > 0 && <span className={s.hostDot} />}
+            <span>{e}</span>
+          </span>
+        ))}
       </div>
-      <p className={s.thanksTitle}>Thank You</p>
-      <p className={s.visit}>VISIT AGAIN</p>
       <div className={s.contactRow}>
         <div>
-          <span className={s.contactLabel}>Contact</span>
-          <a className={s.contactValue} href={`tel:${site.phone.tel}`} onClick={(e) => e.stopPropagation()}>
-            {site.phone.tel.replace(/^\+91/, "")}
+          <span className={s.contactLabel}>Call</span>
+          <a className={s.contactValue} href={`tel:${site.phone.tel}`} onClick={stop}>
+            {site.phone.display}
           </a>
         </div>
         <div>
-          <span className={s.contactLabel}>Address</span>
-          <span className={s.contactValue}>{site.locality}</span>
+          <span className={s.contactLabel}>Find us</span>
+          <a className={s.contactValue} href={site.mapsUrl} target="_blank" rel="noreferrer" onClick={stop}>
+            {site.locality}
+          </a>
         </div>
         <div>
           <span className={s.contactLabel}>Instagram</span>
-          <a className={s.contactValue} href={site.instagram.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+          <a className={s.contactValue} href={site.instagram.url} target="_blank" rel="noreferrer" onClick={stop}>
             {site.instagram.handle}
           </a>
         </div>

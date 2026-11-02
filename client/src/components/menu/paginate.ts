@@ -267,3 +267,6 @@ export function buildBook(categories: CategoryDTO[], mode: Mode): { pages: PageS
   ];
   return { pages, firstPage };
 }
+
+/** Compatibility alias */
+export const buildPages = buildBook;

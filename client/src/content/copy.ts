@@ -26,18 +26,62 @@ export const copy = {
     body: "Send a reservation request and our team will contact you to confirm. Your table is held only once we've confirmed it with you.",
   },
   about: {
-    intro: "A warm, cosy dining room in Chaul for families, friends and the occasions worth gathering for.",
-    meaning: [
-      "In Marathi and Hindi, sampann describes something whole — prosperous, accomplished, complete. We took it as a promise about the table: generous, considered and unhurried.",
-      "That idea shapes how we cook and how we host. A menu wide enough for every appetite at the table; plates meant to be passed around; staff happy to help you find your way through it all.",
-    ],
-    kitchens:
-      "One menu, many kitchens: spicy Indian flavour and the tandoor, Oriental wok cooking, authentic Western dishes, and Konkan home-style cooking — Maharashtrian thalis, sol kadhi and tawa-fried fish from the coast.",
-    room: "Exposed terracotta brick, arched windows of coloured glass and long turquoise banquettes. Lanterns warm the walls in the evening; during the day the arches frame the garden outside.",
-    experience: [
-      { title: "Made with care", body: "Our chefs work with fresh ingredients, led by a HACCP-certified chef." },
-      { title: "Help at the table", body: "Our staff are always happy to help you navigate the menu and make recommendations." },
-      { title: "For every occasion", body: "Families, friends and special occasions — and for larger gatherings, we also host banquets and parties." },
-    ],
+    hero: {
+      eyebrow: "About Sampann",
+      location: "Chaul · Alibag · Maharashtra",
+      meanings: [
+        { word: "समृद्ध", gloss: "having plenty." },
+        { word: "भरभरून जगणं", gloss: "living with a full heart." },
+      ],
+      /** The three senses of the word, each linking down to its chapter. */
+      senses: [
+        { title: "Good food", label: "The food", href: "#about-table" },
+        { title: "A place for everyone", label: "The place", href: "#about-place" },
+        { title: "Time together", label: "The people", href: "#about-moments" },
+      ],
+      roomCaption: "The dining room",
+    },
+    table: {
+      label: "The food",
+      lead: "Our kitchen in Chaul cooks a little of everything, and cooks it to share.",
+      body: "Indian gravies and the tandoor, Konkani seafood, Maharashtrian thalis and Continental plates, all on one menu. So everyone at the table finds something they love.",
+      /** Each kitchen with a real photo from the library and the dish it shows. */
+      kitchens: [
+        { name: "Indian", image: "biryani-overhead", pictured: "Biryani", focus: "32% 48%" },
+        { name: "Maharashtrian", image: "kombadi-vade", pictured: "Kombadi Vade", focus: "50% 50%" },
+        { name: "Konkani", image: "seafood-thali", pictured: "Seafood Thali", focus: "50% 52%" },
+        { name: "Continental", image: "pasta-parmesan", pictured: "Pasta", focus: "70% 62%" },
+      ],
+    },
+    kitchen: {
+      label: "The chef & the kitchen",
+      /** From the restaurant's own menu ("Welcome to Sampann'"). */
+      lead: "Our chefs work with fresh ingredients, led by a HACCP-certified chef.",
+      body: "From thalis with sol kadhi to tawa-fried fish, the tandoor and the wok, this is where every plate begins.",
+      note: "Not sure what to order? Our staff are always happy to help.",
+      /** Not supplied yet. Fill these in and they appear on the page; left null, nothing shows. */
+      chefName: null as string | null,
+      chefStory: null as string | null,
+    },
+    place: {
+      label: "The place",
+      body: "Sampann Resort & Restaurant: brick walls and long turquoise seats inside, and a garden just beyond the arches. There's room here for everyone.",
+      findUs: "You'll find us in",
+      town: "Chaul",
+      area: "Alibag, Maharashtra",
+      photoCaption: "Arched windows and coloured glass",
+      features: ["Brick walls", "Arched windows", "Coloured glass", "Turquoise banquettes", "A garden beyond the glass"],
+    },
+    moments: {
+      label: "The people",
+      lines: ["Dinner for two.", "Lunch with the family."],
+      lineAccent: "Or a big day with everyone you love.",
+      hostLabel: "We also host",
+    },
+    close: {
+      body: "Good food, a warm welcome and a seat for everyone. Come hungry, bring your people.",
+      invite: "या, जेवून जा!",
+      location: "Chaul, Alibag",
+    },
   },
 } as const;
