@@ -1,171 +1,368 @@
+import clsx from "clsx";
 import type { Metadata } from "next";
+import { Tiro_Devanagari_Marathi } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { Logo } from "@/components/layout/Logo";
 import { ArrowRight } from "@/components/ui/Icons";
-import { ImageReveal, Reveal } from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/config/site";
 import { copy } from "@/content/copy";
-import { media } from "@/lib/media";
+import { cormorant } from "@/lib/fonts";
+import { media, type MediaAsset } from "@/lib/media";
+import { getMenu } from "@/services/menu";
+import styles from "./about.module.css";
+
+/** The same Marathi serif the homepage uses for संपन्न; the site's Latin fonts have no Devanagari glyphs. */
+const devanagari = Tiro_Devanagari_Marathi({ subsets: ["devanagari"], weight: "400", display: "swap" });
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "About",
-  description:
-    "Sampann means abundance — rich, fulfilled, complete. Discover the idea behind Sampann Resort & Restaurant in Chaul, Alibag: many kitchens, one warm dining room.",
+  description: "Sampann Resort & Restaurant in Chaul, Alibag: good food from Indian, Konkani, Maharashtrian and Continental kitchens, and a warm place for family and friends.",
   alternates: { canonical: "/about" },
   openGraph: { title: "About · Sampann, Alibag", images: [{ url: "/images/og/lantern-brick-arch.jpg", alt: "Lantern on a brick arch at Sampann" }] },
 };
 
-const KITCHEN_IMAGES = ["kombadi-vade", "chongqing-mala-chicken", "pasta-parmesan", "tandoori-board"] as const;
+/** A photo that fills its positioned parent. */
+function Photo({ asset, sizes, focus, priority = false }: { asset: MediaAsset; sizes: string; focus?: string; priority?: boolean }) {
+  return (
+    <Image
+      src={asset.src}
+      alt={asset.alt}
+      fill
+      sizes={sizes}
+      priority={priority}
+      placeholder="blur"
+      blurDataURL={asset.blurDataUrl}
+      className="object-cover"
+      style={focus ? { objectPosition: focus } : undefined}
+    />
+  );
+}
 
-export default function AboutPage() {
-  const hero = media("dining-room-windows");
-  const lantern = media("lantern-brick-arch");
-  const room = [media("arched-window-garden"), media("table-setting-banquette"), media("exterior-sign-dusk")];
-  const kitchen = media("kitchen-wok");
+function Kitchen({ kitchen, wide = false }: { kitchen: (typeof copy.about.table.kitchens)[number]; wide?: boolean }) {
+  return (
+    <Reveal className={wide ? styles.kitchenWide : styles.kitchenNarrow}>
+      <figure>
+        <div className={styles.kitchenFig}>
+          {/* A landscape photo cropped by height renders wider than its box, so `sizes` follows that, not the box — too small a value is what makes it blurry. */}
+          <Photo asset={media(kitchen.image)} focus={kitchen.focus} sizes="(min-width: 1101px) 26vw, 60vw" />
+        </div>
+        <figcaption>
+          <h3 className={styles.kitchenName}>{kitchen.name}</h3>
+          <span className={styles.pictured}>Pictured: {kitchen.pictured}</span>
+        </figcaption>
+      </figure>
+    </Reveal>
+  );
+}
+
+export default async function AboutPage() {
+  const about = copy.about;
+  const menu = await getMenu();
+  const dishes = menu.flatMap((c) => c.dishes);
+  const [indian, maharashtrian, konkani, continental] = about.table.kitchens;
+  const chef = media("kitchen-wok");
+  const hands = media("kitchen-dough");
+  const finishing = media("kitchen-finishing");
 
   return (
-    <>
-      {/* Hero: a quieter, typographic entrance than the homepage */}
-      <section aria-labelledby="about-title" className="relative isolate flex min-h-[85svh] items-end overflow-hidden bg-charcoal text-ivory">
-        <Image src={hero.src} alt={hero.alt} fill priority sizes="100vw" placeholder="blur" blurDataURL={hero.blurDataUrl} className="-z-20 object-cover opacity-55" />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-charcoal via-charcoal/40 to-charcoal/30" />
-        <div className="shell pb-16 pt-40 md:pb-24">
-          <Reveal>
-            <p className="eyebrow text-sand">About Sampann</p>
-            <h1 id="about-title" className="mt-6 max-w-5xl text-display">
-              Rich. Fulfilled. <em className="text-sand">Complete.</em>
-            </h1>
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-ivory/85">{copy.about.intro}</p>
-          </Reveal>
+    <div className={styles.page}>
+      {/* Opening: the word and what it means, filling one screen on laptops; the dining room follows below */}
+      <header className={styles.hero}>
+        <div className={styles.top}>
+          <p className={clsx("eyebrow", styles.heroEyebrow)}>{about.hero.eyebrow}</p>
+          <p className={clsx("eyebrow", styles.topLocation)}>{about.hero.location}</p>
         </div>
-      </section>
-
-      {/* The word */}
-      <section aria-labelledby="meaning-title" className="bg-ivory py-24 md:py-36">
-        <div className="shell grid gap-14 md:grid-cols-12">
-          <Reveal className="md:col-span-5">
-            <p className="eyebrow text-terracotta">The meaning</p>
-            <p lang="mr" className="mt-6 font-serif text-[clamp(5rem,14vw,11rem)] leading-[0.85] text-turquoise-deep">
-              {copy.story.word}
-            </p>
-            <h2 id="meaning-title" className="mt-6 font-serif text-2xl text-ink-soft">
-              <span className="italic">sampann</span> — abundant, prosperous, complete
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1} className="space-y-6 text-lg leading-relaxed text-ink-soft md:col-span-6 md:col-start-7 md:pt-20">
-            {copy.about.meaning.map((p) => (
-              <p key={p.slice(0, 24)}>{p}</p>
+        <Reveal y={18} className={styles.wordWrap}>
+          <p lang="mr" className={clsx(devanagari.className, styles.deva)}>
+            {copy.story.word}
+          </p>
+          <h1 className={styles.word}>Sampann</h1>
+        </Reveal>
+        <div className={clsx(styles.g12, styles.entry)}>
+          <div className={styles.lab}>
+            <b>{copy.story.pronunciation}</b>
+            <span>
+              {about.hero.meanings.map((m) => (
+                <span key={m.word} className="block">
+                  <span lang="mr" className={clsx(devanagari.className, styles.dv)}>
+                    {m.word}
+                  </span>{" "}
+                  — {m.gloss}
+                </span>
+              ))}
+            </span>
+          </div>
+          <ul className={styles.senses}>
+            {about.hero.senses.map((sense, i) => (
+              <li key={sense.href}>
+                <a href={sense.href} className={styles.sense}>
+                  <span className={styles.senseNum}>{i + 1}</span>
+                  <span className={styles.senseTitle}>{sense.title}</span>
+                  <span className={styles.senseLabel}>
+                    {sense.label}
+                    <svg viewBox="0 0 24 24" aria-hidden className="size-3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M12 5v14M6 13l6 6 6-6" />
+                    </svg>
+                  </span>
+                </a>
+              </li>
             ))}
+          </ul>
+          <div className={styles.heroLogo}>
+            <Logo className="h-8 w-auto xl:h-11" />
+            <p className="eyebrow text-[0.62rem]">{about.hero.location}</p>
+          </div>
+        </div>
+      </header>
+      <figure className={styles.room}>
+        <Photo asset={media("dining-room-arches")} focus="50% 58%" sizes="100vw" />
+        <figcaption className={styles.notch}>{about.hero.roomCaption}</figcaption>
+      </figure>
+
+      {/* 1. A Table Full of Flavours */}
+      <section aria-labelledby="about-table" className={styles.tableSection}>
+        <div className={clsx("shell", styles.g12, styles.split)}>
+          <div className={styles.tableLeft}>
+            <div className={clsx(styles.g12, styles.chead)}>
+              <p className={styles.num}>
+                <b>1.</b>
+                <span>{about.table.label}</span>
+              </p>
+              <h2 id="about-table">
+                A Table Full
+                <br />
+                of <em>Flavours</em>
+              </h2>
+            </div>
+            <Reveal>
+              <p className={styles.lead}>{about.table.lead}</p>
+              <p className={styles.splitBody}>{about.table.body}</p>
+            </Reveal>
+          </div>
+          <div className={styles.tablePhotos}>
+            <Kitchen kitchen={indian} wide />
+            <Kitchen kitchen={konkani} />
+            <Kitchen kitchen={maharashtrian} />
+            <Kitchen kitchen={continental} wide />
+          </div>
+        </div>
+      </section>
+
+      {/* 2. The chef and the kitchen. No chef's name or story has been supplied, so none is shown until copy.ts has one. */}
+      <section aria-labelledby="about-kitchen" className={clsx(styles.chapter, cormorant.variable)}>
+        <div className={clsx("shell", styles.chefHead)}>
+          <div>
+            <p className={styles.num}>
+              <b>2.</b>
+              <span>{about.kitchen.label}</span>
+            </p>
+            <h2 id="about-kitchen" className={styles.spreadTitle}>
+              The Hands Behind
+              <br />
+              the <em>Flavours</em>
+            </h2>
+          </div>
+          <div className={styles.chefLeadWrap}>
+            <p className={styles.chefLead}>{about.kitchen.lead}</p>
+            {about.kitchen.chefName && <p className={clsx("eyebrow", styles.chefName)}>{about.kitchen.chefName}</p>}
+          </div>
+        </div>
+
+        <div className={clsx("shell", styles.stage)}>
+          {/* The chef, with the closing line in a tab cut out of the photo's lower-left corner. */}
+          <Reveal className={styles.stageChef}>
+            <figure className={styles.chefFigure}>
+              <Photo asset={chef} focus="58% 15%" sizes="(min-width: 1101px) 66vw, 100vw" />
+            </figure>
+            <p className={styles.chefNote}>{about.kitchen.note}</p>
+          </Reveal>
+
+          <div className={styles.stageBody}>
+            {about.kitchen.chefStory && <p className={styles.chefBody}>{about.kitchen.chefStory}</p>}
+            <p className={styles.chefBody}>{about.kitchen.body}</p>
+          </div>
+
+          {/* Dough, framed in the page colour, stepping over the chef photo's right edge. */}
+          <Reveal delay={0.15} className={styles.stageDough}>
+            <figure className={styles.doughFrame}>
+              <Photo asset={hands} focus="50% 40%" sizes="(min-width: 1101px) 32vw, 50vw" />
+            </figure>
+          </Reveal>
+
+          <Reveal delay={0.2} className={styles.stageFinish}>
+            <figure className={styles.finishFigure}>
+              <Photo asset={finishing} focus="62% 60%" sizes="(min-width: 1101px) 32vw, 50vw" />
+            </figure>
           </Reveal>
         </div>
       </section>
 
-      {/* Many kitchens */}
-      <section aria-labelledby="kitchens-title" className="bg-turquoise-deep py-24 text-ivory md:py-36">
+      <div className={styles.tally}>
+        <div className={clsx("shell", styles.tallyRow)}>
+          <p>
+            <b>{dishes.length}</b>dishes on the menu.
+          </p>
+          <Link href="/menu" className={styles.lnk}>
+            Explore the Menu <ArrowRight />
+          </Link>
+        </div>
+      </div>
+
+      {/* 3. A Place to Come Together — the dark section; its heading crosses the top edge */}
+      <section aria-labelledby="about-place" className={clsx(styles.dark, cormorant.variable)}>
+        <div className={clsx("shell", styles.g12, styles.chead, styles.cross, styles.placeHead)}>
+          <h2 id="about-place">
+            A Place to
+            <br />
+            Come <em>Together</em>
+          </h2>
+        </div>
+        <div className={clsx("shell", styles.placeEyebrow)}>
+          <p className={styles.num}>
+            <b>3.</b>
+            <span>{about.place.label}</span>
+          </p>
+        </div>
+        <div className={clsx("shell", styles.placeStage)}>
+          <Reveal className={styles.placeLead}>
+            <p className={styles.placeIntro}>{about.place.body}</p>
+          </Reveal>
+          <Reveal className={styles.placeMain}>
+            <figure className={styles.placeMainFigure}>
+              <div className={clsx(styles.placeMainPhoto, styles.vivid)}>
+                <Photo asset={media("dining-room-windows")} sizes="(min-width: 1024px) 62vw, 100vw" />
+              </div>
+              <figcaption className={styles.roomCaption}>
+                {about.place.photoCaption} <span>Chaul · Alibag</span>
+              </figcaption>
+            </figure>
+          </Reveal>
+          {/* The laid table, in a cut-out of the room photo's lower-left corner. */}
+          <Reveal delay={0.15} className={styles.placeSmall}>
+            <div className={styles.placeRing}>
+              <figure className={clsx(styles.placeSmallPhoto, styles.vivid)}>
+                <Photo asset={media("table-setting-banquette")} sizes="(min-width: 1024px) 36vw, 70vw" />
+              </figure>
+            </div>
+          </Reveal>
+        </div>
+        <div className={clsx("shell", styles.g12, styles.where)}>
+          <Reveal className={styles.name}>
+            <p className="eyebrow">{about.place.findUs}</p>
+            <h3>
+              {about.place.town}
+              <em>{about.place.area}</em>
+            </h3>
+          </Reveal>
+          <Reveal delay={0.1} className={styles.feat}>
+            <ul>
+              {about.place.features.map((feature, i) => (
+                <li key={feature}>
+                  {feature}
+                  <span>{String(i + 1).padStart(2, "0")}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
         <div className="shell">
-          <div className="grid gap-10 md:grid-cols-12 md:items-end">
-            <Reveal className="md:col-span-6">
-              <p className="eyebrow text-sand/80">Culinary philosophy</p>
-              <h2 id="kitchens-title" className="mt-5 text-headline">
-                Many kitchens, <em className="text-sand">one</em> table.
-              </h2>
+          <Reveal className={styles.placeWideWrap}>
+            <figure className={clsx(styles.placeWide, styles.vivid)}>
+              <Photo asset={media("arched-window-garden")} focus="50% 55%" sizes="100vw" />
+            </figure>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 4. Moments Worth Sharing — its heading crosses back out of the dark section */}
+      <section aria-labelledby="about-moments" className={styles.moments}>
+        <div className={clsx("shell", styles.momentsInner)}>
+          <div className={clsx(styles.g12, styles.chead, styles.cross, styles.momentsHead)}>
+            <h2 id="about-moments">
+              Moments Worth
+              <br />
+              <em>Sharing</em>
+            </h2>
+          </div>
+          <p className={clsx(styles.num, styles.momentsNum)}>
+            <b>4.</b>
+            <span>{about.moments.label}</span>
+          </p>
+          <div className={styles.peopleStage}>
+            <Reveal className={styles.peopleLine}>
+              <p>
+                {about.moments.lines.map((line) => (
+                  <span key={line}>{line}</span>
+                ))}
+                <em>{about.moments.lineAccent}</em>
+              </p>
             </Reveal>
-            <Reveal delay={0.1} className="md:col-span-5 md:col-start-8">
-              <p className="text-lg leading-relaxed text-ivory/85">{copy.about.kitchens}</p>
-              <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
-                {site.cuisines.map((c) => (
-                  <li key={c} className="eyebrow text-sand">
-                    {c}
+            <Reveal className={styles.peopleFrame}>
+              <figure className={styles.peopleTable}>
+                <Photo asset={media("table-setting-overhead")} focus="50% 45%" sizes="(min-width: 900px) 46vw, 80vw" />
+              </figure>
+              {/* The drink's foot rests on the event band's top rule. */}
+              <figure className={styles.peopleDrink}>
+                <Photo asset={media("mocktail-coupe")} focus="30% 55%" sizes="(min-width: 900px) 20vw, 40vw" />
+              </figure>
+            </Reveal>
+            <div className={styles.peopleEvents}>
+              <p className={clsx("eyebrow", styles.peopleLabel)}>{about.moments.hostLabel}</p>
+              <ul>
+                {site.events.map((event, i) => (
+                  <li key={event}>
+                    <span className={styles.eventNum}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className={styles.eventName}>{event}</span>
                   </li>
                 ))}
               </ul>
-            </Reveal>
-          </div>
-          <ul className="mt-16 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
-            {KITCHEN_IMAGES.map((slug, i) => {
-              const m = media(slug);
-              return (
-                <li key={slug} className={i % 2 ? "md:mt-16" : ""}>
-                  <ImageReveal delay={i * 0.08} className="relative aspect-[3/4] overflow-hidden">
-                    <Image src={m.src} alt={m.alt} fill sizes="(min-width: 768px) 25vw, 50vw" placeholder="blur" blurDataURL={m.blurDataUrl} className="object-cover" />
-                  </ImageReveal>
-                  <p className="mt-3 font-serif text-lg text-ivory/90">{m.caption}</p>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
-      {/* The room */}
-      <section aria-labelledby="room-title" className="overflow-hidden bg-ivory py-24 md:py-36">
-        <div className="shell grid gap-12 md:grid-cols-12">
-          <div className="relative md:col-span-5">
-            <ImageReveal className="relative aspect-[2/3] overflow-hidden">
-              <Image src={lantern.src} alt={lantern.alt} fill sizes="(min-width: 768px) 40vw, 100vw" placeholder="blur" blurDataURL={lantern.blurDataUrl} className="object-cover" />
-            </ImageReveal>
-          </div>
-          <div className="flex flex-col justify-center md:col-span-6 md:col-start-7">
-            <Reveal>
-              <p className="eyebrow text-terracotta">Atmosphere &amp; hospitality</p>
-              <h2 id="room-title" className="mt-5 text-headline">
-                Brick, glass and <em className="text-turquoise-deep">turquoise</em>.
-              </h2>
-              <p className="mt-8 max-w-lg text-lg leading-relaxed text-ink-soft">{copy.about.room}</p>
-            </Reveal>
-            <div className="mt-12 grid grid-cols-3 gap-3">
-              {room.map((m, i) => (
-                <ImageReveal key={m.slug} delay={i * 0.08} className="relative aspect-[3/4] overflow-hidden">
-                  <Image src={m.src} alt={m.alt} fill sizes="(min-width: 768px) 16vw, 33vw" placeholder="blur" blurDataURL={m.blurDataUrl} className="object-cover" />
-                </ImageReveal>
-              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* The dining experience */}
-      <section aria-labelledby="experience-title" className="relative isolate overflow-hidden bg-charcoal py-24 text-ivory md:py-36">
-        <Image src={kitchen.src} alt="" fill sizes="100vw" className="-z-10 object-cover opacity-20" />
-        <div className="shell">
-          <Reveal>
-            <p className="eyebrow text-sand/70">The dining experience</p>
-            <h2 id="experience-title" className="mt-5 max-w-3xl text-headline">
-              Unhurried, generous, <em className="text-sand">shared</em>.
-            </h2>
-          </Reveal>
-          <ol className="mt-16 grid gap-10 md:grid-cols-3 md:gap-12">
-            {copy.about.experience.map((item, i) => (
-              <li key={item.title}>
-                <Reveal delay={i * 0.1} className="border-t border-ivory/20 pt-6">
-                  <p className="eyebrow tabular-nums text-terracotta">{String(i + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-4 font-serif text-3xl">{item.title}</h3>
-                  <p className="mt-3 leading-relaxed text-ivory/75">{item.body}</p>
-                </Reveal>
-              </li>
-            ))}
-          </ol>
-          <p className="mt-16 text-sm text-ivory/60">We also host: {site.events.join(" · ")}.</p>
+      {/* The Table Is Set */}
+      <section aria-labelledby="about-close" className={clsx("shell", styles.close, cormorant.variable)}>
+        <Reveal className={styles.closeText}>
+          <p lang="mr" className={clsx(devanagari.className, styles.deva)}>
+            {copy.story.word}
+          </p>
+          <h2 id="about-close">
+            The Table
+            <br />
+            Is <em>Set</em>
+          </h2>
+          <p className={styles.closeBody}>
+            {about.close.body}{" "}
+            <span lang="mr" className={clsx(devanagari.className, styles.closeInvite)}>
+              {about.close.invite}
+            </span>
+          </p>
+          <div className={styles.ctas}>
+            <Link href="/menu" className="btn btn-dark">
+              Explore the Menu <ArrowRight />
+            </Link>
+            <Link href="/contact#reserve" className="btn btn-primary">
+              Reserve a Table <ArrowRight />
+            </Link>
+          </div>
+        </Reveal>
+        <div className={styles.closePhotos}>
+          <figure className={styles.closeMain}>
+            {/* A landscape photo cropped by height renders wider than its box, so `sizes` follows that. */}
+            <Photo asset={media("dining-room-arches")} focus="50% 78%" priority sizes="(min-width: 900px) 72vw, 100vw" />
+            <figcaption className={styles.closeNotch}>{about.close.location}</figcaption>
+          </figure>
+          <figure className={styles.closeInset}>
+            <Photo asset={media("table-setting-row")} sizes="(min-width: 900px) 36vw, 50vw" />
+          </figure>
         </div>
       </section>
-
-      {/* CTAs */}
-      <section className="bg-sand/60">
-        <div className="shell grid md:grid-cols-2">
-          <Link href="/menu" className="group flex flex-col justify-between gap-10 border-b border-charcoal/10 py-16 md:border-b-0 md:border-r md:py-24 md:pr-12">
-            <p className="eyebrow text-terracotta">Explore</p>
-            <p className="font-serif text-4xl leading-tight md:text-5xl">
-              Read the full menu <ArrowRight className="inline size-8 transition-transform duration-500 group-hover:translate-x-2" />
-            </p>
-          </Link>
-          <Link href="/contact#reserve" className="group flex flex-col justify-between gap-10 py-16 md:py-24 md:pl-12">
-            <p className="eyebrow text-turquoise-deep">Visit</p>
-            <p className="font-serif text-4xl leading-tight md:text-5xl">
-              Reserve a table <ArrowRight className="inline size-8 transition-transform duration-500 group-hover:translate-x-2" />
-            </p>
-          </Link>
-        </div>
-      </section>
-    </>
+      <div className={styles.endRule} />
+    </div>
   );
 }

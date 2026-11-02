@@ -9,7 +9,7 @@ import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
 
 /** Routes whose first section is a dark image, so the header starts transparent. */
-const OVERLAY_ROUTES = new Set(["/", "/about", "/gallery", "/contact"]);
+const OVERLAY_ROUTES = new Set(["/", "/gallery", "/contact"]);
 
 export function Header() {
   const pathname = usePathname();
