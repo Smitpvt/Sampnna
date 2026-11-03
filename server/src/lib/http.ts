@@ -45,9 +45,22 @@ export function getClientIp(req: Request): string {
   return (req.headers["x-real-ip"] as string) || req.socket.remoteAddress || "unknown";
 }
 
-/** Salted hash so rate limiting works without storing raw IPs. */
+/**
+ * Salted hash so rate limiting works without storing raw IPs.
+ * In production, RATE_LIMIT_SALT must be explicitly set to a high-entropy secret.
+ * In development / test, a fixed development salt is used if unspecified.
+ */
 export function hashIp(ip: string): string {
-  const salt = process.env.RATE_LIMIT_SALT ?? "sampann";
-  return createHash("sha256").update(`${salt}:${ip}`).digest("hex");
+  const isProduction = process.env.NODE_ENV === "production";
+  const salt = process.env.RATE_LIMIT_SALT;
+
+  if (isProduction && (!salt || salt === "sampann" || salt.length < 16)) {
+    throw new Error(
+      "Configuration error: RATE_LIMIT_SALT must be configured with a strong secret (at least 16 characters) in production.",
+    );
+  }
+
+  const activeSalt = salt || "dev_rate_limit_salt_only";
+  return createHash("sha256").update(`${activeSalt}:${ip}`).digest("hex");
 }
 

@@ -26,18 +26,18 @@ const LABELS: Record<GalleryCategory, string> = {
  * Sized with responsive breakpoints capped at max shell width (1280px) to prevent over-fetching.
  */
 const BENTO_A = [
-  { area: "lg:[grid-area:d] md:[grid-area:d]", mobile: "col-span-2 aspect-[4/3]", sizes: "(min-width: 1280px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) 66vw, 100vw" },
-  { area: "lg:[grid-area:s] md:[grid-area:s]", mobile: "col-span-1 aspect-[4/5]", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
-  { area: "lg:[grid-area:t] md:[grid-area:t]", mobile: "col-span-1 aspect-square", sizes: "(min-width: 1280px) 320px, (min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw" },
-  { area: "lg:[grid-area:m] md:[grid-area:m]", mobile: "col-span-1 aspect-square", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
-  { area: "lg:[grid-area:h] md:[grid-area:h]", mobile: "col-span-2 aspect-[4/3]", sizes: "(min-width: 1280px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) 66vw, 100vw" },
-  { area: "lg:[grid-area:f] md:[grid-area:f]", mobile: "col-span-1 aspect-square", sizes: "(min-width: 1280px) 320px, (min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw" },
-  { area: "lg:[grid-area:o] md:[grid-area:o]", mobile: "col-span-1 aspect-[4/5]", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
-  { area: "lg:[grid-area:b] md:[grid-area:b]", mobile: "col-span-1 aspect-square", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
+  { area: "lg:[grid-area:d] md:[grid-area:d]", mobile: "col-span-2 aspect-[4/3] md:aspect-auto", sizes: "(min-width: 1280px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) 66vw, 100vw" },
+  { area: "lg:[grid-area:s] md:[grid-area:s]", mobile: "col-span-1 aspect-[4/5] md:aspect-auto", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
+  { area: "lg:[grid-area:o] md:[grid-area:o]", mobile: "col-span-1 aspect-[4/5] md:aspect-auto", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
+  { area: "lg:[grid-area:h] md:[grid-area:h]", mobile: "col-span-2 aspect-[4/3] md:aspect-auto", sizes: "(min-width: 1280px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) 66vw, 100vw" },
+  { area: "lg:[grid-area:t] md:[grid-area:t]", mobile: "col-span-1 aspect-square md:aspect-auto", sizes: "(min-width: 1280px) 320px, (min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw" },
+  { area: "lg:[grid-area:m] md:[grid-area:m]", mobile: "col-span-1 aspect-square md:aspect-auto", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
+  { area: "lg:[grid-area:f] md:[grid-area:f]", mobile: "col-span-1 aspect-square md:aspect-auto", sizes: "(min-width: 1280px) 320px, (min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw" },
+  { area: "lg:[grid-area:b] md:[grid-area:b]", mobile: "col-span-1 aspect-square md:aspect-auto", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
 ];
 
 const BENTO_A_AREAS = clsx(
-  "grid-cols-2 [grid-template-areas:'d_d''s_o''h_h''t_m''f_b']",
+  "grid-cols-2",
   "md:aspect-[6/5] md:grid-cols-6 md:grid-rows-5 md:[grid-template-areas:'d_d_d_d_s_s''d_d_d_d_s_s''h_h_h_h_t_t''h_h_h_h_m_m''f_f_o_o_b_b']",
   "lg:aspect-[1312/643] lg:grid-cols-12 lg:grid-rows-3 lg:[grid-template-areas:'d_d_d_d_d_s_s_t_t_t_m_m''d_d_d_d_d_s_s_h_h_h_h_h''f_f_f_o_o_b_b_h_h_h_h_h']",
 );
@@ -51,21 +51,80 @@ const BENTO_A_AREAS = clsx(
  * - Detail squares (bottom-right)
  */
 const BENTO_B = [
-  { area: "lg:[grid-area:d2] md:[grid-area:d2]", mobile: "col-span-2 aspect-[4/3]", sizes: "(min-width: 1280px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) 66vw, 100vw" },
-  { area: "lg:[grid-area:s2] md:[grid-area:s2]", mobile: "col-span-1 aspect-[4/5]", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
-  { area: "lg:[grid-area:t2] md:[grid-area:t2]", mobile: "col-span-1 aspect-square", sizes: "(min-width: 1280px) 320px, (min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw" },
-  { area: "lg:[grid-area:m2] md:[grid-area:m2]", mobile: "col-span-1 aspect-square", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
-  { area: "lg:[grid-area:h2] md:[grid-area:h2]", mobile: "col-span-2 aspect-[4/3]", sizes: "(min-width: 1280px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) 66vw, 100vw" },
-  { area: "lg:[grid-area:f2] md:[grid-area:f2]", mobile: "col-span-1 aspect-square", sizes: "(min-width: 1280px) 320px, (min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw" },
-  { area: "lg:[grid-area:o2] md:[grid-area:o2]", mobile: "col-span-1 aspect-[4/5]", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
-  { area: "lg:[grid-area:b2] md:[grid-area:b2]", mobile: "col-span-1 aspect-square", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
+  { area: "lg:[grid-area:d2] md:[grid-area:d2]", mobile: "col-span-2 aspect-[4/3] md:aspect-auto", sizes: "(min-width: 1280px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) 66vw, 100vw" },
+  { area: "lg:[grid-area:s2] md:[grid-area:s2]", mobile: "col-span-1 aspect-[4/5] md:aspect-auto", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
+  { area: "lg:[grid-area:o2] md:[grid-area:o2]", mobile: "col-span-1 aspect-[4/5] md:aspect-auto", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
+  { area: "lg:[grid-area:h2] md:[grid-area:h2]", mobile: "col-span-2 aspect-[4/3] md:aspect-auto", sizes: "(min-width: 1280px) 540px, (min-width: 1024px) 42vw, (min-width: 768px) 66vw, 100vw" },
+  { area: "lg:[grid-area:t2] md:[grid-area:t2]", mobile: "col-span-1 aspect-square md:aspect-auto", sizes: "(min-width: 1280px) 320px, (min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw" },
+  { area: "lg:[grid-area:m2] md:[grid-area:m2]", mobile: "col-span-1 aspect-square md:aspect-auto", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
+  { area: "lg:[grid-area:f2] md:[grid-area:f2]", mobile: "col-span-1 aspect-square md:aspect-auto", sizes: "(min-width: 1280px) 320px, (min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw" },
+  { area: "lg:[grid-area:b2] md:[grid-area:b2]", mobile: "col-span-1 aspect-square md:aspect-auto", sizes: "(min-width: 1280px) 220px, (min-width: 768px) 17vw, 50vw" },
 ];
 
 const BENTO_B_AREAS = clsx(
-  "grid-cols-2 [grid-template-areas:'d2_d2''s2_o2''h2_h2''t2_m2''f2_b2']",
+  "grid-cols-2",
   "md:aspect-[6/5] md:grid-cols-6 md:grid-rows-5 md:[grid-template-areas:'s2_s2_d2_d2_d2_d2''s2_s2_d2_d2_d2_d2''t2_t2_m2_m2_h2_h2''f2_f2_o2_o2_h2_h2''b2_b2_o2_o2_h2_h2']",
   "lg:aspect-[1312/643] lg:grid-cols-12 lg:grid-rows-3 lg:[grid-template-areas:'t2_t2_t2_m2_m2_s2_s2_d2_d2_d2_d2_d2''h2_h2_h2_h2_h2_s2_s2_d2_d2_d2_d2_d2''h2_h2_h2_h2_h2_f2_f2_f2_o2_o2_b2_b2']",
 );
+
+type CustomImageConfig = {
+  fit?: "cover" | "contain";
+  positionClass?: string;
+  backdrop?: boolean;
+  paddingClass?: string;
+};
+
+/**
+ * Custom per-image sizing, object-fit and focal alignment so dishes are complete,
+ * perfectly centered, and not clipped or excessively zoomed.
+ */
+function getCustomImageConfig(img: GalleryImageDTO): CustomImageConfig {
+  const src = (img.src || "").toLowerCase();
+  const caption = (img.caption || "").toLowerCase();
+
+  // Waldorf Salad: keep the complete round plate, lettuce and garnishes unclipped & centered
+  if (src.includes("waldorf-salad") || caption.includes("waldorf")) {
+    return { fit: "contain", positionClass: "object-center", backdrop: true, paddingClass: "p-2" };
+  }
+  // Tandoori chicken & naan: keep both chicken & naan fully visible in vertical slots
+  if (src.includes("tandoori-naan-brick") || src.includes("food-33")) {
+    return { fit: "contain", positionClass: "object-center", backdrop: true, paddingClass: "p-2" };
+  }
+  // Pizza slice board
+  if (src.includes("pizza-slice") || src.includes("food-18")) {
+    return { fit: "contain", positionClass: "object-center", backdrop: true, paddingClass: "p-2" };
+  }
+  // Chimichurri prawns
+  if (src.includes("chimichurri-prawns")) {
+    return { fit: "contain", positionClass: "object-center", backdrop: true, paddingClass: "p-2" };
+  }
+  // Fresh fish prep in kitchen
+  if (src.includes("kitchen-fresh-fish") || src.includes("gallery-09")) {
+    return { fit: "contain", positionClass: "object-center", backdrop: true, paddingClass: "p-2" };
+  }
+
+  // Dishes requiring tuned focal positions to stay centered on the hero elements:
+  if (src.includes("kebab-skewer") || src.includes("food-22")) {
+    return { fit: "cover", positionClass: "object-[50%_40%]" };
+  }
+  if (src.includes("seafood-thali")) {
+    return { fit: "cover", positionClass: "object-[50%_52%]" };
+  }
+  if (src.includes("biryani-overhead") || src.includes("food-23")) {
+    return { fit: "cover", positionClass: "object-[30%_62%]" };
+  }
+  if (src.includes("pasta-parmesan") || src.includes("food-07")) {
+    return { fit: "cover", positionClass: "object-[center_40%]" };
+  }
+  if (src.includes("dining-room-long-view")) {
+    return { fit: "cover", positionClass: "object-[center_35%]" };
+  }
+  if (src.includes("murg-tandoori")) {
+    return { fit: "cover", positionClass: "object-[center_45%]" };
+  }
+
+  return { fit: "cover", positionClass: "object-center" };
+}
 
 function GalleryTile({
   img,
@@ -86,6 +145,9 @@ function GalleryTile({
   delay?: number;
   priority?: boolean;
 }) {
+  const config = getCustomImageConfig(img);
+  const isContain = config.fit === "contain";
+
   return (
     <ImageReveal
       delay={delay}
@@ -101,6 +163,18 @@ function GalleryTile({
         className="relative block size-full text-left cursor-pointer"
         aria-label={`View photograph: ${img.caption ?? img.alt}`}
       >
+        {/* Soft ambient blurred backdrop for contained images so card feels full and cohesive */}
+        {config.backdrop && (
+          <Image
+            src={img.src}
+            alt=""
+            fill
+            sizes="120px"
+            aria-hidden="true"
+            className="pointer-events-none object-cover blur-2xl opacity-40 scale-125"
+          />
+        )}
+
         <Image
           src={img.src}
           alt={img.alt}
@@ -111,7 +185,11 @@ function GalleryTile({
           loading={priority ? "eager" : "lazy"}
           placeholder={img.blurDataUrl ? "blur" : "empty"}
           blurDataURL={img.blurDataUrl ?? undefined}
-          className="object-cover transition-transform duration-[1.4s] ease-out-soft group-hover:scale-[1.03]"
+          className={clsx(
+            "transition-transform duration-[1.4s] ease-out-soft group-hover:scale-[1.03]",
+            isContain ? clsx("object-contain", config.paddingClass ?? "p-2") : "object-cover",
+            config.positionClass,
+          )}
         />
 
         {/* Hover / focus overlay matching the homepage GalleryPreview editorial tone */}
@@ -145,7 +223,7 @@ function ClusterSkeleton({ isBentoB }: { isBentoB: boolean }) {
   const bentoAreas = isBentoB ? BENTO_B_AREAS : BENTO_A_AREAS;
 
   return (
-    <div aria-hidden className={clsx("grid gap-[14px]", bentoAreas)}>
+    <div aria-hidden className={clsx("grid gap-3 md:gap-[14px]", bentoAreas)}>
       {bentoConfig.map((tile, i) => (
         <div
           key={i}
@@ -173,7 +251,7 @@ function RemainderGrid({
 
   if (count === 1) {
     return (
-      <div className="grid grid-cols-1 gap-[14px]">
+      <div className="grid grid-cols-1 gap-3 md:gap-[14px]">
         <GalleryTile
           img={items[0]}
           globalIndex={startIndex}
@@ -187,7 +265,7 @@ function RemainderGrid({
 
   if (count === 2) {
     return (
-      <div className="grid grid-cols-1 gap-[14px] md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 md:gap-[14px] md:grid-cols-2">
         {items.map((img, i) => (
           <GalleryTile
             key={img.id}
@@ -205,7 +283,7 @@ function RemainderGrid({
 
   if (count === 3) {
     return (
-      <div className="grid grid-cols-1 gap-[14px] md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 md:gap-[14px] md:grid-cols-3">
         {items.map((img, i) => (
           <GalleryTile
             key={img.id}
@@ -223,7 +301,7 @@ function RemainderGrid({
 
   if (count === 4) {
     return (
-      <div className="grid grid-cols-2 gap-[14px] lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:gap-[14px] lg:grid-cols-4">
         {items.map((img, i) => (
           <GalleryTile
             key={img.id}
@@ -240,7 +318,7 @@ function RemainderGrid({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-[14px] md:grid-cols-3 lg:grid-cols-6">
+    <div className="grid grid-cols-2 gap-3 md:gap-[14px] md:grid-cols-3 lg:grid-cols-6">
       {items.map((img, i) => {
         const isWide = i === 0 && count % 2 === 1;
         return (
@@ -358,7 +436,7 @@ export function GalleryGrid({ images }: { images: GalleryImageDTO[] }) {
       </div>
 
       {/* Rhythmic Bento Layout */}
-      <div className="mt-8 flex flex-col gap-[14px] md:mt-12">
+      <div className="mt-8 flex flex-col gap-3 md:gap-[14px] md:mt-12">
         {clusters.map((cluster, clusterIndex) => {
           const isBentoB = clusterIndex % 2 === 1;
           const isVisible = clusterIndex < visibleClusters;
@@ -372,8 +450,8 @@ export function GalleryGrid({ images }: { images: GalleryImageDTO[] }) {
           const bentoAreas = isBentoB ? BENTO_B_AREAS : BENTO_A_AREAS;
 
           return (
-            <div key={`cluster-${clusterIndex}`} className="flex flex-col gap-[14px]">
-              <div className={clsx("grid gap-[14px]", bentoAreas)}>
+            <div key={`cluster-${clusterIndex}`} className="flex flex-col gap-3 md:gap-[14px]">
+              <div className={clsx("grid gap-3 md:gap-[14px]", bentoAreas)}>
                 {cluster.map((img, i) => {
                   const tile = bentoConfig[i];
                   const globalIndex = clusterIndex * 8 + i;

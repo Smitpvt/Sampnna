@@ -13,7 +13,7 @@ import { navLinks } from "@/config/site";
  */
 const ORDER = ["/about", "/gallery", "/", "/menu", "/contact"];
 
-const linkCls = "font-serif font-light tracking-[-0.01em] block text-[1.5rem] leading-[1.3] transition-colors hover:text-sand lg:text-[1.6rem]";
+const linkCls = "font-serif font-light tracking-[-0.01em] block text-[1.15rem] sm:text-[1.5rem] leading-[1.2] sm:leading-[1.3] transition-colors hover:text-sand lg:text-[1.6rem]";
 
 /** The route a pathname belongs to: an exact match, or the longest link it sits under ("/" only matches itself). */
 function currentHref(pathname: string) {
@@ -42,17 +42,17 @@ export function FooterNav() {
 
   return (
     // The group is only as wide as its two equal columns, and is centred under the heading.
-    <ul className="mx-auto mt-5 grid w-fit grid-cols-2 gap-x-10 gap-y-1 text-left sm:gap-x-14">
+    <ul suppressHydrationWarning className="mx-auto mt-2 sm:mt-5 grid w-fit grid-cols-2 gap-x-8 sm:gap-x-14 gap-y-0.5 sm:gap-y-1 text-left">
       {sides.map((l) => (
         <li key={l.href}>
-          <Link href={l.href} className={linkCls}>
+          <Link href={l.href} suppressHydrationWarning className={linkCls}>
             {l.label}
           </Link>
         </li>
       ))}
       {/* Spans both columns and centres on the whole group, not on either column. */}
-      <li className="col-span-2 mt-2 justify-self-center">
-        <Link href={current.href} aria-current="page" className={clsx(linkCls, "border-b border-terracotta/70 pb-0.5")}>
+      <li className="col-span-2 mt-0.5 sm:mt-2 justify-self-center">
+        <Link href={current.href} aria-current="page" suppressHydrationWarning className={clsx(linkCls, "border-b border-terracotta/70 pb-0.5")}>
           {current.label}
         </Link>
       </li>

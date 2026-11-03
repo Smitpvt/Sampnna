@@ -22,22 +22,93 @@ export function ReservationSection() {
       className={clsx(
         // Desktop: the top padding just clears the fixed 4.5rem navbar, so the card sits high in the section;
         // the bottom padding carries the remaining terracotta.
-        "relative isolate bg-terracotta-deep px-4 py-12 md:px-8 md:py-14",
+        "relative isolate bg-terracotta-deep sm:px-4 sm:py-12 md:px-8 md:py-14",
         "lg:px-[clamp(1.5rem,4.5vw,5rem)] lg:pb-[clamp(2.5rem,6svh,4rem)] lg:pt-[calc(4.5rem+0.25rem)]",
         cormorant.variable,
       )}
     >
-      <Reveal className="relative mx-auto w-full max-w-[110rem] rounded-[6px] bg-[#fcf8f0] text-charcoal shadow-[0_30px_60px_-30px_rgb(39_20_12/0.6),0_8px_20px_-12px_rgb(39_20_12/0.35)]">
+      {/* =========================================================================
+          MOBILE-ONLY HERO & RESERVATION POSTCARD (< sm)
+          Matching attached mockup:
+          - Terracotta top banner with eyebrow & headline
+          - Arched building sketch overlapping terracotta & cream card
+          - Cream card with fine borders, greeting, description, and 3-section form
+          ========================================================================= */}
+      <div className="sm:hidden text-charcoal">
+        {/* Top Terracotta Hero */}
+        <div className="pt-8 pb-12 px-6 text-center text-ivory">
+          <p className="eyebrow flex items-center justify-center gap-2 text-[0.62rem] text-ivory/80 tracking-[0.18em]">
+            <span aria-hidden className="h-px w-5 bg-ivory/50" />
+            YOUR TABLE AWAITS
+            <span aria-hidden className="h-px w-5 bg-ivory/50" />
+          </p>
+          <h2 id="reserve-title-mobile" className="mt-3 font-[family-name:var(--font-cormorant)] text-[2.1rem] leading-[1.08] font-normal tracking-[-0.01em]">
+            Come for the flavours.
+            <br />
+            <em className="text-sand/90 italic">Stay for the moments.</em>
+          </h2>
+        </div>
+
+        {/* Cream Card with arch overlapping hero */}
+        <div className="relative mx-3.5 -mt-6 mb-4 rounded-[6px] bg-[#fcf8f0] px-4 pb-6 pt-0 shadow-[0_25px_50px_-20px_rgb(39_20_12/0.5)]">
+          {/* Decorative double borders */}
+          <span aria-hidden className="pointer-events-none absolute inset-[5px] rounded-[2px] border border-terracotta/35" />
+          <span aria-hidden className="pointer-events-none absolute inset-[8px] rounded-[1px] border border-terracotta/20" />
+
+          {/* Overlapping Architectural Illustration in Rounded Arch */}
+          <div className="relative -mt-10 flex flex-col items-center justify-center">
+            <div className="relative w-56 rounded-t-full border border-terracotta/40 bg-[#fcf8f0] p-1.5 shadow-sm">
+              <span
+                aria-hidden
+                className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-2.5 rotate-45 border border-terracotta/60 bg-[#fcf8f0]"
+              />
+              <div className="relative h-[135px] w-full overflow-hidden rounded-t-full">
+                <Image
+                  src="/images/other/sampann-sketch.webp"
+                  alt="Pencil sketch of the Sampann building"
+                  width={1232}
+                  height={848}
+                  sizes="14rem"
+                  className="h-full w-full object-cover object-[center_35%]"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Postcard Greeting & Location */}
+          <div className="mt-4 flex items-baseline justify-between gap-2 border-b border-terracotta/40 pb-2 px-1">
+            <p className="font-[family-name:var(--font-cormorant)] text-[1.18rem] italic text-turquoise-deep">
+              A warm welcome, always.
+            </p>
+            <p className="eyebrow text-[0.58rem] text-charcoal/80 tracking-widest">
+              CHAUL <span className="text-terracotta">♦</span> ALIBAUG
+            </p>
+          </div>
+
+          {/* Short Description */}
+          <p className="mt-3 px-1 text-[0.84rem] leading-[1.5] text-ink-soft">
+            Every visit deserves a place of its own. Tell us when you&apos;re coming, and we&apos;ll make sure there&apos;s a table waiting for you.
+          </p>
+
+          {/* Form */}
+          <div className="mt-4 px-1">
+            <ReservationForm />
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          DESKTOP & TABLET VIEW (sm:block) — 100% PRESERVED
+          ========================================================================= */}
+      <Reveal className="hidden sm:block relative mx-auto w-full max-w-[110rem] rounded-[6px] bg-[#fcf8f0] text-charcoal shadow-[0_30px_60px_-30px_rgb(39_20_12/0.6),0_8px_20px_-12px_rgb(39_20_12/0.35)]">
         {/* Fine double-line terracotta border, inset from the card's edge. */}
         <span aria-hidden className="pointer-events-none absolute inset-[10px] rounded-[2px] border border-terracotta/35" />
         <span aria-hidden className="pointer-events-none absolute inset-[14px] rounded-[1px] border border-terracotta/20" />
 
-        <div className="relative grid gap-10 px-6 py-10 sm:px-10 md:py-12 lg:grid-cols-[50fr_50fr] lg:gap-0 lg:px-[clamp(2.5rem,4vw,4.5rem)] lg:py-[clamp(1.25rem,3svh,2.5rem)]">
+        <div className="relative grid gap-10 px-10 py-10 md:py-12 lg:grid-cols-[50fr_50fr] lg:gap-0 lg:px-[clamp(2.5rem,4vw,4.5rem)] lg:py-[clamp(1.25rem,3svh,2.5rem)]">
           {/* Left: the building sketch and the postcard greeting */}
           <div className="flex flex-col lg:pr-[clamp(2rem,3.5vw,4rem)]">
             <div className="relative flex flex-1 items-center justify-center">
-              {/* The sketch's own soft edges are carried into the card with a gentle mask — no colour change.
-                  On desktop its height is capped by the screen height so the whole card fits one laptop screen. */}
               <Image
                 src="/images/other/sampann-sketch.webp"
                 alt="Pencil sketch of the Sampann building: a brick pavilion with a large central arch, steps up to the entrance and palms around it"
@@ -55,7 +126,6 @@ export function ReservationSection() {
 
           {/* Right: invitation and form, set off by a fine vertical rule on desktop */}
           <div className="relative lg:border-l lg:border-terracotta/25 lg:pl-[clamp(2rem,3.5vw,4rem)]">
-            {/* Hidden on 1024–1279px screens only, where the right column is too narrow for the stamp beside the heading. */}
             <Stamp className="absolute -top-2 right-0 hidden w-[7.5rem] sm:block lg:hidden xl:block" />
 
             <p className="eyebrow flex items-center gap-3 text-turquoise-deep">

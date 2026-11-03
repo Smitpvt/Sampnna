@@ -109,121 +109,304 @@ export function ReservationForm() {
   const submitting = status.kind === "submitting";
 
   return (
-    // Rows of two (name · phone, email · date, time · guests), special requests across the full width, then the note and the button.
-    <form noValidate onSubmit={onSubmit} aria-describedby="res-note" className="relative grid gap-x-7 gap-y-5 text-charcoal sm:grid-cols-2 lg:gap-y-[clamp(0.75rem,1.6svh,1rem)]">
+    // On mobile (< sm), render the exact 3-section layout from the reference mockup.
+    // On tablet & desktop (sm:), preserve the original 2-column grid layout.
+    <form noValidate onSubmit={onSubmit} aria-describedby="res-note" className="relative text-charcoal">
       <Honeypot value={honeypot} onChange={setHoneypot} />
 
-      <Field id="res-guestName" label="Your name" error={errors.guestName}>
-        {(a) => (
-          <WithIcon icon="user">
-            <input {...a} name="guestName" className={fieldCls} placeholder="Enter your full name" autoComplete="name" value={values.guestName} onChange={set("guestName")} required />
-          </WithIcon>
-        )}
-      </Field>
-      <Field id="res-phone" label="Phone number" error={errors.phone}>
-        {(a) => (
-          <WithIcon icon="phone">
-            <input {...a} name="phone" type="tel" inputMode="tel" className={fieldCls} placeholder="Your contact number" autoComplete="tel" value={values.phone} onChange={set("phone")} required />
-          </WithIcon>
-        )}
-      </Field>
-      <Field id="res-email" label="Email address" error={errors.email}>
-        {(a) => (
-          <WithIcon icon="mail">
-            <input {...a} name="email" type="email" inputMode="email" className={fieldCls} placeholder="you@example.com" autoComplete="email" value={values.email} onChange={set("email")} required />
-          </WithIcon>
-        )}
-      </Field>
-      <Field id="res-date" label="Your visit date" error={errors.date}>
-        {(a) => (
-          <WithIcon icon="calendar">
-            <input
-              {...a}
-              name="date"
-              type="date"
-              className={clsx(fieldCls, "[color-scheme:light]")}
-              min={bounds?.min}
-              max={bounds?.max}
-              value={values.date}
-              onChange={set("date")}
-              required
-            />
-          </WithIcon>
-        )}
-      </Field>
-      <Field id="res-time" label="Preferred time" error={errors.time}>
-        {(a) => (
-          <WithIcon icon="clock">
-          <select {...a} name="time" className={fieldCls} value={values.time} onChange={set("time")} required>
-            <option value="">Choose a time</option>
-            {SLOTS.map((s) => (
-              <option key={s} value={s} disabled={slotUnavailable(s)}>
-                {formatSlot(s)}
-              </option>
-            ))}
-          </select>
-          </WithIcon>
-        )}
-      </Field>
-      <Field id="res-guestCount" label="Number of guests" error={errors.guestCount}>
-        {(a) => (
-          <WithIcon icon="users">
-            <select {...a} name="guestCount" className={fieldCls} value={values.guestCount} onChange={set("guestCount")} required>
-              {GUESTS.map((n) => (
-                <option key={n} value={n}>
-                  {n} {n === 1 ? "guest" : "guests"}
+      {/* MOBILE-ONLY LAYOUT (< sm) matching reference mockup */}
+      <div className="flex flex-col gap-4 sm:hidden">
+        {/* Section 01 — Who's coming */}
+        <div>
+          <div className="flex items-baseline gap-2 border-b border-charcoal/10 pb-1">
+            <span className="font-[family-name:var(--font-cormorant)] text-[0.95rem] italic text-terracotta-deep">01</span>
+            <h3 className="font-[family-name:var(--font-cormorant)] text-[1.15rem] font-medium leading-tight text-charcoal">Who&apos;s coming</h3>
+          </div>
+          <div className="mt-2.5 grid grid-cols-2 gap-x-4">
+            <Field id="res-guestName-m" label="YOUR NAME" error={errors.guestName}>
+              {(a) => (
+                <WithIcon icon="user">
+                  <input {...a} name="guestName" className={fieldClsMobile} placeholder="Full name" autoComplete="name" value={values.guestName} onChange={set("guestName")} required />
+                </WithIcon>
+              )}
+            </Field>
+            <Field id="res-phone-m" label="PHONE" error={errors.phone}>
+              {(a) => (
+                <WithIcon icon="phone">
+                  <input {...a} name="phone" type="tel" inputMode="tel" className={fieldClsMobile} placeholder="Contact number" autoComplete="tel" value={values.phone} onChange={set("phone")} required />
+                </WithIcon>
+              )}
+            </Field>
+          </div>
+          <div className="mt-2.5">
+            <Field id="res-email-m" label="EMAIL ADDRESS" error={errors.email}>
+              {(a) => (
+                <WithIcon icon="mail">
+                  <input {...a} name="email" type="email" inputMode="email" className={fieldClsMobile} placeholder="you@example.com" autoComplete="email" value={values.email} onChange={set("email")} required />
+                </WithIcon>
+              )}
+            </Field>
+          </div>
+        </div>
+
+        {/* Section 02 — When to expect you */}
+        <div>
+          <div className="flex items-baseline gap-2 border-b border-charcoal/10 pb-1">
+            <span className="font-[family-name:var(--font-cormorant)] text-[0.95rem] italic text-terracotta-deep">02</span>
+            <h3 className="font-[family-name:var(--font-cormorant)] text-[1.15rem] font-medium leading-tight text-charcoal">When to expect you</h3>
+          </div>
+          <div className="mt-2.5 grid grid-cols-2 gap-x-4">
+            <Field id="res-date-m" label="VISIT DATE" error={errors.date}>
+              {(a) => (
+                <WithIcon icon="calendar">
+                  <input
+                    {...a}
+                    name="date"
+                    type="date"
+                    className={clsx(fieldClsMobile, "[color-scheme:light]")}
+                    min={bounds?.min}
+                    max={bounds?.max}
+                    value={values.date}
+                    onChange={set("date")}
+                    required
+                  />
+                </WithIcon>
+              )}
+            </Field>
+            <Field id="res-time-m" label="TIME" error={errors.time}>
+              {(a) => (
+                <WithIcon icon="clock">
+                  <select {...a} name="time" className={fieldClsMobile} value={values.time} onChange={set("time")} required>
+                    <option value="">Choose</option>
+                    {SLOTS.map((s) => (
+                      <option key={s} value={s} disabled={slotUnavailable(s)}>
+                        {formatSlot(s)}
+                      </option>
+                    ))}
+                  </select>
+                </WithIcon>
+              )}
+            </Field>
+          </div>
+          {/* Guest selector row with - / count / + counter buttons */}
+          <div className="mt-3 flex items-center justify-between border-b border-charcoal/20 pb-2">
+            <div className="flex items-center gap-2 text-charcoal">
+              <svg aria-hidden viewBox="0 0 24 24" className="size-4 text-turquoise-deep" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                {ICONS.users}
+              </svg>
+              <span className="eyebrow text-[0.62rem] text-charcoal/80">GUESTS</span>
+            </div>
+            <div className="flex items-center rounded border border-charcoal/25 bg-transparent overflow-hidden">
+              <button
+                type="button"
+                onClick={() => {
+                  const curr = parseInt(values.guestCount, 10) || 2;
+                  if (curr > 1) {
+                    setValues((v) => ({ ...v, guestCount: String(curr - 1) }));
+                    if (errors.guestCount) setErrors(({ guestCount: _, ...rest }) => rest);
+                  }
+                }}
+                disabled={parseInt(values.guestCount, 10) <= 1}
+                aria-label="Decrease guest count"
+                className="flex size-7 items-center justify-center text-charcoal/80 hover:bg-charcoal/10 disabled:opacity-30 border-r border-charcoal/20 text-sm font-medium"
+              >
+                −
+              </button>
+              <span className="w-16 text-center text-[0.82rem] font-medium text-charcoal">
+                {values.guestCount} {parseInt(values.guestCount, 10) === 1 ? "guest" : "guests"}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  const curr = parseInt(values.guestCount, 10) || 2;
+                  if (curr < rules.maxGuests) {
+                    setValues((v) => ({ ...v, guestCount: String(curr + 1) }));
+                    if (errors.guestCount) setErrors(({ guestCount: _, ...rest }) => rest);
+                  }
+                }}
+                disabled={parseInt(values.guestCount, 10) >= rules.maxGuests}
+                aria-label="Increase guest count"
+                className="flex size-7 items-center justify-center text-charcoal/80 hover:bg-charcoal/10 disabled:opacity-30 border-l border-charcoal/20 text-sm font-medium"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          {errors.guestCount && (
+            <p className="mt-1 text-[0.72rem] font-medium text-[#b3311d]">{errors.guestCount}</p>
+          )}
+        </div>
+
+        {/* Section 03 — A note for us */}
+        <div>
+          <div className="flex items-baseline justify-between border-b border-charcoal/10 pb-1">
+            <div className="flex items-baseline gap-2">
+              <span className="font-[family-name:var(--font-cormorant)] text-[0.95rem] italic text-terracotta-deep">03</span>
+              <h3 className="font-[family-name:var(--font-cormorant)] text-[1.15rem] font-medium leading-tight text-charcoal">A note for us</h3>
+            </div>
+            <span className="text-[0.62rem] text-ink-soft">Optional</span>
+          </div>
+          <div className="mt-2.5">
+            <WithIcon icon="note">
+              <textarea
+                id="res-specialRequests-m"
+                name="specialRequests"
+                rows={2}
+                maxLength={1000}
+                className={clsx(fieldClsMobile, "resize-none h-[52px] overflow-hidden leading-snug py-1")}
+                placeholder="Celebration, seating preference or anything we should know…"
+                value={values.specialRequests}
+                onChange={set("specialRequests")}
+              />
+            </WithIcon>
+          </div>
+        </div>
+
+        {/* CTA button & footer note */}
+        <div className="mt-1 flex flex-col gap-3">
+          <button
+            type="submit"
+            disabled={submitting}
+            aria-busy={submitting}
+            className="btn w-full rounded-[3px] bg-terracotta h-[44px] text-[0.8rem] font-medium tracking-wider text-ivory hover:bg-terracotta-deep disabled:opacity-70 flex items-center justify-center gap-2 shadow-sm"
+          >
+            {submitting ? (
+              <>
+                <span aria-hidden className="size-4 animate-spin rounded-full border-2 border-ivory/40 border-t-ivory" />
+                Sending…
+              </>
+            ) : (
+              <>
+                RESERVE YOUR TABLE <ArrowRight />
+              </>
+            )}
+          </button>
+
+          <div className="flex items-center justify-between text-[0.68rem] leading-tight text-ink-soft pt-0.5">
+            <span>A request — we&apos;ll call to confirm.</span>
+            <div className="text-right">
+              <span>Larger group? </span>
+              <a href={`tel:${site.phone.tel}`} className="link-line font-medium text-turquoise-deep whitespace-nowrap">
+                {site.phone.display}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* DESKTOP & TABLET LAYOUT (sm:grid) — 100% UNCHANGED */}
+      <div className="hidden sm:grid gap-x-7 gap-y-5 sm:grid-cols-2 lg:gap-y-[clamp(0.75rem,1.6svh,1rem)]">
+        <Field id="res-guestName" label="Your name" error={errors.guestName}>
+          {(a) => (
+            <WithIcon icon="user">
+              <input {...a} name="guestName" className={fieldCls} placeholder="Enter your full name" autoComplete="name" value={values.guestName} onChange={set("guestName")} required />
+            </WithIcon>
+          )}
+        </Field>
+        <Field id="res-phone" label="Phone number" error={errors.phone}>
+          {(a) => (
+            <WithIcon icon="phone">
+              <input {...a} name="phone" type="tel" inputMode="tel" className={fieldCls} placeholder="Your contact number" autoComplete="tel" value={values.phone} onChange={set("phone")} required />
+            </WithIcon>
+          )}
+        </Field>
+        <Field id="res-email" label="Email address" error={errors.email}>
+          {(a) => (
+            <WithIcon icon="mail">
+              <input {...a} name="email" type="email" inputMode="email" className={fieldCls} placeholder="you@example.com" autoComplete="email" value={values.email} onChange={set("email")} required />
+            </WithIcon>
+          )}
+        </Field>
+        <Field id="res-date" label="Your visit date" error={errors.date}>
+          {(a) => (
+            <WithIcon icon="calendar">
+              <input
+                {...a}
+                name="date"
+                type="date"
+                className={clsx(fieldCls, "[color-scheme:light]")}
+                min={bounds?.min}
+                max={bounds?.max}
+                value={values.date}
+                onChange={set("date")}
+                required
+              />
+            </WithIcon>
+          )}
+        </Field>
+        <Field id="res-time" label="Preferred time" error={errors.time}>
+          {(a) => (
+            <WithIcon icon="clock">
+            <select {...a} name="time" className={fieldCls} value={values.time} onChange={set("time")} required>
+              <option value="">Choose a time</option>
+              {SLOTS.map((s) => (
+                <option key={s} value={s} disabled={slotUnavailable(s)}>
+                  {formatSlot(s)}
                 </option>
               ))}
             </select>
-          </WithIcon>
-        )}
-      </Field>
-      <Field id="res-specialRequests" label="Any special requests?" optional error={errors.specialRequests} className="sm:col-span-2">
-        {(a) => (
-          <WithIcon icon="note">
-            <textarea
-              {...a}
-              name="specialRequests"
-              rows={1}
-              maxLength={1000}
-              // Grows with its text (no inner scrollbar); one line when empty.
-              className={clsx(fieldCls, "resize-none overflow-hidden [field-sizing:content]")}
-              placeholder="Celebration, seating preference or anything we should know…"
-              value={values.specialRequests}
-              onChange={set("specialRequests")}
-            />
-          </WithIcon>
-        )}
-      </Field>
-
-      {/* Last row: the note on the left, the button on the right. */}
-      <div className="mt-1 flex flex-col-reverse gap-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
-        <p id="res-note" className="text-xs leading-relaxed text-ink-soft">
-          Planning for a larger gathering? Give us a call.{" "}
-          <a href={`tel:${site.phone.tel}`} className="link-line whitespace-nowrap text-charcoal">
-            {site.phone.display}
-          </a>
-        </p>
-        <button
-          type="submit"
-          disabled={submitting}
-          aria-busy={submitting}
-          className="btn shrink-0 rounded-[3px] bg-terracotta px-8 text-ivory hover:bg-terracotta-deep disabled:opacity-70"
-        >
-          {submitting ? (
-            <>
-              <span aria-hidden className="size-4 animate-spin rounded-full border-2 border-ivory/40 border-t-ivory" />
-              Sending…
-            </>
-          ) : (
-            <>
-              Reserve your table <ArrowRight />
-            </>
+            </WithIcon>
           )}
-        </button>
+        </Field>
+        <Field id="res-guestCount" label="Number of guests" error={errors.guestCount}>
+          {(a) => (
+            <WithIcon icon="users">
+              <select {...a} name="guestCount" className={fieldCls} value={values.guestCount} onChange={set("guestCount")} required>
+                {GUESTS.map((n) => (
+                  <option key={n} value={n}>
+                    {n} {n === 1 ? "guest" : "guests"}
+                  </option>
+                ))}
+              </select>
+            </WithIcon>
+          )}
+        </Field>
+        <Field id="res-specialRequests" label="Any special requests?" optional error={errors.specialRequests} className="sm:col-span-2">
+          {(a) => (
+            <WithIcon icon="note">
+              <textarea
+                {...a}
+                name="specialRequests"
+                rows={1}
+                maxLength={1000}
+                className={clsx(fieldCls, "resize-none overflow-hidden [field-sizing:content]")}
+                placeholder="Celebration, seating preference or anything we should know…"
+                value={values.specialRequests}
+                onChange={set("specialRequests")}
+              />
+            </WithIcon>
+          )}
+        </Field>
+
+        {/* Last row: the note on the left, the button on the right. */}
+        <div className="mt-1 flex flex-col-reverse gap-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+          <p id="res-note" className="text-xs leading-relaxed text-ink-soft">
+            Planning for a larger gathering? Give us a call.{" "}
+            <a href={`tel:${site.phone.tel}`} className="link-line whitespace-nowrap text-charcoal">
+              {site.phone.display}
+            </a>
+          </p>
+          <button
+            type="submit"
+            disabled={submitting}
+            aria-busy={submitting}
+            className="btn shrink-0 rounded-[3px] bg-terracotta px-8 text-ivory hover:bg-terracotta-deep disabled:opacity-70"
+          >
+            {submitting ? (
+              <>
+                <span aria-hidden className="size-4 animate-spin rounded-full border-2 border-ivory/40 border-t-ivory" />
+                Sending…
+              </>
+            ) : (
+              <>
+                Reserve your table <ArrowRight />
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
-      <div ref={statusRef} tabIndex={-1} aria-live="assertive" className="outline-none sm:col-span-2">
+      <div ref={statusRef} tabIndex={-1} aria-live="assertive" className="outline-none sm:col-span-2 mt-2">
         <AnimatePresence>
           {status.kind === "error" && (
             <motion.p
@@ -246,6 +429,9 @@ export function ReservationForm() {
 const fieldCls =
   "field min-h-[2.6rem] py-2 pl-7 placeholder:text-ink-soft/60 border-b-charcoal/25 focus:border-b-terracotta focus:shadow-[0_1px_0_0_var(--color-terracotta)]";
 
+const fieldClsMobile =
+  "field h-[34px] min-h-[34px] py-1 pl-6 text-[0.84rem] placeholder:text-ink-soft/50 border-b-charcoal/20 focus:border-b-terracotta focus:shadow-[0_1px_0_0_var(--color-terracotta)]";
+
 type IconName = "user" | "mail" | "phone" | "calendar" | "clock" | "users" | "note";
 
 /** Small turquoise line icons, one per field. */
@@ -265,7 +451,7 @@ function WithIcon({ icon, children }: { icon: IconName; children: React.ReactNod
       <svg
         aria-hidden
         viewBox="0 0 24 24"
-        className="pointer-events-none absolute left-0 top-[0.8rem] size-4 text-turquoise-deep"
+        className="pointer-events-none absolute left-0 top-[0.55rem] sm:top-[0.8rem] size-3.5 sm:size-4 text-turquoise-deep"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"

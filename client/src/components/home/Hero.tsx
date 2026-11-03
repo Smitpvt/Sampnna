@@ -100,7 +100,7 @@ export function Hero({ backdrops }: Props) {
     <section
       ref={ref}
       aria-labelledby="hero-title"
-      className="relative isolate flex min-h-screen items-center overflow-hidden bg-charcoal text-ivory supports-[min-height:100svh]:min-h-[100svh] sm:h-[100svh] sm:min-h-[600px]"
+      className="relative isolate flex flex-col min-h-screen overflow-hidden bg-charcoal text-ivory supports-[min-height:100svh]:min-h-[100svh] sm:h-[100svh] sm:min-h-[600px] sm:items-center sm:justify-center"
     >
       <motion.div className="absolute inset-x-0 -bottom-6 -top-6 -z-20 sm:inset-y-0" style={{ y: bgY }}>
         <motion.div
@@ -121,48 +121,53 @@ export function Hero({ backdrops }: Props) {
       <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-2/5 bg-gradient-to-t from-charcoal/85 to-transparent" />
 
       {/*
-        Mobile-first spacing. Phones (base): the hero fills the screen (100svh,
-        100vh fallback, as a minimum so short screens never clip). Top padding
-        exceeds bottom by the 64px header, so the group — 32 / 40 / 40 / 14px
-        between eyebrow, heading, description and buttons — centres beneath it.
-        From sm up the top padding clears the fixed header (64 / 80 / 96px) so
-        the content sits centred — slightly low — beneath it.
+        Mobile-first spacing matching approved visual reference:
+        Dedicated mobile content wrapper positioned at ~33.5svh from top of viewport,
+        placing Eyebrow at 34%, Heading at 39%, Description spanning 49-64%,
+        Explore Menu at 70%, and Reserve a Table finishing at 83% (17% floor clearance).
+        From sm up, the desktop centered layout is completely preserved.
       */}
-      <div className="shell relative w-full pb-12 pt-28 sm:pb-8 sm:pt-24 md:pb-12 md:pt-32 lg:pt-40">
-        {/* Text entrance is CSS so it plays before hydration. */}
-        <motion.div className="mx-auto flex max-w-4xl flex-col items-center text-center lg:max-w-5xl" style={{ opacity: fade }}>
-          {/* A lightened tint of the brand gold: the pure tone is too dark to read over brick. */}
-          <p className="eyebrow anim-fade-up flex items-center gap-4 text-[color-mix(in_oklab,var(--color-gold)_72%,var(--color-ivory))] [animation-delay:250ms] md:text-[0.78rem] lg:gap-5 lg:text-[0.82rem]">
-            <span aria-hidden className="h-px w-8 bg-gold/60 md:w-12 lg:w-16" />
-            {copy.hero.eyebrow}
-            <span aria-hidden className="h-px w-8 bg-gold/60 md:w-12 lg:w-16" />
-          </p>
-          <h1
-            id="hero-title"
-            className="mt-8 text-[clamp(2.625rem,10.5vw,2.875rem)] font-[340] leading-none tracking-[0.015em] [font-variation-settings:'SOFT'_30,'WONK'_0,'opsz'_144] sm:mt-4 sm:text-[clamp(4.25rem,1.8rem+8.6vw,9.5rem)] md:mt-6"
+      <div className="shell relative flex w-full flex-col min-h-[100svh] supports-[min-height:100svh]:min-h-[100svh] sm:min-h-0 sm:justify-center sm:pb-8 sm:pt-24 md:pb-12 md:pt-32 lg:pt-40">
+        {/* Dedicated mobile content wrapper with viewport-relative positioning */}
+        <div className="relative w-full max-sm:top-[33.5svh] sm:static">
+          {/* Text entrance is CSS so it plays before hydration. */}
+          <motion.div
+            className="mx-auto flex w-full max-w-4xl flex-col items-center text-center lg:max-w-5xl"
+            style={{ opacity: fade }}
           >
-            <span className="block overflow-hidden pb-[0.1em]">
-              <span className="anim-rise block [animation-delay:350ms]">{copy.hero.heading}</span>
-            </span>
-          </h1>
-          <p className="anim-fade-up mt-10 max-w-[310px] px-2 text-[0.9375rem] leading-[1.75] text-ivory/85 [animation-delay:600ms] sm:mt-4 sm:max-w-[36rem] sm:px-0 sm:text-base sm:leading-[1.7] md:mt-6 md:text-[1.0625rem] lg:max-w-[42rem] lg:text-[1.1875rem]">
-            {copy.hero.body}
-          </p>
-          <div className="anim-fade-up mt-10 flex w-full max-w-[275px] flex-col gap-3.5 [animation-delay:750ms] sm:w-auto sm:max-w-none sm:flex-row sm:gap-4 md:mt-12 lg:mt-14">
-            <Link
-              href="/menu"
-              className="btn min-h-[46px] rounded-[10px] border border-ivory/35 bg-ivory/[0.06] px-8 py-0 text-ivory hover:border-ivory/70 hover:bg-ivory/[0.14] sm:min-h-[3.25rem] sm:py-[0.85rem] lg:min-h-14 lg:px-10"
+            {/* A lightened tint of the brand gold: the pure tone is too dark to read over brick. */}
+            <p className="eyebrow anim-fade-up flex items-center gap-4 text-[color-mix(in_oklab,var(--color-gold)_72%,var(--color-ivory))] [animation-delay:250ms] md:text-[0.78rem] lg:gap-5 lg:text-[0.82rem]">
+              <span aria-hidden className="h-px w-8 bg-gold/60 md:w-12 lg:w-16" />
+              {copy.hero.eyebrow}
+              <span aria-hidden className="h-px w-8 bg-gold/60 md:w-12 lg:w-16" />
+            </p>
+            <h1
+              id="hero-title"
+              className="mt-[2.75svh] text-[clamp(2.75rem,11.5vw,3.25rem)] font-[340] leading-none tracking-[0.015em] [font-variation-settings:'SOFT'_30,'WONK'_0,'opsz'_144] sm:mt-4 sm:text-[clamp(4.25rem,1.8rem+8.6vw,9.5rem)] md:mt-6"
             >
-              Explore Menu
-            </Link>
-            <Link
-              href="#reserve"
-              className="btn btn-primary min-h-[46px] rounded-[10px] px-8 py-0 sm:min-h-[3.25rem] sm:py-[0.85rem] lg:min-h-14 lg:px-10"
-            >
-              Reserve a Table <ArrowRight className="size-3.5" />
-            </Link>
-          </div>
-        </motion.div>
+              <span className="block overflow-hidden pb-[0.1em]">
+                <span className="anim-rise block [animation-delay:350ms]">{copy.hero.heading}</span>
+              </span>
+            </h1>
+            <p className="anim-fade-up mt-[4.25svh] w-[82%] max-w-[340px] px-1 text-[0.9375rem] leading-[1.75] text-ivory/85 [animation-delay:600ms] sm:mt-4 sm:w-auto sm:max-w-[36rem] sm:px-0 sm:text-base sm:leading-[1.7] md:mt-6 md:text-[1.0625rem] lg:max-w-[42rem] lg:text-[1.1875rem]">
+              {copy.hero.body}
+            </p>
+            <div className="anim-fade-up mt-[6svh] flex w-[78%] max-w-[330px] flex-col gap-4 [animation-delay:750ms] sm:w-auto sm:max-w-none sm:flex-row sm:gap-4 sm:mt-8 md:mt-12 lg:mt-14">
+              <Link
+                href="/menu"
+                className="btn min-h-[50px] w-full rounded-[10px] border border-ivory/35 bg-ivory/[0.06] px-8 py-0 text-sm font-semibold tracking-[0.12em] text-ivory hover:border-ivory/70 hover:bg-ivory/[0.14] sm:min-h-[3.25rem] sm:py-[0.85rem] sm:w-auto lg:min-h-14 lg:px-10"
+              >
+                Explore Menu
+              </Link>
+              <Link
+                href="#reserve"
+                className="btn btn-primary min-h-[50px] w-full rounded-[10px] px-8 py-0 text-sm font-semibold tracking-[0.12em] sm:min-h-[3.25rem] sm:py-[0.85rem] sm:w-auto lg:min-h-14 lg:px-10"
+              >
+                Reserve a Table <ArrowRight className="size-3.5" />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

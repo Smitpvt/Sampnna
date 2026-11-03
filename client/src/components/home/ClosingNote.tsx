@@ -40,7 +40,7 @@ export function ClosingNote({ main, detail }: { main: ImageRef; detail: ImageRef
           <p className="eyebrow text-[0.74rem] text-turquoise-deep md:text-[0.78rem]">A little something from Sampann</p>
           {/* Three natural phrases on desktop; balanced wrapping on smaller screens. Sized by both height and
               width so the longest phrase always fits beside the photos. */}
-          <blockquote className="mt-[clamp(1.25rem,3.5svh,2.25rem)] max-w-[11em] text-balance font-[family-name:var(--font-cormorant)] text-[clamp(3rem,9svh,5.6rem)] font-normal leading-[1.02] tracking-[-0.02em] text-charcoal lg:max-w-none lg:text-[clamp(3.4rem,min(10.3svh,5.6vw),6.8rem)]">
+          <blockquote className="mt-[clamp(1.25rem,3.5svh,2.25rem)] max-w-[11em] text-balance font-[family-name:var(--font-cormorant)] text-[clamp(2.8rem,11vw,3.5rem)] font-normal leading-[1.08] tracking-[-0.02em] text-charcoal sm:text-[clamp(3rem,9svh,5.6rem)] sm:leading-[1.02] lg:max-w-none lg:text-[clamp(3.4rem,min(10.3svh,5.6vw),6.8rem)]">
             <span className="lg:block">Our greatest reward</span> <span className="lg:block">is seeing you leave</span>{" "}
             <span className="lg:block">
               with a{" "}

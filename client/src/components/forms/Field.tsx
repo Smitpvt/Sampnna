@@ -14,19 +14,19 @@ type Props = {
 export function Field({ id, label, error, hint, optional, className, children }: Props) {
   const describedBy = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(" ") || undefined;
   return (
-    <div className={clsx("flex flex-col", className)}>
-      <label htmlFor={id} className="eyebrow text-[0.66rem] opacity-80">
+    <div className={clsx("flex flex-col justify-end", className)}>
+      <label htmlFor={id} className="eyebrow text-[0.6rem] sm:text-[0.66rem] opacity-80 leading-none">
         {label}
-        {optional && <span className="ml-2 normal-case tracking-normal opacity-70">(optional)</span>}
+        {optional && <span className="ml-1 sm:ml-2 normal-case tracking-normal opacity-70">(optional)</span>}
       </label>
       {children({ id, "aria-invalid": Boolean(error), "aria-describedby": describedBy })}
       {hint && !error && (
-        <p id={`${id}-hint`} className="mt-2 text-xs opacity-70">
+        <p id={`${id}-hint`} className="mt-0.5 sm:mt-2 text-[0.68rem] sm:text-xs opacity-70">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-[#b3311d] [.on-dark_&]:text-[#ffb4a2]">
+        <p id={`${id}-error`} className="mt-0.5 sm:mt-2 text-[0.72rem] sm:text-sm font-medium text-[#b3311d] [.on-dark_&]:text-[#ffb4a2]">
           {error}
         </p>
       )}

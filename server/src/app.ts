@@ -7,16 +7,23 @@ export function createApp() {
   const app = express();
 
   const allowedOrigins = process.env.CORS_ORIGIN
-    ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+    ? process.env.CORS_ORIGIN.split(",")
+        .map((o) => o.trim())
+        .filter((o) => o.length > 0 && o !== "*")
     : ["http://localhost:3000", "http://127.0.0.1:3000"];
 
   app.use(
     cors({
       origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+        // Allow requests with no origin (such as server-to-server, health-check probes, or curl)
+        if (!origin) {
           return callback(null, true);
         }
-        return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+        // Disallowed origin: deny by omitting CORS response headers
+        return callback(null, false);
       },
       credentials: true,
     }),
@@ -30,6 +37,10 @@ export function createApp() {
   });
 
   app.use(express.json({ limit: "16kb" }));
+
+  app.get("/health", (_req, res) => {
+    res.status(200).json({ status: "ok", message: "Sampann API is healthy" });
+  });
 
   app.use("/api", apiRouter);
 
