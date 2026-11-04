@@ -394,15 +394,23 @@ function Ornament({ className }: { className?: string }) {
   );
 }
 
+function CoverOrnament({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 100 12" fill="none" aria-hidden>
+      <line x1="8" y1="6" x2="43" y2="6" stroke="currentColor" strokeWidth="0.8" />
+      <line x1="57" y1="6" x2="92" y2="6" stroke="currentColor" strokeWidth="0.8" />
+      <path d="M50 2l4 4-4 4-4-4z" fill="#b96349" stroke="currentColor" strokeWidth="0.6" />
+    </svg>
+  );
+}
+
 /** Art-deco corner clasp, drawn for the top-left corner (mirrored in CSS). */
 function Corner({ className }: { className: string }) {
   return (
     <svg className={clsx(s.corner, className)} viewBox="0 0 40 40" fill="none" aria-hidden>
       <path d="M2 26V12C2 6.5 6.5 2 12 2h14" stroke="currentColor" strokeWidth="1" />
       <path d="M6.5 22V13c0-3.6 2.9-6.5 6.5-6.5h9" stroke="currentColor" strokeWidth="0.6" opacity="0.6" />
-      <path d="M12 8.5l3.5 3.5-3.5 3.5-3.5-3.5z" fill="currentColor" />
-      <circle cx="2" cy="30" r="1.1" fill="currentColor" />
-      <circle cx="30" cy="2" r="1.1" fill="currentColor" />
+      <path className={s.cornerDiamond} d="M12 8.5l3.5 3.5-3.5 3.5-3.5-3.5z" fill="currentColor" />
     </svg>
   );
 }
@@ -420,10 +428,10 @@ function Corners() {
 
 function ArchLine() {
   return (
-    <svg className={s.archLine} viewBox="0 0 100 146" fill="none" aria-hidden>
+    <svg className={s.archLine} viewBox="0 -6 100 152" fill="none" aria-hidden>
       <path d="M1 146V50a49 49 0 0 1 98 0v96" stroke="currentColor" strokeWidth="0.45" />
       <path d="M5 146V51a45 45 0 0 1 90 0v95" stroke="currentColor" strokeWidth="0.25" opacity="0.55" />
-      <path d="M50 -3.2l3.2 3.2-3.2 3.2-3.2-3.2z" fill="currentColor" />
+      <path className={s.archDiamond} d="M50 -4.5l4.5 4.5-4.5 4.5-4.5-4.5z" fill="currentColor" />
     </svg>
   );
 }
@@ -480,7 +488,7 @@ function Cover() {
         <Image src="/brand/sampann-logo.png" alt="" width={244} height={60} className={s.coverLogo} unoptimized priority />
         <p className={s.coverThe}>THE</p>
         <p className={clsx(s.coverMenu, s.foil)}>Menu</p>
-        <Ornament className={s.coverOrn} />
+        <CoverOrnament className={s.coverOrn} />
         <p className={s.coverPlace}>CHAUL · ALIBAG</p>
       </div>
       <p className={s.cuisines}>{site.cuisines.join(" · ")}</p>

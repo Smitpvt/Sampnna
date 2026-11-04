@@ -26,11 +26,10 @@
   min-height: 100svh;
   overflow-x: clip;
   padding: 4.75rem 0 1rem;
-  color: var(--cream);
+  color: #272622;
   font-family: var(--font-jost), var(--font-sans), sans-serif;
   background:
-    radial-gradient(ellipse 50% 42% at 50% 44%, rgba(232, 200, 140, 0.13), transparent 70%),
-    radial-gradient(ellipse 120% 85% at 50% 38%, #24453a 0%, #17301f 52%, #0d1c14 100%);
+    radial-gradient(ellipse 80% 65% at 50% 40%, #f9f5ec 0%, #f4ede2 60%, #ebe2d3 100%);
 }
 @media (min-width: 768px) {
   .root {
@@ -43,23 +42,22 @@
   }
 }
 
-/* A faint wall of arches behind the book, fading out at the edges. */
+/* A faint wall of arches behind the book. */
 .root::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  opacity: 0.07;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='84' height='120' viewBox='0 0 84 120'><path d='M8 120V46a34 34 0 0 1 68 0v74' fill='none' stroke='%23e8d199' stroke-width='1'/><path d='M14 120V47a28 28 0 0 1 56 0v73' fill='none' stroke='%23e8d199' stroke-width='0.5'/></svg>");
-  background-size: 84px 120px;
-  mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, transparent 30%, #000 75%);
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='180' viewBox='0 0 100 180'><path d='M10 180V60a40 40 0 0 1 80 0v120' fill='none' stroke='%23914735' stroke-width='1'/><path d='M16 180V62a34 34 0 0 1 68 0v118' fill='none' stroke='%23914735' stroke-width='0.5'/></svg>");
+  background-size: 100px 180px;
 }
 .root::after {
   content: "";
   position: absolute;
   inset: 0 0 auto;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(184, 146, 74, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(141, 107, 45, 0.25), transparent);
 }
 
 .stage {
@@ -143,7 +141,7 @@
   inset: auto 4% -3.5% 4%;
   height: 10%;
   z-index: -1;
-  background: radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0.55), transparent 70%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0.25), transparent 70%);
   filter: blur(6px);
 }
 
@@ -169,19 +167,19 @@
 .ribbon {
   position: absolute;
   z-index: 0;
-  top: calc(100% - 3rem);
-  width: 0.95rem;
-  height: calc(3rem + 1.55rem);
-  background: linear-gradient(90deg, #4f171a, #86302f 45%, #9b3a37 55%, #5a1b1d);
+  top: calc(100% - 2.5rem);
+  width: 1.05rem;
+  height: 3.5rem;
+  background: linear-gradient(90deg, #6e2d1f 0%, #9e4632 45%, #b45740 55%, #7a3222 100%);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
   pointer-events: none;
 }
 .spread .ribbon {
-  left: calc(var(--pw) * 1.2);
+  left: calc(var(--pw) * 1.15);
 }
 .single .ribbon {
-  left: calc(var(--pw) * 0.8);
+  left: calc(var(--pw) * 0.75);
 }
 
 /* Page curl on hover — a hint that the corner can be turned. */
@@ -220,13 +218,18 @@
 }
 
 /* Stack of page edges under each side, for the thickness of the book. */
+.edges {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
 .edge {
   position: absolute;
   inset: 0;
   pointer-events: none;
   border-radius: 0.5cqw;
-  background: linear-gradient(90deg, #e3d8c1, #ebe2cf);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+  background: linear-gradient(90deg, #ede4d5 0%, #f6f0e4 50%, #e2d7c5 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 /* ─── Turning leaf ──────────────────────────────────────────────────────── */
@@ -323,8 +326,8 @@
   container-type: inline-size;
   border-radius: 0.5cqw;
   box-shadow:
-    0 18px 30px -8px rgba(0, 0, 0, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.22);
+    0 20px 34px -8px rgba(0, 0, 0, 0.25),
+    0 3px 6px rgba(0, 0, 0, 0.12);
 }
 .sideLeft {
   border-radius: 0.9cqw 0 0 0.9cqw;
@@ -662,60 +665,69 @@
   color: rgba(30, 46, 36, 0.5);
 }
 
-/* ─── Green leather pages: cover and thank-you ─────────────────────────── */
+/* ─── Teal/turquoise leather pages: cover and thank-you ─────────────────────────── */
 .leather {
   position: absolute;
   inset: 0;
   overflow: hidden;
   border-radius: inherit;
   background:
-    radial-gradient(ellipse 80% 60% at 55% 36%, rgba(76, 128, 96, 0.55), transparent 70%),
-    linear-gradient(160deg, #25483a 0%, #1a3628 55%, #11251b 100%);
+    radial-gradient(ellipse 90% 75% at 52% 40%, #2f7570 0%, #25645d 55%, #1a4f48 100%);
   box-shadow:
-    inset 0 0 0 1px rgba(232, 209, 153, 0.14),
-    inset 0 0 4cqw rgba(0, 0, 0, 0.35);
+    inset 0 0 0 1px rgba(248, 243, 234, 0.2),
+    inset 0 0 3cqw rgba(0, 0, 0, 0.25);
 }
 .leather::before {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.32;
+  opacity: 0.22;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 .spineBand {
   position: absolute;
   inset: 0 auto 0 0;
-  width: 7cqw;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.18) 70%, rgba(255, 255, 255, 0.05));
+  width: 6.8cqw;
+  background: linear-gradient(90deg, #421c14 0%, #7d3928 20%, #9c4c39 50%, #843b2a 80%, #3a1811 96%, rgba(0, 0, 0, 0.35) 100%);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.35);
 }
 .spineBand::after {
   content: "";
   position: absolute;
-  inset: 3cqw -1.6cqw 3cqw auto;
-  border-left: 1px dashed rgba(232, 209, 153, 0.4);
+  inset: 0 0 0 auto;
+  width: 1px;
+  background: rgba(248, 243, 234, 0.25);
 }
 .leatherFrame {
   position: absolute;
   inset: 5cqw;
   z-index: 1;
-  border: 1px solid rgba(232, 209, 153, 0.5);
+  border: 1px solid rgba(248, 243, 234, 0.7);
   box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(0, 0, 0, 0.35);
+    0 1px 0 rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(0, 0, 0, 0.25);
   pointer-events: none;
 }
 .leatherFrame::after {
   content: "";
   position: absolute;
   inset: 0.9cqw;
-  border: 1px solid rgba(232, 209, 153, 0.2);
+  border: 1px solid rgba(248, 243, 234, 0.5);
 }
 .leatherFrame .corner {
-  color: var(--gold-hi);
+  color: rgba(248, 243, 234, 0.85);
+}
+.leatherFrame .cornerDiamond {
+  fill: #b96349;
+  stroke: rgba(248, 243, 234, 0.85);
+  stroke-width: 0.5;
+}
+.frame .cornerDiamond {
+  fill: var(--gold-hi);
 }
 .coverFrame {
-  left: 10cqw;
+  left: 9.5cqw;
 }
 
 .foil {
@@ -745,14 +757,14 @@
 /* Cover */
 .cover {
   position: absolute;
-  inset: 5cqw 5cqw 5cqw 10cqw;
+  inset: 4.5cqw 4.5cqw 4.5cqw 9.5cqw;
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: var(--gold-hi);
+  color: #f8f3ea;
 }
 .arch {
   position: relative;
@@ -768,21 +780,29 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  color: var(--gold-hi);
+  color: rgba(248, 243, 234, 0.8);
   overflow: visible;
+}
+.archDiamond {
+  fill: #b96349;
+  stroke: rgba(248, 243, 234, 0.85);
+  stroke-width: 0.5;
 }
 .coverLogo {
   position: relative;
   width: 38cqw;
   height: auto;
+  filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
 .coverThe {
   position: relative;
-  margin-top: 10cqw;
-  font-size: 1.9cqw;
+  margin-top: 6cqw;
+  font-size: 1.8cqw;
   font-weight: 500;
-  letter-spacing: 0.7em;
-  margin-right: -0.7em;
+  letter-spacing: 0.65em;
+  margin-right: -0.65em;
+  text-transform: uppercase;
+  color: #f8f3ea;
 }
 .coverMenu {
   position: relative;
@@ -793,30 +813,35 @@
   font-size: 17cqw;
   line-height: 1;
   padding: 0 2cqw 1cqw;
+  color: #f8f3ea !important;
+  background: none !important;
+  -webkit-text-fill-color: #f8f3ea !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 .coverOrn {
   position: relative;
-  width: 24cqw;
+  width: 22cqw;
   height: 2cqw;
-  margin-top: 3cqw;
-  color: var(--gold-hi);
+  margin-top: 2.5cqw;
+  color: rgba(248, 243, 234, 0.85);
 }
 .coverPlace {
   position: relative;
-  margin-top: 4cqw;
-  font-size: 1.75cqw;
+  margin-top: 3.5cqw;
+  font-size: 1.6cqw;
   font-weight: 500;
   letter-spacing: 0.55em;
   margin-right: -0.55em;
-  color: rgba(232, 209, 153, 0.85);
+  text-transform: uppercase;
+  color: rgba(248, 243, 234, 0.9);
 }
 .cuisines {
-  margin-top: 6cqw;
-  font-size: 1.45cqw;
-  letter-spacing: 0.36em;
-  margin-right: -0.36em;
+  margin-top: 4.5cqw;
+  font-size: 1.15cqw;
+  letter-spacing: 0.3em;
+  margin-right: -0.3em;
   text-transform: uppercase;
-  color: rgba(232, 209, 153, 0.6);
+  color: rgba(248, 243, 234, 0.75);
 }
 
 /* Thank you */
@@ -1031,9 +1056,9 @@ a.contactValue:hover {
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  border: 1px solid rgba(232, 209, 153, 0.45);
-  background: rgba(10, 22, 15, 0.35);
-  color: var(--gold-hi);
+  border: 1px solid rgba(39, 38, 34, 0.28);
+  background: rgba(248, 243, 234, 0.65);
+  color: #272622;
   backdrop-filter: blur(4px);
   transition:
     background-color 300ms,
@@ -1050,7 +1075,7 @@ a.contactValue:hover {
   .arrow:hover:not(:disabled) {
     background: var(--gold);
     border-color: var(--gold);
-    color: var(--forest);
+    color: #fff;
   }
   .arrowPrev:hover:not(:disabled) {
     transform: translateX(-3px);
@@ -1060,7 +1085,7 @@ a.contactValue:hover {
   }
 }
 .arrow:active:not(:disabled) {
-  background: rgba(184, 146, 74, 0.3);
+  background: rgba(184, 146, 74, 0.2);
 }
 .spread .arrow {
   position: absolute;
@@ -1101,10 +1126,10 @@ a.contactValue:hover {
   width: 100%;
   appearance: none;
   padding: 0.6rem 2.3rem 0.6rem 1.1rem;
-  border: 1px solid rgba(232, 209, 153, 0.35);
-  border-radius: 999px;
-  background: rgba(10, 22, 15, 0.35);
-  color: #f3ead2;
+  border: 1px solid rgba(39, 38, 34, 0.38);
+  border-radius: 2px;
+  background: rgba(248, 243, 234, 0.75);
+  color: #272622;
   font: inherit;
   font-size: 0.7rem;
   font-weight: 500;
@@ -1120,7 +1145,7 @@ a.contactValue:hover {
 }
 .select:hover,
 .select:focus-visible {
-  border-color: var(--gold-hi);
+  border-color: #914735;
   outline: none;
 }
 .select option {
@@ -1134,20 +1159,20 @@ a.contactValue:hover {
   top: 50%;
   width: 0.5rem;
   height: 0.5rem;
-  border-right: 1.5px solid var(--gold-hi);
-  border-bottom: 1.5px solid var(--gold-hi);
+  border-right: 1.5px solid rgba(39, 38, 34, 0.65);
+  border-bottom: 1.5px solid rgba(39, 38, 34, 0.65);
   transform: translateY(-70%) rotate(45deg);
   pointer-events: none;
 }
 .progress {
   position: relative;
   height: 1px;
-  background: rgba(232, 209, 153, 0.2);
+  background: rgba(185, 99, 73, 0.22);
 }
 .progressFill {
   position: absolute;
   inset: 0 auto 0 0;
-  background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi));
+  background: linear-gradient(90deg, #b96349, #914735);
   transition: width var(--dur) var(--ease-turn);
 }
 .progressFill::after {
@@ -1158,14 +1183,14 @@ a.contactValue:hover {
   width: 7px;
   height: 7px;
   transform: rotate(45deg);
-  background: var(--gold-hi);
+  background: #914735;
 }
 .counter {
   font-size: 0.68rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: rgba(232, 209, 153, 0.8);
+  color: rgba(39, 38, 34, 0.75);
   font-variant-numeric: tabular-nums;
 }
 .subBar {
@@ -1179,9 +1204,9 @@ a.contactValue:hover {
 .hint {
   font-family: var(--font-cormorant), Georgia, serif;
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   letter-spacing: 0.02em;
-  color: rgba(243, 234, 210, 0.6);
+  color: #914735;
 }
 
 @media (prefers-reduced-motion: reduce) {
