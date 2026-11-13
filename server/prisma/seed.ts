@@ -65,6 +65,7 @@ async function seedMenu() {
         imageAlt: imageAlt(d.image),
         categoryId: category.id,
         tags: d.tags ?? [],
+        allergens: d.allergens ?? [],
         isFeatured: d.featured ?? false,
         displayOrder: di,
       };

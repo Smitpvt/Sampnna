@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { type AllergenCode, ALLERGEN_GUIDE } from "@/content/allergens";
 import type { DishDTO } from "@/types/content";
 import { Price } from "./Price";
 
@@ -28,6 +29,12 @@ export function DishRow({ dish, highlight }: { dish: DishDTO; highlight?: string
           <span className="leader" aria-hidden />
           <Price dish={dish} className="text-base text-terracotta-deep" />
         </div>
+        {dish.allergens.length > 0 && (
+          <p className="mt-1 text-xs tracking-wide text-ink-soft/80">
+            <span className="sr-only">Allergens: </span>
+            {dish.allergens.map((c) => ALLERGEN_GUIDE[c as AllergenCode] ?? c).join(" · ")}
+          </p>
+        )}
         {dish.description && (
           <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-ink-soft">
             <Highlight text={dish.description} term={highlight} />

@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { site } from "@/config/site";
+import { type AllergenCode, ALLERGEN_GUIDE } from "@/content/allergens";
 import { COURSES } from "@/content/courses";
 import { cormorant } from "@/lib/fonts";
 import type { CategoryDTO, DishDTO } from "@/types/content";
@@ -610,7 +611,10 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
               <ul className={s.grid}>
                 {sec.dishes.map((d) => (
                   <li key={d.id} className={s.gridItem}>
-                    <span className={s.name}>{d.name}</span>
+                    <span className={s.name}>
+                      {d.name}
+                      <Allergens codes={d.allergens} />
+                    </span>
                     <span className={s.leader} />
                     <Amount dish={d} />
                   </li>
@@ -621,7 +625,10 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
                 {sec.dishes.map((d) => (
                   <li key={d.id} className={s.item}>
                     <div className={s.row}>
-                      <span className={s.name}>{d.name}</span>
+                      <span className={s.name}>
+                        {d.name}
+                        <Allergens codes={d.allergens} />
+                      </span>
                       {d.options.length === 0 && (
                         <>
                           <span className={s.leader} />
@@ -647,8 +654,41 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
           </section>
         ))}
       </div>
+      <AllergenLegend dishes={sections.flatMap((sec) => sec.dishes)} />
       <Foot number={number} mode={mode} />
     </div>
+  );
+}
+
+/** Key for the allergen codes used on this page only, e.g. "ALLERGENS (D) DAIRY (M) MUSTARD". */
+function AllergenLegend({ dishes }: { dishes: DishDTO[] }) {
+  const used = new Set(dishes.flatMap((d) => d.allergens));
+  const codes = (Object.keys(ALLERGEN_GUIDE) as AllergenCode[]).filter((c) => used.has(c));
+  return (
+    <div className={s.legend}>
+      {codes.length > 0 && (
+        <>
+          <span className={s.legendTitle}>Allergens</span>
+          {codes.map((c) => (
+            <span key={c} className={s.legendItem}>
+              <span className={s.legendCode}>{c}</span>
+              {ALLERGEN_GUIDE[c]}
+            </span>
+          ))}
+        </>
+      )}
+    </div>
+  );
+}
+
+/** Allergen codes as printed on the menu, e.g. "D G N"; the key is on the last page. */
+function Allergens({ codes }: { codes: string[] }) {
+  if (codes.length === 0) return null;
+  const label = codes.map((c) => ALLERGEN_GUIDE[c as AllergenCode] ?? c).join(", ");
+  return (
+    <span className={s.allergens} title={`Contains: ${label}`} aria-label={`Allergens: ${label}`}>
+      {codes.join(" ")}
+    </span>
   );
 }
 
@@ -665,6 +705,15 @@ function Thanks() {
       <Image src="/brand/sampann-logo.png" alt="" width={244} height={60} className={s.thanksLogo} unoptimized />
       <p className={clsx(s.thanksTitle, s.foil)}>Thank you</p>
       <p className={s.thanksSub}>for dining with us — do visit again.</p>
+      <p className={s.hostLabel}>Allergen guide</p>
+      <p className={s.allergenKey}>
+        {(Object.entries(ALLERGEN_GUIDE) as [AllergenCode, string][]).map(([code, label]) => (
+          <span key={code}>
+            <b>{code}</b> {label}
+          </span>
+        ))}
+      </p>
+      <p className={s.allergenNote}>Please inform our staff of any food allergy or dietary requirement before ordering. Our kitchen handles all of the above, so traces may be present in any dish.</p>
       <p className={s.hostLabel}>We also host</p>
       <div className={s.hostList}>
         {site.events.map((e, i) => (
@@ -726,6 +775,7 @@ function PlainMenu({ categories }: { categories: CategoryDTO[] }) {
               <li key={d.id}>
                 {d.name} — {price(d)}
                 {d.description ? `. ${d.description}` : ""}
+                {d.allergens.length ? ` Allergens: ${d.allergens.map((c) => ALLERGEN_GUIDE[c as AllergenCode] ?? c).join(", ")}.` : ""}
               </li>
             ))}
           </ul>

@@ -33,6 +33,7 @@ function toDish(d: DishRow): DishDTO {
     options: d.priceOptions.map((o) => ({ label: o.label, price: o.price, priceNote: o.priceNote })),
     image: toImage(d.image, d.imageAlt, d.name),
     tags: d.tags,
+    allergens: d.allergens,
     isFeatured: d.isFeatured,
     categorySlug: d.category.slug,
     categoryName: d.category.name,

@@ -28,7 +28,8 @@ const PAD_BOTTOM = 5.5;
 
 // Running head, folio and a small safety margin, in u.
 const RUNHEAD = 1.05 * 1.2 + 0.9 + 2.6;
-const FOOT = 1.2 + 1.6 + 0.6 + 0.95 * 1.2;
+const LEGEND = 3; // per-page allergen key above the folio
+const FOOT = 1.2 + 1.6 + 0.6 + 0.95 * 1.2 + LEGEND;
 const SAFETY = 0.8;
 
 // Section heading: kicker, title, ornament.
@@ -95,8 +96,11 @@ function frame(mode: Mode) {
   };
 }
 
+/** Printed width of the name line: the dish name plus its allergen codes. */
+const nameLen = (d: DishDTO) => d.name.length + (d.allergens.length ? 2 + d.allergens.join(" ").length * 0.7 : 0);
+
 function listItemHeight(d: DishDTO, width: number) {
-  let h = lines(d.name.length, NAME_CW, width - PRICE_W) * NAME_LH;
+  let h = lines(nameLen(d), NAME_CW, width - PRICE_W) * NAME_LH;
   if (d.description) h += DESC_MT + lines(d.description.length, DESC_CW, width - DESC_INSET) * DESC_LH;
   if (d.options.length) h += OPT_H;
   return h + ITEM_GAP;
@@ -104,7 +108,7 @@ function listItemHeight(d: DishDTO, width: number) {
 
 function gridRowHeight(a: DishDTO, b: DishDTO | undefined, width: number) {
   const col = (width - GRID_GAP_X) / 2 - GRID_PRICE_W;
-  const n = Math.max(lines(a.name.length, NAME_CW, col), b ? lines(b.name.length, NAME_CW, col) : 1);
+  const n = Math.max(lines(nameLen(a), NAME_CW, col), b ? lines(nameLen(b), NAME_CW, col) : 1);
   return n * NAME_LH + GRID_ROW_GAP;
 }
 
@@ -117,7 +121,7 @@ function layoutFor(c: CategoryDTO, width: number): Layout {
   const plain = c.dishes.every((d) => !d.description && d.options.length === 0);
   if (!plain || c.dishes.length < 6) return "list";
   const col = (width - GRID_GAP_X) / 2 - GRID_PRICE_W;
-  const n = c.dishes.map((d) => lines(d.name.length, NAME_CW, col));
+  const n = c.dishes.map((d) => lines(nameLen(d), NAME_CW, col));
   const oneLine = n.filter((x) => x === 1).length / n.length;
   return Math.max(...n) <= 2 && oneLine >= 0.6 ? "grid" : "list";
 }

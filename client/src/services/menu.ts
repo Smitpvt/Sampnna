@@ -38,6 +38,7 @@ function getFallbackMenu(): CategoryDTO[] {
         })),
         image: toImage(d.image, null, d.name),
         tags: d.tags ?? [],
+        allergens: d.allergens ?? [],
         isFeatured: Boolean(d.featured),
         categorySlug: c.slug,
         categoryName: c.name,

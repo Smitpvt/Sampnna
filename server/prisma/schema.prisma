@@ -47,6 +47,8 @@ model Dish {
   category     MenuCategory      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   /// Free-form presentation tags, e.g. "seafood". Derived only from the dish name/menu.
   tags         String[]          @default([])
+  /// Allergen codes printed on the menu (D, G, E, N, P, S, Se, M, Ce, F, C).
+  allergens    String[]          @default([])
   isFeatured   Boolean           @default(false)
   isAvailable  Boolean           @default(true)
   displayOrder Int               @default(0)

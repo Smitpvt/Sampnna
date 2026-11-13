@@ -20,6 +20,8 @@ export type DishDTO = {
   options: PriceOption[];
   image: ImageRef | null;
   tags: string[];
+  /** Allergen codes printed on the menu; empty when none are listed. */
+  allergens: string[];
   isFeatured: boolean;
   categorySlug: string;
   categoryName: string;
