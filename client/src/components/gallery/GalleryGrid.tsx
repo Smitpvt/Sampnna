@@ -357,10 +357,10 @@ export function GalleryGrid({ images }: { images: GalleryImageDTO[] }) {
 
   const shown = useMemo(() => (filter === "ALL" ? images : images.filter((i) => i.category === filter)), [images, filter]);
 
-  // Reset progressive cluster window whenever filter changes
-  useEffect(() => {
+  const handleFilterChange = (c: GalleryCategory | "ALL") => {
+    setFilter(c);
     setVisibleClusters(2);
-  }, [filter]);
+  };
 
   // Divide into 8-item clusters and a remainder for perfect layout rhythm
   const { clusters, remainder } = useMemo(() => {
@@ -416,7 +416,7 @@ export function GalleryGrid({ images }: { images: GalleryImageDTO[] }) {
                 key={c}
                 type="button"
                 aria-pressed={isSelected}
-                onClick={() => setFilter(c)}
+                onClick={() => handleFilterChange(c)}
                 className={clsx(
                   "relative inline-flex items-center rounded-full px-5 py-2 text-xs font-medium tracking-[0.14em] uppercase transition-all duration-300 md:px-6 md:py-2.5 cursor-pointer",
                   isSelected

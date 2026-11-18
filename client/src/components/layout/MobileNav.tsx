@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { navLinks, site } from "@/config/site";
 import { Close } from "@/components/ui/Icons";
@@ -13,11 +13,11 @@ type Props = { open: boolean; onClose: () => void; isActive: (href: string) => b
 /** Full-screen mobile navigation with focus trap, Esc to close and scroll lock. */
 export function MobileNav({ open, onClose, isActive }: Props) {
   const panel = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     if (!open) return;

@@ -18,6 +18,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    agentUpgrade: "security",
+  } as NextConfig["experimental"] & { agentUpgrade?: string },
   devIndicators: false,
   poweredByHeader: false,
   // The homepage lists public/images/featured_dishes at render time (ISR), so ship the folder with it.
