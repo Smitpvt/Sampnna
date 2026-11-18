@@ -629,7 +629,7 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
                         {d.name}
                         <Allergens codes={d.allergens} />
                       </span>
-                      {d.options.length === 0 && (
+                      {(!d.options || d.options.length === 0) && (
                         <>
                           <span className={s.leader} />
                           <Amount dish={d} />
@@ -637,7 +637,7 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
                       )}
                     </div>
                     {d.description && <p className={s.desc}>{d.description}</p>}
-                    {d.options.length > 0 && (
+                    {Boolean(d.options?.length) && (
                       <p className={s.opts}>
                         {d.options.map((o) => (
                           <span key={o.label}>
@@ -662,7 +662,7 @@ function MenuPage({ sections, number, mode }: { sections: Section[]; number: num
 
 /** Key for the allergen codes used on this page only, e.g. "ALLERGENS (D) DAIRY (M) MUSTARD". */
 function AllergenLegend({ dishes }: { dishes: DishDTO[] }) {
-  const used = new Set(dishes.flatMap((d) => d.allergens));
+  const used = new Set(dishes.flatMap((d) => d.allergens ?? []));
   const codes = (Object.keys(ALLERGEN_GUIDE) as AllergenCode[]).filter((c) => used.has(c));
   return (
     <div className={s.legend}>
@@ -682,8 +682,8 @@ function AllergenLegend({ dishes }: { dishes: DishDTO[] }) {
 }
 
 /** Allergen codes as printed on the menu, e.g. "D G N"; the key is on the last page. */
-function Allergens({ codes }: { codes: string[] }) {
-  if (codes.length === 0) return null;
+function Allergens({ codes }: { codes?: string[] }) {
+  if (!codes || codes.length === 0) return null;
   const label = codes.map((c) => ALLERGEN_GUIDE[c as AllergenCode] ?? c).join(", ");
   return (
     <span className={s.allergens} title={`Contains: ${label}`} aria-label={`Allergens: ${label}`}>
@@ -759,7 +759,7 @@ function Arrow({ dir }: { dir: "left" | "right" }) {
 
 function PlainMenu({ categories }: { categories: CategoryDTO[] }) {
   const price = (d: DishDTO) =>
-    d.options.length
+    d.options?.length
       ? d.options.map((o) => `${o.label} ₹${o.price != null ? amount(o.price) : o.priceNote}`).join(", ")
       : d.price != null
         ? `₹${amount(d.price)}`
@@ -775,7 +775,7 @@ function PlainMenu({ categories }: { categories: CategoryDTO[] }) {
               <li key={d.id}>
                 {d.name} — {price(d)}
                 {d.description ? `. ${d.description}` : ""}
-                {d.allergens.length ? ` Allergens: ${d.allergens.map((c) => ALLERGEN_GUIDE[c as AllergenCode] ?? c).join(", ")}.` : ""}
+                {d.allergens?.length ? ` Allergens: ${d.allergens.map((c) => ALLERGEN_GUIDE[c as AllergenCode] ?? c).join(", ")}.` : ""}
               </li>
             ))}
           </ul>

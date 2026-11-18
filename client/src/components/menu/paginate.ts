@@ -97,12 +97,12 @@ function frame(mode: Mode) {
 }
 
 /** Printed width of the name line: the dish name plus its allergen codes. */
-const nameLen = (d: DishDTO) => d.name.length + (d.allergens.length ? 2 + d.allergens.join(" ").length * 0.7 : 0);
+const nameLen = (d: DishDTO) => d.name.length + (d.allergens?.length ? 2 + d.allergens.join(" ").length * 0.7 : 0);
 
 function listItemHeight(d: DishDTO, width: number) {
   let h = lines(nameLen(d), NAME_CW, width - PRICE_W) * NAME_LH;
   if (d.description) h += DESC_MT + lines(d.description.length, DESC_CW, width - DESC_INSET) * DESC_LH;
-  if (d.options.length) h += OPT_H;
+  if (d.options?.length) h += OPT_H;
   return h + ITEM_GAP;
 }
 
@@ -118,7 +118,7 @@ function headHeight(name: string, width: number, note: boolean) {
 
 /** Two columns only for plain lists whose names sit comfortably in a half-width column. */
 function layoutFor(c: CategoryDTO, width: number): Layout {
-  const plain = c.dishes.every((d) => !d.description && d.options.length === 0);
+  const plain = c.dishes.every((d) => !d.description && (!d.options || d.options.length === 0));
   if (!plain || c.dishes.length < 6) return "list";
   const col = (width - GRID_GAP_X) / 2 - GRID_PRICE_W;
   const n = c.dishes.map((d) => lines(nameLen(d), NAME_CW, col));

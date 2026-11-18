@@ -29,7 +29,7 @@ export function DishRow({ dish, highlight }: { dish: DishDTO; highlight?: string
           <span className="leader" aria-hidden />
           <Price dish={dish} className="text-base text-terracotta-deep" />
         </div>
-        {dish.allergens.length > 0 && (
+        {(dish.allergens?.length ?? 0) > 0 && (
           <p className="mt-1 text-xs tracking-wide text-ink-soft/80">
             <span className="sr-only">Allergens: </span>
             {dish.allergens.map((c) => ALLERGEN_GUIDE[c as AllergenCode] ?? c).join(" · ")}

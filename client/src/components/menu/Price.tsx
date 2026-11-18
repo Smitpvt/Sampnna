@@ -5,7 +5,7 @@ const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
 /** Renders exactly what the menu prints: a price, variant prices, or a note. Nothing is invented. */
 export function Price({ dish, className }: { dish: Pick<DishDTO, "price" | "priceNote" | "options">; className?: string }) {
-  if (dish.options.length) {
+  if (dish.options?.length) {
     return (
       <span className={clsx("inline-flex flex-wrap justify-end gap-x-3 gap-y-0.5 tabular-nums", className)}>
         {dish.options.map((o) => (

@@ -60,7 +60,17 @@ function getFallbackMenu(): CategoryDTO[] {
 /** All active categories with their available dishes — fetched from the API with graceful fallback. */
 export async function getMenu(): Promise<CategoryDTO[]> {
   const data = await fetchApi<CategoryDTO[]>("/api/menu", { next: { revalidate: 300 } });
-  if (data && data.length > 0) return data;
+  if (data && data.length > 0) {
+    return data.map((c) => ({
+      ...c,
+      dishes: (c.dishes ?? []).map((d) => ({
+        ...d,
+        allergens: d.allergens ?? [],
+        options: d.options ?? [],
+        tags: d.tags ?? [],
+      })),
+    }));
+  }
   return getFallbackMenu();
 }
 
